@@ -261,12 +261,12 @@ class LinearFuzzifier(Fuzzifier):
         check_X_y(X, y)
         R = np.fromiter(map(self.x_to_sq_dist, X), dtype=float)
 
-        #print(R)
+        # print(R)
     
         sq_radius_1_guess = np.median([self.x_to_sq_dist(x)
                                        for x, mu in zip(X, y) if mu >= 0.90])
 
-        #print(sq_radius_1_guess)
+        # print('raggio medio = ', sq_radius_1_guess)
 
         if self.profile == 'fixed':
             def r_to_mu(R_arg, sq_radius_1):
