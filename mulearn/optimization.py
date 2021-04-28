@@ -164,6 +164,7 @@ class GurobiSolver(Solver):
             with Model('mulearn', env=env) as model:
                 model.setParam('OutputFlag', 0)
                 model.setParam('TimeLimit', self.time_limit)
+                model.setParam('NonConvex',2)
 
                 for i in range(m):
                     if c < np.inf:
