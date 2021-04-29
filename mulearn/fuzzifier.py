@@ -289,7 +289,7 @@ class LinearFuzzifier(Fuzzifier):
 
             p_opt, _ = curve_fit(r_to_mu, R, y,
                                  p0=(sq_radius_1_guess, 10 * self.sq_radius_05),
-                                 bounds=((0, 0), (np.inf, np.inf,)))
+                                 bounds=((-np.inf,), (np.inf,)))
         else:
             raise ValueError("'profile' parameter should be equal to "
                              "'fixed' or 'infer' (provided value: {profile})")
@@ -390,7 +390,7 @@ class ExponentialFuzzifier(Fuzzifier):
             with warnings.catch_warnings():
                 warnings.simplefilter("ignore")
                 p_opt, _ = curve_fit(r_to_mu, R, y, p0=(r_1_guess,),
-                                     maxfev=2000, bounds=((0,), (np.inf,)))
+                                     maxfev=2000, bounds=((-np.inf,), (np.inf,)))
             self.r_to_mu = lambda r: r_to_mu([r], *p_opt)[0]
 
         elif self.profile == "infer":
@@ -416,7 +416,7 @@ class ExponentialFuzzifier(Fuzzifier):
                         for r in R_data]
 
             p_opt, _ = curve_fit(r_to_mu, R, y, p0=(r_1_guess,),
-                                 bounds=((0,), (np.inf,)))
+                                 bounds=((-np.inf,), (np.inf,)))
             self.r_to_mu = lambda r: r_to_mu([r], *p_opt)[0]
         else:
             raise ValueError("'profile' parameter should be equal to "
