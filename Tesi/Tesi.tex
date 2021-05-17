@@ -1,0 +1,99 @@
+% scopiazzato dal template di Matteo Longeri (grazie!)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[12pt,a4paper]{report}
+% o article, book, ...
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% packages...
+\usepackage[utf8]{inputenc}
+\usepackage[english,italian]{babel}
+\usepackage[hyphens]{url}
+
+% Per generare il file PDF aderente alle specifiche PDF/A-1b. Verificarne poi la validità.
+%\usepackage[a-1b]{pdfx}
+
+\usepackage{hyperref}
+\usepackage{graphicx}
+
+
+% Per inserire testo a caso in attesa di realizzare i capitoli
+\usepackage{lipsum}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+% Frontespizio
+\begin{titlepage}
+\begin{center}
+\includegraphics[width=\textwidth]{Logo.jpg}\\
+{\large{\bf Corso di Laurea in Informatica}}
+\end{center}
+\vspace{12mm}
+\begin{center}
+{\huge{\bf Apprendimento di insiemi fuzzy nell'ambito del web semantico}}\\
+\end{center}
+\vspace{12mm}
+\begin{flushleft}
+{\large{\bf Relatore:}}
+{\large{Prof. Dario Malchiodi}}\\
+\vspace{4mm}
+{\large{\bf Correlatore:}}
+{\large{Prof.ssa Anna Maria Zanaboni}}\\
+\end{flushleft}
+\vspace{12mm}
+\begin{flushright}
+{\large{\bf Tesi di Laurea di:}}
+{\large{Alessia Cecere}}\\
+{\large{\bf Matr. 923563}}\\
+\end{flushright}
+\vspace{4mm}
+\begin{center}
+{\large{\bf Anno Accademico 2020/2021}}
+\end{center}
+\end{titlepage}
+
+
+\tableofcontents
+
+
+% o sections (dipende dal documentclass)
+\chapter{Introduzione}
+
+\section{L'algoritmo di apprendimento}
+\section{La ricerca di assiomi in un insieme di formule}
+
+\chapter{Elementi del problema}
+
+\section{Adattamento dell'algoritmo di apprendimento}
+Qui indicherei come l'algoritmo di apprendimento viene adattato per essere applicato alla valutazione di formule.
+\subsection{Utilizzo della libreria mulearn}
+Qui descriverei mulearn e in particolare come è stata utilizzata durante gli esperimenti.
+\section{Il Kernel}
+Qui inizierei a descrivere il ruolo del kernel nella computazione.
+\subsection{Kernel precomputato}
+Qui descriverei il kernel precomputato utilizzato, passando per la matrice di Gram e per il relativo adjustment. Sempre in questo contesto spiegherei i problemi riscontrati durante il fitting, e la possibilità che siano stati causati proprio dal fatto che non sia esattamente un kernel.
+\subsection{Alternative al kernel precomputato}
+Qui descriverei le altre forme di computazione del kernel che sono state considerate.
+\subsubsection{Length-based similarity}
+\subsubsection{Hamming similarity}
+\subsubsection{Levenshtein similarity}
+\subsubsection{Jaccard similarity}
+
+\chapter{Esperimenti}
+Qui andrei a mostrare gli esperimenti e i relativi risultati conseguiti tramite cross validation e model selection.
+\section{Riproduzione degli esperimenti originali}
+\section{Esperimenti sul kernel}
+\subsection{Kernel alternativi}
+\subsection{Possibili soluzioni al problema del fitting}
+\subsubsection{Eliminazione combinatoria di formule}
+\subsubsection{Eliminazione a campione di formule}
+\subsubsection{Valori di similarità come vettori in input all'algoritmo}
+
+
+%\addcontentsline{toc}{chapter}{Bibliografia}
+
+\end{document}

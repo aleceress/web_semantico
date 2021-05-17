@@ -293,8 +293,8 @@ class LinearFuzzifier(Fuzzifier):
         else:
             raise ValueError("'profile' parameter should be equal to "
                              "'fixed' or 'infer' (provided value: {profile})")
-        if min(p_opt) < 0:
-            raise ValueError('Profile fitting returned a negative parameter')
+        #if min(p_opt) < 0:
+            #raise ValueError('Profile fitting returned a negative parameter')
 
         self.r_to_mu = lambda r: r_to_mu([r], *p_opt)[0]
 
