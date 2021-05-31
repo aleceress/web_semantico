@@ -62,15 +62,66 @@
 
 % o sections (dipende dal documentclass)
 \chapter*{Introduzione}
-\chapter{Conoscenze preliminari}
+\chapter{Apprendimento di insiemi fuzzy}
 \section{Gli insiemi fuzzy}
-\section{L'algoritmo di apprendimento}
+\section{Applicazione alla ricerca di assiomi in un insieme di formule}
 
 \chapter{Elementi del problema}
+\section{L'algoritmo di apprendimento}
+Per affrontare il problema sopra descritto, si è utilizzata una variante dell'algoritmo di Support vector clustering, descritta in \cite{svpaper}
 
-\section{La ricerca di assiomi in un insieme di formule}
-\section{Adattamento dell'algoritmo di apprendimento}
-Qui indicherei come l'algoritmo di apprendimento viene adattato per essere applicato alla valutazione di formule.
+Dati \{$x_1$, \dots , $x_n$\} un campione di elementi appartenenti a un dominio $X$ e  \{$\mu_1$, \dots , $\mu_n$\} i rispettivi gradi di appartenenza a un fuzzy set sconosciuto A, duplice obiettivo dell'algoritmo è trovare il fuzzy set $A$,  e inferire i parametri della funzione di appartenenza $\mu_A$. Per spiegare la tecnica, immaginiamo di mappare i punti  $x_i$ su una circonferenza di raggio R  e centro a sconosciuti, e che vi sia un modo di far sì che il  loro  grado di membership dipenda dalla distanza dal centro $a$.
+A questo punto, la ricerca si trasformerebbe nella risoluzione di un problema di ottimizzazione vincolata, di cui possiamo dare una prima formulazione:
+\[ min R^2 + C\sum_{i} \xi_{i}\]
+\[s.t.\]
+\[||x_i - a||^2  \leq R^2 + \xi_{i}\]
+\[ \xi_{i}\ \geq 0, C > 0\]
+Ovvero, il problema diventa trovare la circonferenza di raggio minimo, al variare di $R^2$ e $a$, che raccolga i punti rappresentanti gli elementi del campione.
+Le $\xi_i$ corrispondono a variabili di slack che vengono aggiunte per far rispettare i vincoli di appartenenza, la cui sommatoria minimizzo nella funzione obiettivo; il valore C funge da bilanciamento tra questo adattamento e il rispetto del vincolo, identificando se sia più importante mantenere vincoli stringenti o mappare tutti i punti nella circonferenza.
+In realtà, l'obiettivo è che la distanza dal centro della circonferenza rappresenti un grado di appartenenza all'insieme fuzzy, e dunque andiamo a inserire le $\mu_i$ nella formulazione, che diventa, moltiplicando per $\mu_i$:
+
+\[ min R^2 + C\sum_{i} (\xi_{i} + \tau_{i})\]
+\[s.t.\]
+\[ \mu_i||x_i - a||^2  \leq \mu_i R^2 + \xi_{i}\]
+\[ (1 - \mu_i)||x_i - a||^2  \geq \mu_i R^2 - \tau_{i}\]
+\[ \xi_{i}\ \geq 0, \tau_{i}\ \geq 0 ,  C > 0\]
+
+La formulazione cattura in parte l'insieme fuzzy, infatti:
+\begin{itemize}
+  \item Se  $\mu_i$ = 1, il secondo vincolo diventa ridondante, e si torna alla formulazione iniziale, nella quale si chiede di trovare il centro  e il raggio della circonferenza più piccola che contiene tutti i punti con membership 1.
+  \item Se   $\mu_i$ = 0, il primo vincolo diventa ridondante, e la formulazione è volta a cercare punti che stanno fuori dalla ciconferenza.
+  \item Se   $\mu_i$ = $\frac{1}{2}$, moltiplicando entrambi i vincoli per 2 ottengo:
+\[ ||x_i - a||^2  \leq R^2 + 2\xi_{i}\]
+\[ ||x_i - a||^2  \geq R^2 - 2\tau_{i}\]
+\end{itemize}
+
+Dal momento che entrambe le variabili di slack devono essere il più possibile vicine e zero, questo sta a significare che per la membership  $\frac{1}{2}$ i punti tendono a stare esattamente sulla circonferenza. Rimane il problema di modellazione delle membership intermedie, come si vedrà in seguito.
+Per affrontare quest'ultima formulazione del problema di ottimizzazione, si risolve il problema duale, attraverso il metodo di Wolfe. Per farlo, costruiamo la funzione lagrangiana, sottraendovi obiettivo e vincoli, moltiplicati per altrettante variabili:
+
+\[ L = R^2 + C\sum_{i}(\xi_i + \tau_i) - \sum_{i}\alpha_i(\mu_i+R^2 + \xi_i - ||\xi_i - a||^2) -\] 
+\[\sum_{i}\beta_i[(1- \mu_i)||x_i - a||^2 - (1 - \mu_i)R^2 + \tau_i] -  \sum_{i}\gamma_i\xi_i - \sum_{i}\delta_i\tau_i\]
+
+I vincoli richiedono che vengano messe a zero tutte le derivate parziali della lagrangiana rispetto al problema originale. Sostituendo il pattern $\sum_{i}\alpha_i\mu_i - \beta_i(1-\mu_i)$ con $\epsilon_i$, sapendo che $\sum_{i}\epsilon_i = 1$, a partire dal vincolo sulla derivata parziale rispetto ad $a$ arriviamo all'equazione  $\sum_{i}x_i\epsilon_i = a$. Dunque, nel momento in cui trovo le variabili ottimali $\epsilon_i$, so di riuscire a identificare anche il centro della circonferenza cercata.
+La forma finale del problema duale, da massimizzare, è dunque:
+
+\[ max \sum_{i}\epsilon_ix_ix_i - \sum_{i,j}\epsilon_i\epsilon_jx_ix_j\]
+\[s.t.\]
+\[\sum_i\epsilon_i = 1\]
+\[ C \geq 0, 0 \leq \alpha{i}\ \leq C , 0 \leq \beta_{i}\ \leq C \]
+
+Una volta risolto il problema e ottenute le $\epsilon_i^*$ ottimali, posso calcolare il valore:
+
+\[ R^2(x) = xx - \sum{i}\epsilon_i^*x_ix + \sum{i,j}\epsilon_i^*\epsilon_j^*x_ix_j\]
+
+Si può dimostrare che questa quantità è esattamente uguale al quadrato della distanza tra $a^*$ valore ottimare del raggio e x fornito. Inoltre,  se prendo un $i$ tale che $0 \leq \alpha{i}\ \leq C$ o $0 \leq \beta{i}\ \leq C$,  allora $R^2(x) = R^*$, raggio ottimale della sfera.
+Perciò, dato un punto, sono in grado di stimare il suo grado di appartenenza alla sfera: se $R(x)^2 > R^*$ ha membership $>\frac{1}{2}$, se $R(x)^2$ = $R^*$ la membership è  $\frac{1}{2}$, se $R(x)^2  <R^*$ .
+Se trovo una funzione che si comporta in questo modo, posso calcolare la membership in ogni punto.
+
+In realtà, nell'algoritmo i punti non vanno visti come inscritti in una circonferenza ma in una sfera, e mappati nello spazio tridimensionale tramite una trasformazione $\Phi$, che viene definita kernel. Anche non conoscendo la funzione specifica, ma conoscendo la sua famiglia, posso ricavarne il prodotto scalare. Ad esempio, nel caso sia una funzione polinomiale di grado al massimo $p$, $\Phi(x_i)\cdot \Phi(x_j) = (1 + x_i + x_j)^p$.
+Di conseguenza, la formulazione finale del problema diventa:
+
+\[ max \sum_{i}\epsilon_i\Phi(x_i)\Phi(x_j) - \sum_{i,j}\epsilon_i\epsilon_j\Phi(x_i)\Phi(x_j)\]
+
 \subsection{Utilizzo della libreria mulearn}
 Qui descriverei mulearn e in particolare come è stata utilizzata durante gli esperimenti.
 \section{Il Kernel}
@@ -96,6 +147,8 @@ Qui andrei a mostrare gli esperimenti e i relativi risultati conseguiti tramite 
 
 \chapter*{Conclusione}
 
+\bibliographystyle{plain}
+\bibliography{Biblio}
 %\addcontentsline{toc}{chapter}{Bibliografia}
 
 \end{document}
