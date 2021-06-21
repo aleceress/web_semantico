@@ -91,13 +91,13 @@ La formulazione cattura in parte l'insieme fuzzy, infatti:
 \begin{itemize}
   \item Se  $\mu_i$ = 1, il secondo vincolo diventa ridondante, e si torna alla formulazione iniziale, nella quale si chiede di trovare il centro  e il raggio della circonferenza più piccola che contiene tutti i punti con membership 1;
   \item Se   $\mu_i$ = 0, è il primo vincolo a diventare ridondante, e la formulazione è volta a cercare punti che stanno fuori dalla ciconferenza;
-  \item Se   $\mu_i$ = $\frac{1}{2}$, moltiplicando entrambi i vincoli per 2 ottengo:
+  \item Se   $\mu_i$ = $\frac{1}{2}$, moltiplicando entrambi i vincoli per 2 si ottiene:
 \[ ||x_i - a||^2  \leq R^2 + 2\xi_{i}\]
 \[ ||x_i - a||^2  \geq R^2 - 2\tau_{i}\]
 \end{itemize}
 
 Dal momento che entrambe le variabili di slack devono essere il più possibile vicine e zero, questo sta a significare che per la membership  $\frac{1}{2}$ i punti tendono a stare esattamente sulla circonferenza. Rimane il problema di modellazione delle membership intermedie, che si affronterà in seguito.
-Con quest'ultima formulazione del problema di ottimizzazione, si risolve il problema duale, attraverso il metodo di Wolfe. Per farlo, costruiamo la funzione lagrangiana, sottraendovi obiettivo e vincoli, moltiplicati per altrettante variabili:
+Ottenuta quest'ultima formulazione del problema di ottimizzazione, si risolve il problema duale, attraverso il metodo di Wolfe. Per farlo, costruiamo la funzione lagrangiana, sottraendovi obiettivo e vincoli, moltiplicati per altrettante variabili:
 
 \[ L = R^2 + C\sum_{i}(\xi_i + \tau_i) - \sum_{i}\alpha_i(\mu_i+R^2 + \xi_i - ||\xi_i - a||^2) -\] 
 \[\sum_{i}\beta_i[(1- \mu_i)||x_i - a||^2 - (1 - \mu_i)R^2 + \tau_i] -  \sum_{i}\gamma_i\xi_i - \sum_{i}\delta_i\tau_i\]
@@ -114,7 +114,7 @@ Una volta risolto il problema e ottenute le $\epsilon_i^*$ ottimali, si può cal
 
 \[ R^2(x) = xx - \sum{i}\epsilon_i^*x_ix + \sum{i,j}\epsilon_i^*\epsilon_j^*x_ix_j\]
 
-Si può dimostrare che questa quantità è esattamente uguale al quadrato della distanza tra $a^*$ (valore ottimare del raggio) e x fornito. Inoltre,  se si prende un $i$ tale che $0 \leq \alpha{i}\ \leq C$ o $0 \leq \beta{i}\ \leq C$,  allora $R^2(x) = R^*$, raggio ottimale della sfera.
+Si può dimostrare che questa quantità è esattamente uguale al quadrato della distanza tra $a^*$ (valore ottimale del raggio) e x fornito. Inoltre,  se si prende un $i$ tale che $0 \leq \alpha{i}\ \leq C$ o $0 \leq \beta{i}\ \leq C$,  allora $R^2(x) = R^*$, raggio ottimale della sfera.
 Perciò, dato un punto, è possibile stimare il suo grado di appartenenza alla sfera: se $R(x)^2 > R^*$ ha membership $>\frac{1}{2}$, se $R(x)^2$ = $R^*$ la membership è  $\frac{1}{2}$, se $R(x)^2  <R^*$ .
 Se si trova una funzione che si comporta in questo modo, si può calcolare la membership in ogni punto.
 
@@ -126,7 +126,7 @@ Di conseguenza, la formulazione finale della funzione obiettivo diventa:
 \subsection{Utilizzo della libreria mulearn}
 
 Per eseguire gli esperimenti, è stata utilizzata la libreria mulearn.\cite{mulearn}
-Come si può leggere dalla documentazione, al suo interno vi è una classe FuzzyInductor, che raccoglie la funzionalità fondamentale del processo di apprendimento: una volta allenato (attraverso l'operazione fit) su una serie di input, questo è in grado, ricevendo un vettore di valori, di inferire una funzione di appartenenza al fuzzyset, e quindi di restituire, tramite la funzione predict, un grado di appartenenza per ogni input dato.
+Come si può leggere dalla documentazione, al suo interno vi è una classe FuzzyInductor, che raccoglie la funzionalità fondamentale del processo di apprendimento: una volta allenato (attraverso l'operazione fit) su una serie di input, il FuzzyInductor è in grado, ricevendo un vettore di valori, di inferire una funzione di appartenenza al fuzzyset, e quindi di restituire, tramite la funzione predict, un grado di appartenenza per ogni input dato.
 Per la costruzione del FuzzyInductor, devono essere passati una serie di parametri; il primo di questi è il parametro $c$, che fa da tradeoff tra la grandezza della sfera di appartenenza e il rispetto dei vincoli imposti. 
 
 Ulteriore parametro è il fuzzifier, ovvero la funzione che approssima gli ouput del processo di regressione, al fine di prevedere l'appartenenza di nuovi input. Esistono diversi tipi di fuzzificatori, più o meno complessi a seconda delle esigenze del problema.
@@ -246,7 +246,7 @@ Anche agendo in questo modo, il tempo di computazione è risultato accettabile p
 
 \subsubsection{Hamming similarity}
 Altro modo di definire la similarità tra due assiomi è la distanza di Hamming, ovvero la distanza tra le rappresentazioni testuali delle due formule, intesa come il numero di caratteri diversi tra una e l'altra, e trascurando i caratteri extra della stringa più lunga.
-Definendo H come la distanza di hamming calcolata in questo modo, si fa la stessa distinzione di prima per gli assiomi di segno opposto:  $sim_{H}(\phi_1, \phi_2) = H(abs(\phi_1),abs(\phi_2))$ se i segni delle due formule sono opposti, $1 - H(\phi_1, \phi_2)$ altrimenti.
+Definendo H come la distanza di Hamming calcolata in questo modo, si fa la stessa distinzione di prima per gli assiomi di segno opposto:  $sim_{H}(\phi_1, \phi_2) = H(abs(\phi_1),abs(\phi_2))$ se i segni delle due formule sono opposti, $1 - H(\phi_1, \phi_2)$ altrimenti.
 Anche in questo caso, l'implementazione della classe \emph{HammingKernel} non è stata utile per computare direttamente il kernel, a causa dell'eccessivo costo computazionale di calcolare la distanza di Hamming per ognuno dei 1444 assiomi. Gli esperimenti con la matrice di gram hanno condotto, invece, ai seguenti risultati:
 
 \begin{table}[h!]
