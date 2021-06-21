@@ -67,7 +67,7 @@
 \section{Gli insiemi fuzzy}
 \section{Applicazione alla ricerca di assiomi in un insieme di formule}
 
-\chapter{Definizione del problema}
+\chapter{Risoluzione del problema}
 \section{L'algoritmo di apprendimento}
 Per affrontare il problema sopra descritto, si è utilizzata una variante dell'algoritmo di Support vector clustering, descritta in \cite{svpaper}
 
@@ -78,7 +78,7 @@ A questo punto, la ricerca si trasformerebbe nella risoluzione di un problema di
 \[||x_i - a||^2  \leq R^2 + \xi_{i}\]
 \[ \xi_{i}\ \geq 0, C > 0\]
 Ovvero, il problema diventa trovare la circonferenza di raggio minimo, al variare di $R^2$ e $a$, che raccolga i punti rappresentanti gli elementi del campione.
-Le $\xi_i$ corrispondono a variabili di slack che vengono aggiunte per far rispettare i vincoli di appartenenza, la cui sommatoria minimizzo nella funzione obiettivo; il valore $C$ funge da bilanciamento tra questo adattamento e il rispetto del vincolo, identificando se sia più importante mantenere vincoli stringenti o mappare tutti i punti nella circonferenza.
+Le $\xi_i$, la cui sommatoria minimizzo nella funzione obiettivo, corrispondono a variabili di slack che vengono aggiunte per far rispettare i vincoli di appartenenza; il valore $C$ funge da bilanciamento tra questo adattamento e il rispetto del vincolo, identificando se sia più importante mantenere vincoli stringenti o mappare tutti i punti nella circonferenza.
 In realtà, l'obiettivo è che la distanza dal centro della circonferenza rappresenti un grado di appartenenza all'insieme fuzzy, e dunque andiamo a inserire le $\mu_i$ nella formulazione, che diventa, moltiplicando per $\mu_i$:
 
 \[ min R^2 + C\sum_{i} (\xi_{i} + \tau_{i})\]
@@ -103,7 +103,7 @@ Ottenuta quest'ultima formulazione del problema di ottimizzazione, si risolve il
 \[\sum_{i}\beta_i[(1- \mu_i)||x_i - a||^2 - (1 - \mu_i)R^2 + \tau_i] -  \sum_{i}\gamma_i\xi_i - \sum_{i}\delta_i\tau_i\]
 
 I vincoli richiedono che vengano messe a zero tutte le derivate parziali della lagrangiana rispetto al problema originale. Sostituendo il pattern $\sum_{i}\alpha_i\mu_i - \beta_i(1-\mu_i)$ con $\epsilon_i$, sapendo che $\sum_{i}\epsilon_i = 1$, a partire dal vincolo sulla derivata parziale rispetto ad $a$ arriviamo all'equazione  $\sum_{i}x_i\epsilon_i = a$. Dunque, nel momento in cui si trovano le variabili ottimali $\epsilon_i$, si sa di riuscire a identificare anche il centro della circonferenza cercata.
-La forma finale del problema duale, da massimizzare, è dunque:
+Il problema duale, da massimizzare, è dunque:
 
 \[ max \sum_{i}\epsilon_ix_ix_i - \sum_{i,j}\epsilon_i\epsilon_jx_ix_j\]
 \[s.t.\]
@@ -112,9 +112,9 @@ La forma finale del problema duale, da massimizzare, è dunque:
 
 Una volta risolto il problema e ottenute le $\epsilon_i^*$ ottimali, si può calcolare il valore:
 
-\[ R^2(x) = xx - \sum{i}\epsilon_i^*x_ix + \sum{i,j}\epsilon_i^*\epsilon_j^*x_ix_j\]
+\[ R^2(x) = xx - \sum_{i}\epsilon_i^*x_ix + \sum_{i,j}\epsilon_i^*\epsilon_j^*x_ix_j\]
 
-Si può dimostrare che questa quantità è esattamente uguale al quadrato della distanza tra $a^*$ (valore ottimale del raggio) e x fornito. Inoltre,  se si prende un $i$ tale che $0 \leq \alpha{i}\ \leq C$ o $0 \leq \beta{i}\ \leq C$,  allora $R^2(x) = R^*$, raggio ottimale della sfera.
+Si può dimostrare che questa quantità è esattamente uguale al quadrato della distanza tra $a^*$ (valore ottimale del raggio) e x fornito. Inoltre,  se si prende un $i$ tale che $0 \leq \alpha_{i}\ \leq C$ o $0 \leq \beta_{i}\ \leq C$,  allora $R^2(x) = R^*$, raggio ottimale della sfera.
 Perciò, dato un punto, è possibile stimare il suo grado di appartenenza alla sfera: se $R(x)^2 > R^*$ ha membership $>\frac{1}{2}$, se $R(x)^2$ = $R^*$ la membership è  $\frac{1}{2}$, se $R(x)^2  <R^*$ .
 Se si trova una funzione che si comporta in questo modo, si può calcolare la membership in ogni punto.
 
@@ -193,8 +193,9 @@ Nella pratica, per calcolare i valori del kernel precomputato si è utilizzata u
 Utilizzando questa definizione di similarità, i risultati ottenuti in termini di RMSE per i valori di test e per i valori di train sono riportati nella tabella seguente.
 
 \begin{table}[h!]
+\small
 \centering 	
-	\begin{tabular}{|c|c|c|} 
+	\begin{tabular}{|c|c|c|}
 	 \hline
 	  & RMSE test(+/- std) & RMSE train (+/- std)\\ [0.5ex] 
 	 \hline
@@ -226,6 +227,7 @@ Per velocità di computazione si è scelto di implementare solamente la prima ve
 Anche agendo in questo modo, il tempo di computazione è risultato accettabile per un massimo di 50 assiomi su 1444; si è scelto, pertanto, di utilizzare matrice e kernel precomputato anche per questa definizione di similarità. Seguono i risultati ottenuti.
 
 \begin{table}[h!]
+\small
 \centering 	
 	\begin{tabular}{|c|c|c|} 
 	 \hline
@@ -250,6 +252,7 @@ Definendo H come la distanza di Hamming calcolata in questo modo, si fa la stess
 Anche in questo caso, l'implementazione della classe \emph{HammingKernel} non è stata utile per computare direttamente il kernel, a causa dell'eccessivo costo computazionale di calcolare la distanza di Hamming per ognuno dei 1444 assiomi. Gli esperimenti con la matrice di gram hanno condotto, invece, ai seguenti risultati:
 
 \begin{table}[h!]
+\small
 \centering 	
 	\begin{tabular}{|c|c|c|} 
 	 \hline
@@ -273,6 +276,7 @@ L'ultima funzione di similarità utilizzata è la distanza di Levenshtein tra du
 Come nei due casi precedenti, si è continuato a dover utilizzare una matrice di Gram precalcolata per definire i valori del kernel in un tempo accettabile.
 
 \begin{table}[h!]
+\small
 \centering 	
 	\begin{tabular}{|c|c|c|} 
 	 \hline
