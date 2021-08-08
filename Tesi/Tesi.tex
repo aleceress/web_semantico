@@ -23,6 +23,8 @@
 \usepackage{lipsum}
 
 \usepackage{amsmath}
+\usepackage{pgfplots}
+\usepackage{layouts}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{document}
@@ -69,80 +71,113 @@
 
 \chapter{Risoluzione del problema}
 \section{L'algoritmo di apprendimento}
-Per affrontare il problema sopra descritto, si è utilizzata una variante dell'algoritmo di Support vector clustering, descritta in \cite{svpaper}
+Per affrontare il problema sopra descritto, si è utilizzata una variante dell'algoritmo di support vector clustering, descritta in \cite{svpaper}.
 
-Dati \{$x_1$, \dots , $x_n$\} un campione di elementi appartenenti a un dominio $X$ e  \{$\mu_1$, \dots , $\mu_n$\} i rispettivi gradi di appartenenza a un fuzzy set sconosciuto $A$, duplice obiettivo dell'algoritmo è trovare il fuzzy set $A$,  e inferire i parametri della funzione di appartenenza $\mu_A$. Per spiegare la tecnica, immaginiamo di mappare i punti  $x_i$ su una circonferenza di raggio $R$  e centro $a$ sconosciuti, e che vi sia un modo di far sì che il  loro  grado di membership dipenda dalla distanza dal centro $a$.
-A questo punto, la ricerca si trasformerebbe nella risoluzione di un problema di ottimizzazione vincolata, di cui possiamo dare una prima formulazione:
-\[ min R^2 + C\sum_{i} \xi_{i}\]
+Dati un campione  \{$x_1$, \dots , $x_n$\} di elementi appartenenti a un dominio $X$ e i rispettivi gradi di appartenenza  \{$\mu_1$, \dots , $\mu_n$\}  a un fuzzy set sconosciuto $A$, obiettivo dell'algoritmo è indurre un'approssimazione del fuzzy set $A$,  inferendo la sua funzione di appartenenza $\mu_A$. Per spiegare la tecnica, immaginiamo di mappare i punti  $x_i$ su una sfera di raggio $R$  e centro $a$ sconosciuti, e che vi sia un modo di far sì che il  loro  grado di membership dipenda dalla distanza dal centro $a$.
+A questo punto, la ricerca si trasformerebbe nella risoluzione di un problema di ottimizzazione vincolata, di cui si può dare una prima formulazione:
+\[ \min R^2 + C\sum_{i} \xi_{i}\]
 \[s.t.\]
-\[||x_i - a||^2  \leq R^2 + \xi_{i}\]
-\[ \xi_{i}\ \geq 0, C > 0\]
-Ovvero, il problema diventa trovare la circonferenza di raggio minimo, al variare di $R^2$ e $a$, che raccolga i punti rappresentanti gli elementi del campione.
-Le $\xi_i$, la cui sommatoria minimizzo nella funzione obiettivo, corrispondono a variabili di slack che vengono aggiunte per far rispettare i vincoli di appartenenza; il valore $C$ funge da bilanciamento tra questo adattamento e il rispetto del vincolo, identificando se sia più importante mantenere vincoli stringenti o mappare tutti i punti nella circonferenza.
-In realtà, l'obiettivo è che la distanza dal centro della circonferenza rappresenti un grado di appartenenza all'insieme fuzzy, e dunque andiamo a inserire le $\mu_i$ nella formulazione, che diventa, moltiplicando per $\mu_i$:
+\[||x_i - a||^2  \leq R^2 + \xi_{i} \; \forall i = 1, \dots, n,\]
+\[ \xi_{i}\ \geq 0 \; \forall i = 1, \dots, n.\]
+Il problema diventa dunque trovare la sfera di raggio minimo, al variare di $R^2$ e $a$, che raccolga i punti rappresentanti gli elementi del campione.  
+Le $\xi_i$ corrispondono a variabili di slack, che vengono aggiunte per rilassare i vincoli ove necessario, rendendoli ridondanti e permettendo che vengano rispettati, per alcune istanze, nonostante queste non si trovino all'interno della sfera. Per ridurre il numero di punti all'esterno della sfera, minimizziamo la somma delle $\xi_i$ all'interno della funzione obiettivo, moltiplicandola per un valore $C$, che funge da bilanciamento tra il rilassamento precedentemente descritto e il rispetto del vincolo, identificando se sia più importante mantenere vincoli stringenti o mappare tutti i punti nella sfera.
+In realtà, l'obiettivo è che la distanza dal centro della sfera rappresenti un grado di appartenenza all'insieme fuzzy, e dunque andiamo a inserire le $\mu_i$ nella formulazione, che diventa:
 
-\[ min R^2 + C\sum_{i} (\xi_{i} + \tau_{i})\]
+\[\min R^2 + C\sum_{i} (\xi_{i} + \tau_{i})\]
 \[s.t.\]
-\[ \mu_i||x_i - a||^2  \leq \mu_i R^2 + \xi_{i}\]
-\[ (1 - \mu_i)||x_i - a||^2  \geq \mu_i R^2 - \tau_{i}\]
-\[ \xi_{i}\ \geq 0, \tau_{i}\ \geq 0 ,  C > 0\]
+\[ \mu_i||x_i - a||^2  \leq \mu_i R^2 + \xi_{i} \; \forall i = 1, \dots, n,\]
+\[ (1 - \mu_i)||x_i - a||^2  \geq \mu_i R^2 - \tau_{i}  \; \forall i = 1, \dots, n,\]
+\[ \xi_{i}\ \geq 0, \tau_{i}\ \geq 0  \; \forall i = 1, \dots, n.\]
 
 La formulazione cattura in parte l'insieme fuzzy, infatti:
 \begin{itemize}
-  \item Se  $\mu_i$ = 1, il secondo vincolo diventa ridondante, e si torna alla formulazione iniziale, nella quale si chiede di trovare il centro  e il raggio della circonferenza più piccola che contiene tutti i punti con membership 1;
-  \item Se   $\mu_i$ = 0, è il primo vincolo a diventare ridondante, e la formulazione è volta a cercare punti che stanno fuori dalla ciconferenza;
+  \item Se  $\mu_i$ = 1, il secondo vincolo diventa ridondante, e si torna alla formulazione iniziale, nella quale si chiede di trovare il centro  e il raggio della sfera più piccola che contiene tutti i punti con membership 1;
+  \item Se   $\mu_i$ = 0, è il primo vincolo a diventare ridondante, e il vincolo modula la non appartenenza alla sfera;		
   \item Se   $\mu_i$ = $\frac{1}{2}$, moltiplicando entrambi i vincoli per 2 si ottiene:
-\[ ||x_i - a||^2  \leq R^2 + 2\xi_{i}\]
-\[ ||x_i - a||^2  \geq R^2 - 2\tau_{i}\]
+\[ ||x_i - a||^2  \leq R^2 + 2\xi_{i} \; \forall i = 1, \dots, n,\]
+\[ ||x_i - a||^2  \geq R^2 - 2\tau_{i}\; \forall i = 1, \dots, n.\]
 \end{itemize}
 
-Dal momento che entrambe le variabili di slack devono essere il più possibile vicine e zero, questo sta a significare che per la membership  $\frac{1}{2}$ i punti tendono a stare esattamente sulla circonferenza. Rimane il problema di modellazione delle membership intermedie, che si affronterà in seguito.
-Ottenuta quest'ultima formulazione del problema di ottimizzazione, si risolve il problema duale, attraverso il metodo di Wolfe. Per farlo, costruiamo la funzione lagrangiana, sottraendovi obiettivo e vincoli, moltiplicati per altrettante variabili:
+Dal momento che entrambe le variabili di slack devono essere il più possibile vicine e zero, questo sta a significare che per la membership  $\frac{1}{2}$ i punti tendono a stare esattamente sulla superficie della sfera. Rimane il problema di modellazione delle membership intermedie, che si affronterà in seguito.
+Ottenuta quest'ultima formulazione del problema di ottimizzazione, si risolve il corrispondente problema duale, attraverso il metodo di Wolfe. Per farlo, costruiamo la funzione lagrangiana, sottraendovi obiettivo e vincoli, moltiplicati per altrettante variabili:
 
 \[ L = R^2 + C\sum_{i}(\xi_i + \tau_i) - \sum_{i}\alpha_i(\mu_i+R^2 + \xi_i - ||\xi_i - a||^2) -\] 
 \[\sum_{i}\beta_i[(1- \mu_i)||x_i - a||^2 - (1 - \mu_i)R^2 + \tau_i] -  \sum_{i}\gamma_i\xi_i - \sum_{i}\delta_i\tau_i\]
 
-I vincoli richiedono che vengano messe a zero tutte le derivate parziali della lagrangiana rispetto al problema originale. Sostituendo il pattern $\sum_{i}\alpha_i\mu_i - \beta_i(1-\mu_i)$ con $\epsilon_i$, sapendo che $\sum_{i}\epsilon_i = 1$, a partire dal vincolo sulla derivata parziale rispetto ad $a$ arriviamo all'equazione  $\sum_{i}x_i\epsilon_i = a$. Dunque, nel momento in cui si trovano le variabili ottimali $\epsilon_i$, si sa di riuscire a identificare anche il centro della circonferenza cercata.
+Tale metodo richiede che tutte le derivate parziali della lagrangiana rispetto alle variabili del problema originale siano poste uguali a zero. Calcoliamo:
+\[ \frac{\partial L}{\partial R^2} = 1- \sum_{i}\alpha_i\mu_i + \sum_{i}\beta_i(1 - \mu_i),\]
+\[ \frac{\partial L}{\partial \xi_k} = C - 	\alpha_k - \gamma_k  \; \forall k = 1, \dots, n,\]
+\[ \frac{\partial L}{\partial \tau_k} = C - \beta_k - \delta_k  \; \forall k = 1, \dots, n.\]
+
+Sostituendo il pattern $\sum_{i}\alpha_i\mu_i - \beta_i(1-\mu_i)$ con $\epsilon_i$ e imponendo che derivata parziale rispetto a $R^2$ si annulli, otteniamo $\sum_{i}\epsilon_i = 1$.
+Calcoliamo la derivata parziale della lagrangiana rispetto alla variabile originale $a$:
+
+\[ \frac{\partial L}{\partial a} = \sum_{i}||x_i - a||^2\epsilon_i.\]
+
+Imponendo che questa sia uguale a zero e tenendo conto del vincolo sulla sommatoria delle $\epsilon_i$ appena ricavato,  arriviamo all'equazione  $\sum_{i}x_i\epsilon_i = a$. Dunque, nel momento in cui si trovano le variabili ottimali $\epsilon_i$, si sa di riuscire a identificare anche il centro della sfera cercata.
 Il problema duale, da massimizzare, è dunque:
 
 \[ max \sum_{i}\epsilon_ix_ix_i - \sum_{i,j}\epsilon_i\epsilon_jx_ix_j\]
 \[s.t.\]
-\[\sum_i\epsilon_i = 1\]
-\[ C \geq 0, 0 \leq \alpha{i}\ \leq C , 0 \leq \beta_{i}\ \leq C \]
+\[\sum_i\epsilon_i = 1.\]
 
-Una volta risolto il problema e ottenute le $\epsilon_i^*$ ottimali, si può calcolare il valore:
+Una volta risolto il problema e ottenute le $\epsilon_i^*$ ottimali, a partire da un qualunque elemento x del dominio si può calcolare il valore:
 
 \[ R^2(x) = xx - \sum_{i}\epsilon_i^*x_ix + \sum_{i,j}\epsilon_i^*\epsilon_j^*x_ix_j\]
 
-Si può dimostrare che questa quantità è esattamente uguale al quadrato della distanza tra $a^*$ (valore ottimale del raggio) e x fornito. Inoltre,  se si prende un $i$ tale che $0 \leq \alpha_{i}\ \leq C$ o $0 \leq \beta_{i}\ \leq C$,  allora $R^2(x) = R^*$, raggio ottimale della sfera.
-Perciò, dato un punto, è possibile stimare il suo grado di appartenenza alla sfera: se $R(x)^2 > R^*$ ha membership $>\frac{1}{2}$, se $R(x)^2$ = $R^*$ la membership è  $\frac{1}{2}$, se $R(x)^2  <R^*$ .
-Se si trova una funzione che si comporta in questo modo, si può calcolare la membership in ogni punto.
+Si può dimostrare che questa quantità è esattamente uguale al quadrato della distanza tra $a^*$ (valore ottimale del centro) e $x$ fornito. Inoltre,  se si prende un $i$ tale che $0 < \alpha_{i}\ < C$ o $0 < \beta_{i}\ < C$,  allora $R^2(x) = R^*$, quadrato del raggio ottimale della sfera.
+Perciò, dato un punto, è possibile stimare il suo grado di appartenenza alla sfera: se $R^2(x) > R^*$ ha membership $>\frac{1}{2}$, se $R^2(x)$ = $R^*$ la membership è  $\frac{1}{2}$, se $R^2(x)  < R^*$ la membership è  $< \frac{1}{2}$.
+A questo punto, per ottenere un'approssimazione migliore, è necessario stabilire una famiglia per la funzione di appartenenza che vogliamo inferire, ed eseguire una regressione all'interno di questa famiglia. Nel paragrafo \ref{FuzzifierSection} vi è una descrizione delle famiglie di funzioni che sono state utilizzate allo scopo.
 
-In realtà, nell'algoritmo i punti non vanno visti come inscritti in una circonferenza ma in una sfera, e mappati nello spazio tridimensionale tramite una trasformazione $\Phi$, che viene definita kernel. Anche non conoscendo la funzione specifica, ma essendo consapevoli della sua famiglia, si può ricavare il prodotto scalare. Ad esempio, nel caso sia una funzione polinomiale di grado al massimo $p$, $\Phi(x_i)\cdot \Phi(x_j) = (1 + x_i + x_j)^p$.
-Di conseguenza, la formulazione finale della funzione obiettivo diventa:
+In realtà, l'ipotesi di racchiudere la maggior parte dei punti all'interno di una sfera è eccessivamente restrittiva: si rende pertanto necessario introdurre una trasformazione  $\Phi$, che mappi in modo non lineare tali punti in uno spazio di dimensione più elevata rispetto al dominio considerato; in questo spazio cercheremo la sfera che includa la maggior parte delle immagini.
+La trasformazione $\Phi$ deve essere lineare, in modo che la nuova sfera corrisponda, nello spazio originale, a un insieme che meglio si possa adattare ai dati. Definiamo kernel la funzione che accetta due argomenti e calcola il prodotto scalare delle loro immagini attraverso $\Phi$: questa si può calcolare anche non conoscendo la trasformazione specifica, ma sapendo a quale famiglia appartiene. Ad esempio, nel caso sia una funzione polinomiale di grado al massimo $p$, $k(x_i, x_j) = \Phi(x_i)\cdot \Phi(x_j) = (1 + x_i + x_j)^p$.
+Di conseguenza, la formulazione finale della funzione obiettivo diventa
 
-\[ max \sum_{i}\epsilon_i\Phi(x_i)\Phi(x_j) - \sum_{i,j}\epsilon_i\epsilon_j\Phi(x_i)\Phi(x_j)\]
+\[ max \sum_{i}\epsilon_i\Phi(x_i)\Phi(x_j) - \sum_{i,j}\epsilon_i\epsilon_j\Phi(x_i)\Phi(x_j),\]
 
-\subsection{Utilizzo della libreria mulearn}
+mentre il calcolo di $R^2(x)$ viene così modificato:
 
-Per eseguire gli esperimenti, è stata utilizzata la libreria mulearn.\cite{mulearn}
-Come si può leggere dalla documentazione, al suo interno vi è una classe FuzzyInductor, che raccoglie la funzionalità fondamentale del processo di apprendimento: una volta allenato (attraverso l'operazione fit) su una serie di input, il FuzzyInductor è in grado, ricevendo un vettore di valori, di inferire una funzione di appartenenza al fuzzyset, e quindi di restituire, tramite la funzione predict, un grado di appartenenza per ogni input dato.
-Per la costruzione del FuzzyInductor, devono essere passati una serie di parametri; il primo di questi è il parametro $c$, che fa da tradeoff tra la grandezza della sfera di appartenenza e il rispetto dei vincoli imposti. 
+\[ R^2(x) = \Phi(x)\Phi(x) - \sum_{i}\epsilon_i^*\Phi(x_i)x + \sum_{i,j}\epsilon_i^*\epsilon_j^*\Phi(x_i)\Phi(x_j).\]
+
+Nel paragrafo \ref{kernelSection} sono elencati e descritti i diversi kernel utilizzati durante gli esperimenti.
+
+\subsection{Utilizzo della libreria mulearn}\label{FuzzifierSection}
+
+Per eseguire gli esperimenti, è stata utilizzata la libreria mulearn\cite{mulearn}.
+Come si può leggere dalla documentazione, al suo interno vi è una classe FuzzyInductor, che raccoglie la funzionalità fondamentale del processo di apprendimento: una volta allenato (attraverso l'operazione fit) su una serie di esempi, il FuzzyInductor è in grado, ricevendo un vettore di valori, di inferire una funzione di appartenenza all'insieme fuzzy, e quindi di restituire, tramite la funzione predict, un grado di appartenenza per ogni vettore dato.
+Per la costruzione del FuzzyInductor devono essere specificati una serie di parametri; il primo dei quali è il parametro $c$, che fa da tradeoff tra la grandezza della sfera di appartenenza e il rispetto dei vincoli imposti. 
 
 Ulteriore parametro è il fuzzifier, ovvero la funzione che approssima gli ouput del processo di regressione, al fine di prevedere l'appartenenza di nuovi input. Esistono diversi tipi di fuzzificatori, più o meno complessi a seconda delle esigenze del problema.
 \begin{itemize}
-\item \emph{Crisp Fuzzifier}: corrisponde a un set semplice, ce ha valore 1 se l'elemento 0 appartiene all'insieme, 0 se non vi appartiene;
+\item \emph{Crisp Fuzzifier}: corrisponde a un insieme nel senso classico del termine, che ha valore 1 se l'elemento appartiene all'insieme, 0 se non vi appartiene;
+\begin{figure}[h]
+    \begin{center}
+        \input{crispFuzzifier.pgf}
+    \end{center}
+    \caption{Grafico esemplificativo di un Crisp Fuzzifier}
+\end{figure}
 \item \emph{Linear Fuzzifier}: corrisponde a un fuzzy set la cui membership decresce linearmente da 1 a 0;
-\item \emph{Exponential Fuzzifier}: la membership diminuisce da 1 a 0 in maniera esponenziale;
-\item \emph{Quantile Constant Piecewise Fuzzifier}:  corrisponde a un fuzzy set che ha una funzione di membership costante definita a tratti, per la quale gli step sono definiti in base ai quartili delle distanze al quadrato tra le immagini dei punti e il centro della sfera inferita; 
-\item \emph{Quantile Linear Piecewise Fuzzifier}:  la funzione definita a tratti è in questo caso lineare.
+
+
+\begin{minipage}{\linewidth}
+            \includegraphics{lineaFuzzifier.png}
+\end{minipage}
+
+\item \emph{Exponential Fuzzifier}: corrisponde a un fuzzy set la cui  membership diminuisce da 1 a 0 in maniera esponenziale;
+
+\begin{minipage}{\linewidth}
+            \includegraphics{lineaFuzzifier.png}
+\end{minipage}
+
+\item \emph{Quantile Constant Piecewise Fuzzifier}:  corrisponde a un fuzzy set che ha una funzione di membership costante a tratti, per la quale gli step sono definiti in base ai quartili delle distanze al quadrato tra le immagini dei punti e il centro della sfera inferita; 
+\item \emph{Quantile Linear Piecewise Fuzzifier}:  corrisponde a un fuzzy set che ha una funzione di membership lineare a tratti, per la quale gli step sono definiti in base ai quartili delle distanze al quadrato tra le immagini dei punti e il centro della sfera inferita.
 \end{itemize}
 
 Nella costruzione del FuzzyInductor si può optare per due tipi diversi di solver, che risolvano il problema di ottimizzazione: il solver basato su Gurobi e quello basato su TensorFlow. 
 
-\section{Il Kernel}
-Il parametro kernel definisce quale sarà la funzione attraverso cui i valori verranno mappati nello spazio tridimensionale.
-La libreria mulearn implementa:
+\section{Il Kernel}\label{kernelSection}
+Il parametro kernel della classe FuzzyInductor definisce quale sarà la funzione attraverso cui i valori verranno mappati nello spazio tridimensionale.
+La libreria mulearn implementa i kernel elencati in seguito:
 
 \begin{itemize}
 \item \emph{Kernel lineare}: il valore $k(x_1,x_2)$ equivale al prodotto $x_1\cdot x_2$, ovvero  $\sum_{i=1}^N(x_1)_i\cdot(x_2)_i$, dove $N$ è la dimensione dei vettori $x_1$ e $x_2$;
@@ -154,8 +189,8 @@ La libreria mulearn implementa:
 
 
 \subsection{Kernel precomputato}
-Per ragioni di tempi di computazione (i punti da mappare, nel caso di un insieme di formule, non corrispondono a valori numerici di cui i kernel sono semplici da calcolare) si è utilizzato un kernel precomputato, per il quale  $k(x_1,x_2)$ equivale a un valore precedentemente calcolato e salvato all'interno di una matrice, detta \emph{matrice di Gram}.
-Per calcolare questo valore, ovvero trovare un criterio per definire il grado di similarità tra due assiomi, si utilizza la similarità di Jaccard, descritta in \cite{sacpaper}.
+Per ottimizzare i tempi di computazione (i punti da mappare, nel caso di un insieme di formule, non corrispondono a valori numerici di cui i kernel sono semplici da calcolare) si è utilizzato un kernel precomputato, per il quale  $k(x_1,x_2)$ equivale a un valore precedentemente calcolato e salvato all'interno di una matrice, detta \emph{matrice di Gram}.
+Per calcolare questo valore, ovvero trovare un criterio per definire il grado di similarità tra due assiomi, si utilizza un indice di similarità ispirato alla similarità di Jaccard, descritta in \cite{sacpaper}.
 Per tutte le coppie di assiomi $\phi$ e $\psi$, la definizione di similarità deve rispettare le seguenti proprietà:
 \begin{itemize}
 \item $0 \leq sim(\psi, \phi) \leq 1$. Si sta infatti operando in un ambito possibilistico, nel quale a ogni assioma viene associato un grado di possibilità compreso tra 0 e 1;
@@ -249,7 +284,7 @@ Anche agendo in questo modo, il tempo di computazione è risultato accettabile p
 \subsubsection{Hamming similarity}
 Altro modo di definire la similarità tra due assiomi è la distanza di Hamming, ovvero la distanza tra le rappresentazioni testuali delle due formule, intesa come il numero di caratteri diversi tra una e l'altra, e trascurando i caratteri extra della stringa più lunga.
 Definendo H come la distanza di Hamming calcolata in questo modo, si fa la stessa distinzione di prima per gli assiomi di segno opposto:  $sim_{H}(\phi_1, \phi_2) = H(abs(\phi_1),abs(\phi_2))$ se i segni delle due formule sono opposti, $1 - H(\phi_1, \phi_2)$ altrimenti.
-Anche in questo caso, l'implementazione della classe \emph{HammingKernel} non è stata utile per computare direttamente il kernel, a causa dell'eccessivo costo computazionale di calcolare la distanza di Hamming per ognuno dei 1444 assiomi. Gli esperimenti con la matrice di gram hanno condotto, invece, ai seguenti risultati:
+Anche in questo caso, l'implementazione della classe \emph{HammingKernel} non è stata utile per computare direttamente il kernel, a causa dell'eccessivo costo computazionale di calcolare la distanza di Hamming per ognuno dei 1444 assiomi. Gli esperimenti con la matrice di Gram hanno condotto, invece, ai seguenti risultati:
 
 \begin{table}[h!]
 \small
