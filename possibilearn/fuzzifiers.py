@@ -82,7 +82,7 @@ class QuantileConstantPiecewiseFuzzifier(BaseFuzzifier):
 
     def get_fuzzified_membership(self, SV_square_distance, sample,
                  estimated_square_distance_from_center):
-        sample = map(estimated_square_distance_from_center, sample)
+        sample = list(map(estimated_square_distance_from_center, sample))
         m = np.median([s-SV_square_distance
                        for s in sample if s > SV_square_distance])
         q1 = np.percentile([s-SV_square_distance
@@ -124,7 +124,7 @@ class QuantileLinearPiecewiseFuzzifier(BaseFuzzifier):
 
     def get_fuzzified_membership(self, SV_square_distance, sample,
                  estimated_square_distance_from_center):
-        sample = map(estimated_square_distance_from_center, sample)
+        sample = list(map(estimated_square_distance_from_center, sample))
         m = np.median([s-SV_square_distance
                        for s in sample if s > SV_square_distance])
         q1 = np.percentile([s-SV_square_distance

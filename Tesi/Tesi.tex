@@ -17,7 +17,7 @@
 \usepackage{hyperref}
 \usepackage{graphicx}
 \usepackage{url}
-
+\usepackage{caption}
 
 % Per inserire testo a caso in attesa di realizzare i capitoli
 \usepackage{lipsum}
@@ -150,30 +150,53 @@ Per la costruzione del FuzzyInductor devono essere specificati una serie di para
 Ulteriore parametro è il fuzzifier, ovvero la funzione che approssima gli ouput del processo di regressione, al fine di prevedere l'appartenenza di nuovi input. Esistono diversi tipi di fuzzificatori, più o meno complessi a seconda delle esigenze del problema.
 \begin{itemize}
 \item \emph{Crisp Fuzzifier}: corrisponde a un insieme nel senso classico del termine, che ha valore 1 se l'elemento appartiene all'insieme, 0 se non vi appartiene;
-\begin{figure}[h]
-    \begin{center}
-        \input{crispFuzzifier.pgf}
-    \end{center}
-    \caption{Grafico esemplificativo di un Crisp Fuzzifier}
-\end{figure}
+
+\begin{minipage}{\linewidth}
+      \includegraphics{crispFuzzifier.png}
+	\captionof{figure}{Grafico esemplificativo di un crisp fuzzifier}
+\end{minipage}
+
 \item \emph{Linear Fuzzifier}: corrisponde a un fuzzy set la cui membership decresce linearmente da 1 a 0;
 
 
 \begin{minipage}{\linewidth}
-            \includegraphics{lineaFuzzifier.png}
+      \includegraphics{linearFuzzifier.png}
+	\captionof{figure}{Grafico esemplificativo di un linear fuzzifier}
 \end{minipage}
 
-\item \emph{Exponential Fuzzifier}: corrisponde a un fuzzy set la cui  membership diminuisce da 1 a 0 in maniera esponenziale;
+\item \emph{Exponential Fuzzifier}: corrisponde a un fuzzy set la cui  membership diminuisce da 1 a 0 in maniera esponenziale. Il parametro $\alpha$ indica il decadimento esponenziale fissato;
 
 \begin{minipage}{\linewidth}
-            \includegraphics{lineaFuzzifier.png}
+       \includegraphics{exponentialFuzzifier.png}
+	 \captionof{figure}{Grafico esemplificativo di un exponential fuzzifier con $\alpha$ = 0.001}
+\end{minipage}
+
+\begin{minipage}{\linewidth}
+       \includegraphics{exponentialFuzzifier2.png}
+	 \captionof{figure}{Grafico esemplificativo di un exponential fuzzifier con $\alpha$  = 0.5}
 \end{minipage}
 
 \item \emph{Quantile Constant Piecewise Fuzzifier}:  corrisponde a un fuzzy set che ha una funzione di membership costante a tratti, per la quale gli step sono definiti in base ai quartili delle distanze al quadrato tra le immagini dei punti e il centro della sfera inferita; 
+
+\begin{minipage}{\linewidth}
+       \includegraphics{quantileConstantPiecewiseFuzzifier.png}
+	 \captionof{figure}{Grafico esemplificativo di un quantile constant piecewise fuzzifier}
+\end{minipage}
+
 \item \emph{Quantile Linear Piecewise Fuzzifier}:  corrisponde a un fuzzy set che ha una funzione di membership lineare a tratti, per la quale gli step sono definiti in base ai quartili delle distanze al quadrato tra le immagini dei punti e il centro della sfera inferita.
+
+\begin{minipage}{\linewidth}
+       \includegraphics{quantileLinearPiecewiseFuzzifier.png}
+	 \captionof{figure}{Grafico esemplificativo di un quantile linear piecewise fuzzifier}
+\end{minipage}
+
 \end{itemize}
 
-Nella costruzione del FuzzyInductor si può optare per due tipi diversi di solver, che risolvano il problema di ottimizzazione: il solver basato su Gurobi e quello basato su TensorFlow. 
+Nella costruzione del FuzzyInductor si può optare per due tipi diversi di solver che risolvano il problema di ottimizzazione: il solver basato su Gurobi e quello basato su TensorFlow. 
+
+Gurobi\cite{gurobi} è un solutore commerciale di ottimizzazione fondato nel 2008. Risolve problemi di programmazione lineare (LP), quadratica (QP), quadratica con vincoli (CQP), programmazione lineare intera mista (MILP), programmazione intera quadratica mista (MIQP) e programmazione intera quadratica con vincoli (MIQCP).
+
+TensorFlow\cite{tensorFlow} è una piattaforma end-to-end open source per il machine learning. Viene utilizzata in ambiti di produzione e di ricerca scientifica, principalmente allo scopo di realizzare algoritmi per compiti percettivi e di comprensione del linguaggio.
 
 \section{Il Kernel}\label{kernelSection}
 Il parametro kernel della classe FuzzyInductor definisce quale sarà la funzione attraverso cui i valori verranno mappati nello spazio tridimensionale.
