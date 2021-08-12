@@ -102,7 +102,7 @@ Dal momento che entrambe le variabili di slack devono essere il più possibile v
 Ottenuta quest'ultima formulazione del problema di ottimizzazione, si risolve il corrispondente problema duale, attraverso il metodo di Wolfe. Per farlo, costruiamo la funzione lagrangiana, sottraendovi obiettivo e vincoli, moltiplicati per altrettante variabili:
 
 \[ L = R^2 + C\sum_{i}(\xi_i + \tau_i) - \sum_{i}\alpha_i(\mu_i+R^2 + \xi_i - ||\xi_i - a||^2) -\] 
-\[\sum_{i}\beta_i[(1- \mu_i)||x_i - a||^2 - (1 - \mu_i)R^2 + \tau_i] -  \sum_{i}\gamma_i\xi_i - \sum_{i}\delta_i\tau_i\]
+\[\sum_{i}\beta_i[(1- \mu_i)||x_i - a||^2 - (1 - \mu_i)R^2 + \tau_i] -  \sum_{i}\gamma_i\xi_i - \sum_{i}\delta_i\tau_i.\]
 
 Tale metodo richiede che tutte le derivate parziali della lagrangiana rispetto alle variabili del problema originale siano poste uguali a zero. Calcoliamo:
 \[ \frac{\partial L}{\partial R^2} = 1- \sum_{i}\alpha_i\mu_i + \sum_{i}\beta_i(1 - \mu_i),\]
@@ -123,7 +123,7 @@ Il problema duale, da massimizzare, è dunque:
 
 Una volta risolto il problema e ottenute le $\epsilon_i^*$ ottimali, a partire da un qualunque elemento x del dominio si può calcolare il valore:
 
-\[ R^2(x) = xx - \sum_{i}\epsilon_i^*x_ix + \sum_{i,j}\epsilon_i^*\epsilon_j^*x_ix_j\]
+\[ R^2(x) = xx - \sum_{i}\epsilon_i^*x_ix + \sum_{i,j}\epsilon_i^*\epsilon_j^*x_ix_j.\]
 
 Si può dimostrare che questa quantità è esattamente uguale al quadrato della distanza tra $a^*$ (valore ottimale del centro) e $x$ fornito. Inoltre,  se si prende un $i$ tale che $0 < \alpha_{i}\ < C$ o $0 < \beta_{i}\ < C$,  allora $R^2(x) = R^*$, quadrato del raggio ottimale della sfera.
 Perciò, dato un punto, è possibile stimare il suo grado di appartenenza alla sfera: se $R^2(x) > R^*$ ha membership $>\frac{1}{2}$, se $R^2(x)$ = $R^*$ la membership è  $\frac{1}{2}$, se $R^2(x)  < R^*$ la membership è  $< \frac{1}{2}$.
@@ -152,7 +152,8 @@ Ulteriore parametro è il fuzzifier, ovvero la funzione che approssima gli ouput
 \item \emph{Crisp Fuzzifier}: corrisponde a un insieme nel senso classico del termine, che ha valore 1 se l'elemento appartiene all'insieme, 0 se non vi appartiene;
 
 \begin{minipage}{\linewidth}
-      \includegraphics{crispFuzzifier.png}
+	\centering
+      \includegraphics[width=0.8\linewidth]{crispFuzzifier.png}
 	\captionof{figure}{Grafico esemplificativo di un crisp fuzzifier}
 \end{minipage}
 
@@ -160,33 +161,34 @@ Ulteriore parametro è il fuzzifier, ovvero la funzione che approssima gli ouput
 
 
 \begin{minipage}{\linewidth}
-      \includegraphics{linearFuzzifier.png}
+	\centering
+      \includegraphics[width=0.8\linewidth]{linearFuzzifier.png}
 	\captionof{figure}{Grafico esemplificativo di un linear fuzzifier}
 \end{minipage}
 
 \item \emph{Exponential Fuzzifier}: corrisponde a un fuzzy set la cui  membership diminuisce da 1 a 0 in maniera esponenziale. Il parametro $\alpha$ indica il decadimento esponenziale fissato;
 
 \begin{minipage}{\linewidth}
-       \includegraphics{exponentialFuzzifier.png}
+       \includegraphics[width=0.8\linewidth]{exponentialFuzzifier.png}
 	 \captionof{figure}{Grafico esemplificativo di un exponential fuzzifier con $\alpha$ = 0.001}
 \end{minipage}
 
 \begin{minipage}{\linewidth}
-       \includegraphics{exponentialFuzzifier2.png}
+       \includegraphics[width=0.8\linewidth]{exponentialFuzzifier2.png}
 	 \captionof{figure}{Grafico esemplificativo di un exponential fuzzifier con $\alpha$  = 0.5}
 \end{minipage}
 
 \item \emph{Quantile Constant Piecewise Fuzzifier}:  corrisponde a un fuzzy set che ha una funzione di membership costante a tratti, per la quale gli step sono definiti in base ai quartili delle distanze al quadrato tra le immagini dei punti e il centro della sfera inferita; 
 
 \begin{minipage}{\linewidth}
-       \includegraphics{quantileConstantPiecewiseFuzzifier.png}
+       \includegraphics[width=0.8\linewidth]{quantileConstantPiecewiseFuzzifier.png}
 	 \captionof{figure}{Grafico esemplificativo di un quantile constant piecewise fuzzifier}
 \end{minipage}
 
 \item \emph{Quantile Linear Piecewise Fuzzifier}:  corrisponde a un fuzzy set che ha una funzione di membership lineare a tratti, per la quale gli step sono definiti in base ai quartili delle distanze al quadrato tra le immagini dei punti e il centro della sfera inferita.
 
 \begin{minipage}{\linewidth}
-       \includegraphics{quantileLinearPiecewiseFuzzifier.png}
+       \includegraphics[width=0.8\linewidth]{quantileLinearPiecewiseFuzzifier.png}
 	 \captionof{figure}{Grafico esemplificativo di un quantile linear piecewise fuzzifier}
 \end{minipage}
 
@@ -242,7 +244,7 @@ allora si può scrivere la formula precedente come:
 Avendo precedentemente definito l'operatore di similarità tra due assiomi in relazione al minimo tra le due implicazioni, risulta:
 
 \[ sim(A \sqsubseteq B, C  \sqsubseteq D) = min\{Impl(A \sqsubseteq B, C\sqsubseteq D), Impl( C\sqsubseteq D, A \sqsubseteq B)\} \]
-\[ = min\bigg\{\frac{\parallel [A] \cap [\overline{B}] \cup [C] \cap [D] \parallel}{\parallel [A] \cup [C] \parallel}, \frac{\parallel [C] \cup [\overline{D}] \cup [C] \cap [D] \parallel}{\parallel [A] \cup [C] \parallel}\bigg\}\]
+\[ = min\bigg\{\frac{\parallel [A] \cap [\overline{B}] \cup [C] \cap [D] \parallel}{\parallel [A] \cup [C] \parallel}, \frac{\parallel [C] \cup [\overline{D}] \cup [C] \cap [D] \parallel}{\parallel [A] \cup [C] \parallel}\bigg\}.\]
 \[ = \frac{min\{\parallel [A] \cap [\overline{B}] \cup [C] \cap [D] \parallel, \parallel [C] \cup [\overline{D}] \cup [C] \cap [D] \parallel\}}{\parallel [A] \cup [C] \parallel}.\]
 
 Nella pratica, per calcolare i valori del kernel precomputato si è utilizzata una versione semplificata della formula precedente, ovvero:
@@ -277,12 +279,12 @@ Utilizzando questa definizione di similarità, i risultati ottenuti in termini d
 Nel corso degli esperimenti sono state utilizzate altre definizioni di similarità, diverse da quella di Jaccard, descritte in \cite{drtpaper}.
 \subsubsection{Length-based similarity}
 Una prima forma ingenua di similarità utilizzata è quella basata sulla lunghezza degli assiomi.
-Si definisce dunque:
+Si definisce dunque
 
-\[ s_{len}(\phi_1, \phi_2) = 1 - \frac{|\# \phi_1 - \# \phi_2|}{max\{\#\phi_1, \#\phi_2\}}\]
+\[ s_{len}(\phi_1, \phi_2) = 1 - \frac{|\# \phi_1 - \# \phi_2|}{max\{\#\phi_1, \#\phi_2\}},\]
 
 ovvero il valore assoluto della differenza tra le due lunghezze, normalizzato.
-Ciò però nasconde una problematica: quando un assioma è il negato dell'altro la funzione restituisce un valore di similarità alto, cosa che chiaramente non dovrebbe accadere. Ciò fa sì che sia opportuno introdurre un'ulteriore casistica: se i segni dei due assiomi sono diversi, la funzione di similarità vale $1 - s_{len}(\phi_1,\phi_2)$.
+Tale formulazione nasconde una problematica: quando un assioma è il negato dell'altro la funzione restituisce un valore di similarità alto. Occore, pertanto, introdurre un'ulteriore casistica: se i segni dei due assiomi sono diversi, la funzione di similarità vale $1 - s_{len}(\phi_1,\phi_2)$.
 Una nuova classe kernel è stata implementata per essere utilizzata in modo da computare direttamente il valore di similarità basato su lunghezza dei due assiomi, senza passare per la creazione o il caricamento della matrice di Gram con i valori precalcolati.
 Per velocità di computazione si è scelto di implementare solamente la prima versione della funzione, ignorando il problema del valore di similarità per assiomi opposti l'uno all'altro.
 Anche agendo in questo modo, il tempo di computazione è risultato accettabile per un massimo di 50 assiomi su 1444; si è scelto, pertanto, di utilizzare matrice e kernel precomputato anche per questa definizione di similarità. La tabella \ref{table:risultatiLength} mostra i risultati ottenuti. L'ingenuità del metodo faceva supporre un generale peggioramento dei risultati rispetto alla similarità di Jaccard, che anzi si presupponeva più consistente di quello effettivamente riscontrato.
