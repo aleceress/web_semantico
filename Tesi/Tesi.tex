@@ -67,6 +67,15 @@
 \chapter*{Introduzione}
 \chapter{Apprendimento di insiemi fuzzy}
 \section{Gli insiemi fuzzy}
+
+Gli insiemi fuzzy sono una variante degli insiemi classici introdotta da Lotfi Zadeh del 1965, che li definisce \lq\lq una classe di oggetti con un continuo di gradi di appartenenza\rq\rq\cite{fuzzysetspaper}.
+
+Vengono utilizzati in situazioni in cui è impossibile identificare, come avverebbe tramite un generico classificatore, una soglia univoca oltre la quale un elemento si può dire appartenente a un determinato insieme. In questi contesti è necessario dire che l'elemento appartiene all'insieme con un certo grado di intensità. Per capire meglio la differenza, immaginiamo di definire \lq\lq l'insieme dei laureati\rq\rq: preso un elemento dell'universo del discorso, è possibile definire  se è vero o falso che questo vi appartiene. Pensiamo invece, come fa Zadeh, a una \lq\lq classe degli uomini alti\rq\rq\cite{fuzzysetspaper}, o alla \lq\lq classe dei caffè dolci\rq\rq;  si tratta di insiemi di carattere più qualitativo: non tutti gli elementi vi appartengono allo stesso modo.  Il concetto di \emph{membership degree} è formalizzato tramite la funzione di appartenenza all'insieme fuzzy $f: X \mapsto [0,1]$, generalizzazione della funzione booleana classica $f: X \mapsto \{0,1\}$;  $f(x) = 1 $ indica totale appartenenza all'insieme, $f(x) = 0 $ totale non-appartenenza, con i valori intermedi dell'intervallo ad esprimere il grado di appartenenza.
+In questo modo un elemento può appartenere a più insiemi che esprimono caratteristiche opposte (ad esempio \lq\lq l'insieme delle persone vecchie\rq\rq e \lq\lq l'insieme delle persone giovani\rq\rq\cite{fuzzysystemspaper}) con gradi differenti, e questo concorre a far sì che gli insiemi fuzzy giochino un ruolo importante in contesti di informazione incerta, aggiugendo un potere descrittivo enorme.
+Tramite principio di estensione, Zadeh riesce ad applicare agli insiemi fuzzy qualunque operazione tipica degli insiemi classici.
+
+\section{Il web semantico}
+
 \section{Applicazione alla ricerca di assiomi in un insieme di formule}
 
 \chapter{Risoluzione del problema}
