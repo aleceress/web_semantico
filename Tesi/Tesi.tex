@@ -76,7 +76,7 @@ Per capire meglio la differenza, immaginiamo di definire``l'insieme dei laureati
 
  Il concetto di \emph{membership degree} è formalizzato tramite la funzione di appartenenza all'insieme fuzzy $f: X \mapsto [0,1]$, generalizzazione della funzione booleana classica $f: X \mapsto \{0,1\}$;  $f(x) = 1 $ indica totale appartenenza all'insieme, $f(x) = 0 $ totale non-appartenenza, con i valori intermedi dell'intervallo ad esprimere il grado di appartenenza.
 In questo modo un elemento può appartenere a più insiemi che esprimono caratteristiche opposte (ad esempio `` l'insieme delle persone vecchie" e ``l'insieme delle persone giovani"\cite{fuzzysystemspaper}) con gradi differenti, e questo concorre a far sì che gli insiemi fuzzy giochino un ruolo importante in contesti di informazione incerta, aggiugendo un potere descrittivo enorme.
-Tramite principio di estensione, Zadeh riesce ad applicare agli insiemi fuzzy qualunque operazione tipica degli insiemi classici.
+
 
 \section{Il web semantico}
 Nel 2001, Tim Berners Lee definiva il web semantico come ``un'estensione del web attuale, nella quale all'informazione viene dato un significato ben definito, permettendo a computer e utenti di cooperare meglio"\cite{semanticWebPaper}.
@@ -413,10 +413,18 @@ Come nei due casi precedenti, si è continuato a dover utilizzare una matrice di
 
 
 \chapter{Esperimenti}\label{capitoloEsperimenti}
-Qui andrei a mostrare gli esperimenti e i relativi risultati conseguiti tramite cross validation e model selection.
+
 \section{Riproduzione degli esperimenti originali}
+Una delle prime attività svolte è stata quella di ripetere gli esperimenti originali descritti in \cite{sacpaper}, per confrontarne i risultati al netto dell'utilizzo di una nuova libreria: quegli esperimenti, infatti, si basavano una versione vecchia del codice, che non era ancora stato organizzato sistematicamente come nella libreria mulearn.
+Sono stati presi 722 candidati assiomi del tipo \emph{SubClassOf} con le loro negazioni, per un totale di 1444 formule;  tra ciascuna coppia è stata calcolata la similarità di Jaccard e inserita all'interno di una matrice di Gram $K$.
+Il valore precalcolato di similarità è stato utilizzato come etichetta per il grado di appartenenza di ogni formula all'insieme fuzzy degli assiomi.
+Si è poi effettuato il procedimento di valutazione dei risultati e model selection sugli iperparametri con cui inizializzare i componenti dell'algoritmo. Le formule sono state rimischiate e divise in tre gruppi dedicati a training, model selection e model validation, contenenti rispettivamente l'80\%, il 10\% e il 10\% del campione originale.
+La model selection è stata effettuata a questo stadio sul parametro c, in termini di quale parametro tra quelli testati (0.005, 0.007, 0.01, 0.03, 0.05, 0.07, 0.1, 0.3, 0.5, 0.7, 1, 10, 100) desse luogo all'RMSE minore, dove RMSE sta ad indicare lo scarto quadratico medio posto sotto radice, per riportarlo alla stessa unità di misura dei dati.
+Questo procedimento è stato ripetuto dieci volte per ogni fuzzificatore, concludendo per ciascuno di esso i valori minimi dell'RMSE sui valori di test, che vengono riportati nella tabella.
+
+
+
 \section{Esperimenti sul kernel}
-\subsection{Kernel alternativi}
 \subsection{Possibili soluzioni al problema del fitting}
 \subsubsection{Eliminazione combinatoria di formule}
 \subsubsection{Eliminazione a campione di formule}
