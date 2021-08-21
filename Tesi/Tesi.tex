@@ -416,16 +416,66 @@ Come nei due casi precedenti, si è continuato a dover utilizzare una matrice di
 
 \section{Riproduzione degli esperimenti originali}
 Una delle prime attività svolte è stata quella di ripetere gli esperimenti originali descritti in \cite{sacpaper}, per confrontarne i risultati al netto dell'utilizzo di una nuova libreria: quegli esperimenti, infatti, si basavano una versione vecchia del codice, che non era ancora stato organizzato sistematicamente come nella libreria mulearn.
-Sono stati presi 722 candidati assiomi del tipo \emph{SubClassOf} con le loro negazioni, per un totale di 1444 formule;  tra ciascuna coppia è stata calcolata la similarità di Jaccard e inserita all'interno di una matrice di Gram $K$.
-Il valore precalcolato di similarità è stato utilizzato come etichetta per il grado di appartenenza di ogni formula all'insieme fuzzy degli assiomi.
-Si è poi effettuato il procedimento di valutazione dei risultati e model selection sugli iperparametri con cui inizializzare i componenti dell'algoritmo. Le formule sono state rimischiate e divise in tre gruppi dedicati a training, model selection e model validation, contenenti rispettivamente l'80\%, il 10\% e il 10\% del campione originale.
-La model selection è stata effettuata a questo stadio sul parametro c, in termini di quale parametro tra quelli testati (0.005, 0.007, 0.01, 0.03, 0.05, 0.07, 0.1, 0.3, 0.5, 0.7, 1, 10, 100) desse luogo all'RMSE minore, dove RMSE sta ad indicare lo scarto quadratico medio posto sotto radice, per riportarlo alla stessa unità di misura dei dati.
-Questo procedimento è stato ripetuto dieci volte per ogni fuzzificatore, concludendo per ciascuno di esso i valori minimi dell'RMSE sui valori di test, che vengono riportati nella tabella.
 
+Sono stati considerati 722 candidati assiomi del tipo \emph{SubClassOf} con le loro negazioni, per un totale di 1444 formule;  tra ciascuna coppia è stata calcolata la similarità di Jaccard e inserita all'interno di una matrice di Gram $K$.
+Il valore precalcolato di possibilità è stato utilizzato come etichetta per il grado di appartenenza di ogni formula all'insieme fuzzy degli assiomi.
+Si è poi effettuata la model selection sugli iperparametri con cui inizializzare i componenti dell'algoritmo; le formule sono state rimischiate e divise in tre gruppi dedicati a training, model selection e model validation, contenenti rispettivamente l'80\%, il 10\% e il 10\% del campione originale.
+La model selection è stata effettuata a questo stadio sull'iperparametro c, in termini di quale tra quelli testati (0.005, 0.007, 0.01, 0.03, 0.05, 0.07, 0.1, 0.3, 0.5, 0.7, 1, 10, 100) desse luogo all'RMSE minore nella previsione del grado di membership dell'assioma, dove RMSE sta ad indicare lo scarto quadratico medio posto sotto radice, per riportarlo all'unità di misura dei dati.
+Questo procedimento è stato ripetuto dieci volte per ogni fuzzificatore, concludendo per ciascuno di esso i valori minimi dell'RMSE sui valori di test, che vengono riportati nella tabella \ref{table: risultatiNuoviEsperimenti}
 
+\begin{table}[h!]
+\centering 	
+	\begin{tabular}{|l|l|} 
+	 \hline
+	  & RMSE test(+/- std) \\ [0.5ex] 
+	 \hline
+	 Crisp Fuzzifier & 0.41536 +/- 0.06\\ 
+	 \hline
+	 Quantile Constant Piecewise Fuzzifier & 0.33295 +/- 0.048\\
+	 \hline
+	 Quantile Linear Piecewise Fuzzifier & 0.30343 +/- 0.032\\
+	 \hline
+	 Linear Fuzzifier & 0.34012 +/- 0.054\\
+	 \hline
+	 Exponential Fuzzifier & 0.32827 +/- 0.04\\ [1ex] 
+	 \hline
+	\end{tabular}
+	\caption{Valori minimi RMSE per fuzzificatore, esperimenti nuovi}
+	\label{table: risultatiNuoviEsperimenti}
+\end{table}
+
+\begin{table}[h!]
+\centering 	
+	\begin{tabular}{|l|l|} 
+	 \hline
+	  & RMSE test(+/- std) \\ [0.5ex] 
+	 \hline
+	 Crisp Fuzzifier & 0.377 +/- 0.33\\ 
+	 \hline
+	 Quantile Constant Piecewise Fuzzifier & 0.314 +/- 0.179\\
+	 \hline
+	 Quantile Linear Piecewise Fuzzifier &  0.314 +/- 0.164\\
+	 \hline
+	 Linear Fuzzifier &  0.313 +/- 0.49 \\
+	 \hline
+	 Exponential Fuzzifier & 0.362+/- 0.321\\ [1ex] 
+	 \hline
+	\end{tabular}
+	\caption{Valori minimi RMSE per fuzzificatore, esperimenti 2018}
+	\label{table: risultatiVecchiEsperimenti}
+\end{table}
+
+Come si può notare confrontando le tabelle \ref{table: risultatiNuoviEsperimenti} e \ref{table: risultatiVecchiEsperimenti}, i risultati ottenuti nei due esperimenti si discostano, anche se non eccessivamente.
+Le maggiori differenze si riscontrano per il Crisp Fuzzifier e per il Linear Fuzzifier; i risultati ottenuti mediante Exponential Fuzzifier sono solo parzialmente confrontabili poiché nel primo caso è stato utilizzato un fuzzificatore con decadimento esponenziale non fissato manualmente, mentre i risultati degli esperimenti del 2018 si riferiscono a un decadimento esponenziale di 0.001.
 
 \section{Esperimenti sul kernel}
-\subsection{Possibili soluzioni al problema del fitting}
+Nel corso degli esperimenti, ci si è trovati di fronte a una problematica precedentemente inaspettata. 
+Al momento del calcolo della distanza dei punti, nello spazio delle feature, dal centro dello spazio di riferimento, si è riscontrato che questi valori risultavano negativi. Questo non dovrebbe chiaramente avvenire per il valore di una distanza, e ha fatto sì che risultasse problematico considerare valido il valore di membership inferito dall'algoritmo per alcuni assiomi.
+
+Il problema di definire perché ciò avvenga è ancora aperto, ma in prima istanza è stata fatta la seguente ipotesi: i valori del kernel all'interno della matrice di Gram sono stati precalcolati seguendo delle euristiche, che per definizione risultano intuitivamente corrette, ma non supportate da una dimostrazione formale. L'ipotesi è, dunque, che i valori precomputati della matrice di Gram non rappresentino effettivamente un kernel, non esistendo una dimostrazione del fatto che ne  rispettino le caratteristiche formali; perciò è possibile che, nel momento in cui si è andati a cercare di ritrovare delle proprietà matematiche che si riconoscevano immediate, queste non siano invece state riscontrate. 
+
+
+\subsection{Possibili soluzioni al problema del raggio negativo}
 \subsubsection{Eliminazione combinatoria di formule}
 \subsubsection{Eliminazione a campione di formule}
 \subsubsection{Valori di similarità come vettori in input all'algoritmo}
