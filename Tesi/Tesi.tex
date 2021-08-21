@@ -476,9 +476,37 @@ Il problema di definire perché ciò avvenga è ancora aperto, ma in prima istan
 
 
 \subsection{Possibili soluzioni al problema del raggio negativo}
-\subsubsection{Eliminazione combinatoria di formule}
-\subsubsection{Eliminazione a campione di formule}
+
+Per cercare di comprendere meglio le ragioni che portavano al problema sopra descritto, sono stati condotti ulteriori esperimenti.
+
+\subsubsection{Eliminazione di formule}
+Contestualmente alla negatività del raggio, ci si è anche resi conto di un problema riguardante la matrice di Gram in sé: Gurobi, per definirla matrice semipositiva, richiedeva degli aggiustamenti di un ordine di grandezza talmente elevato che i valori del kernel perdevano di significato. Si è quindi supposto che il problema riguardasse la matrice, e, per convalidare l'ipotesi, si è pensato eliminare da quest'ultima alcune formule, allo scopo di capire se rimuovendole sarebbe cambiato anche l'aggiustamento. Inizialmente si è intrapresa una strada combinatoria, che consisteva nell'eliminare tutte le possibili formule una alla volta, successivamente tutte le coppie e a procedere fino a gruppi di dimensione più elevata; eliminando una formula alla volta non si sono riscontrati cambiamenti dell'aggiustamento nel suo ordine di grandezza, mentre il tempo di esecuzione per l'eliminazione combinatoria delle coppie di formule si è rivelato eccessivamente elevato. Si è perciò deciso di eliminare coppie di formule a campione, scegliendole diecimila volte casualmente dal gruppo di candidati assiomi: anche con questa tecnica, l'indice di adjusment non ha subito delle modifiche rilevanti; si è perciò deciso di abbandonare questa strada. 
+
 \subsubsection{Valori di similarità come vettori in input all'algoritmo}
+Si è poi provato a cambiare completamente approccio: non considerare più i valori precomputati della matrice di Gram come un kernel, ma come descrizione delle formule stesse; le righe della matrice di similarità sono dunque diventate il vettore di valori numerici utilizzati per allenare l'algoritmo di apprendimento.
+Procedendo in questo modo, si sono ottenuti i risultati riportati nella tabella \ref{table:risultatiVettore}, che non soffrono del problema del raggio negativo ma sono globalmente meno buoni, in termini di RMSE, di quelli ottenuti utilizzando l'approccio originale.
+
+\begin{table}[h!]
+\centering 	
+	\begin{tabular}{|c|c|c|} 
+	 \hline
+	  & RMSE test(+/- std) & RMSE train (+/- std)\\ [0.5ex] 
+	 \hline
+	 Crisp Fuzzifier & 0.4714  +/- 0.402 & 0.243 +/- 0.06 \\ 
+	 \hline
+	 Quantile Constant Piecewise Fuzzifier & 0.52855  +/- 0.224 & 0.067 +/- 0.016\\
+	 \hline
+	 Quantile Linear Piecewise Fuzzifier & 0.46104  +/- 0.228	& 0.072 +/- 0.016\\
+	 \hline
+	 Linear Fuzzifier &0.45253  +/- 0.33 & 0.165 +/- 0.028\\
+	 \hline
+	 Exponential Fuzzifier & 0.42252  +/- 0.302 & 0.167 +/-  0.028\\ [1ex] 
+	 \hline
+	\end{tabular}
+	\caption{Valori ottenuti utilizzando la matrice di Gram come descrizione delle formule}
+	\label{table:risultatiVettore}
+\end{table}
+
 
 \chapter*{Conclusione}
 
