@@ -65,17 +65,23 @@
 
 % o sections (dipende dal documentclass)
 \chapter*{Introduzione}
+
 \chapter{Apprendimento di insiemi fuzzy}
 \section{Gli insiemi fuzzy}
 
+Una collezione di elementi rappresenta un insieme se esiste un criterio oggettivo che permette di definire univocamente se un qualunque elemento appartiene o meno al raggruppamento.
+Immaginiamo ``l'insieme dei laureati"; è possibile definire, preso un elemento dell'universo del discorso,  se è vero o falso che questo ne fa parte, tramite il criterio oggettivo di aver conseguito la laurea. O ancora, consideriamo  ``l'insieme di persone con la febbre": come stabiliamo se un elemento vi appartiene?
+In questi casi occorre identificare una soglia: se la temperatura corporea di una persona supera i 37 gradi, allora diciamo che questa ha la febbre, ovvero appartiene all'insieme.
+
+L'esperienza quotidiana del mondo racconta, tuttavia, una realtà più composita: non a tutti i concetti è possibile applicare in maniera univoca una classificazione.
+Pensiamo a una ``classe degli uomini alti" \cite{fuzzysetspaper}: quale soglia di appartenenza si potrebbe fissare? 1.75, 1.80 metri? 
+L'operazione appare molto più complessa e, già a primo impatto, di scarso significato. Questo perché ``uomo alto" è un concetto molto più qualitativo dei precedenti, per il quale non ha particolare attinenza dare una risposta binaria: ha molto più senso interrogarsi su \emph{in che misura} l'elemento appartiene all'insieme. Potremmo così intuitivamente dire che un uomo di 1.60 metri appartiene meno all'insieme di uno di alto 1.80.
+
+
 Gli insiemi fuzzy sono una variante degli insiemi classici introdotta da Lotfi Zadeh del 1965, che li definisce ``una classe di oggetti con un continuo di gradi di appartenenza"\cite{fuzzysetspaper}.
-
-Vengono utilizzati in situazioni in cui è impossibile identificare, come avverebbe tramite un generico classificatore, una soglia univoca oltre la quale un elemento si può dire appartenente a un determinato insieme. In questi contesti è necessario dire che l'elemento appartiene all'insieme con un certo grado di intensità. 
-
-Per capire meglio la differenza, immaginiamo di definire``l'insieme dei laureati": preso un elemento dell'universo del discorso, è possibile definire  se è vero o falso che questo vi appartiene. Pensiamo invece, come fa Zadeh, a una ``classe degli uomini alti"\cite{fuzzysetspaper}, o alla``classe dei caffè dolci";  si tratta di insiemi di carattere più qualitativo, ai quali non tutti gli elementi appartengono allo stesso modo. 
-
- Il concetto di \emph{membership degree} è formalizzato tramite la funzione di appartenenza all'insieme fuzzy $f: X \mapsto [0,1]$, generalizzazione della funzione booleana classica $f: X \mapsto \{0,1\}$;  $f(x) = 1 $ indica totale appartenenza all'insieme, $f(x) = 0 $ totale non-appartenenza, con i valori intermedi dell'intervallo ad esprimere il grado di appartenenza.
-In questo modo un elemento può appartenere a più insiemi che esprimono caratteristiche opposte (ad esempio `` l'insieme delle persone vecchie" e ``l'insieme delle persone giovani"\cite{fuzzysystemspaper}) con gradi differenti, e questo concorre a far sì che gli insiemi fuzzy giochino un ruolo importante in contesti di informazione incerta, aggiugendo un potere descrittivo enorme.
+Dato un insieme classico e un oggetto del dominio, è possibile stabilire una funzione  $f: X \mapsto \{0,1\}$, o funzione di appartenenza: questa restituisce 1 se l'elemento appartiene all'insieme, 0 altrimenti.
+Nel caso di un insieme fuzzy, la funzione di appartenenza si presenta nella generalizzazione  $f: X \mapsto [0,1]$ : invece di un valore booleano, restituisce un numero continuo nell'intervallo tra 0 e 1, che sta ad indicare il grado di appartenenza all'insieme.
+Questa generalizzazione rende molto più facile esprimere concetti che, come nel caso degli uomini alti descritto precedentemente, evadono la classificazione binaria a causa del loro carattere vago e qualitativo: proprio per questo parliamo di insiemi sfocati. Includendo anche questi elementi nel discorso, è possibile aggiungere un potere descrittivo enorme. Non solo, gli insiemi fuzzy rappresentano uno strumento utile in contesti di informazione incerta: un elemento può appartenere a più insiemi che esprimono caratteristiche opposte (ad esempio `` l'insieme delle persone vecchie" e ``l'insieme delle persone giovani"\cite{fuzzysystemspaper}) con gradi differenti mantenendo il sistema coerente, proprio come avverrebbe in un contesto reale.
 
 
 \section{Il web semantico}
