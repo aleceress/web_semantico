@@ -109,8 +109,12 @@ Inseriamo nel quadro la teoria della possibilità, ovvero quella teoria matemati
 Indichiamo con $u_\phi$ la cardinalità degli $\psi$, con  $u_{\phi}^+$ la cardinalità delle conferme di $\phi$ e con $u_{\phi}^-$ la cardinalità dei controesempi di $\phi$; allora, se $u_\phi > 0,$  $\Pi(\phi) = 1 - \sqrt{1 - \frac{u_\phi - u_{\phi}^-}{u_\phi}}$, mentre se $u_\phi > 0,$ allora $\Pi(\phi) = 1$.
 Il problema di questa tecnica è che, a meno di alcuni trucchi di implementazione, è impossibile da applicare nella pratica, a causa dell'eccessivo costo computazionale.
 
-L'alternativa considerata per il lavoro che si andrà a documentare, esposta in \cite{sacpaper}, è quella di allenare un algoritmo di machine learning su un modello surrogato, che consiste in un insieme di assiomi e delle loro negazioni, etichettati con i rispettivi valori di possibilità precedentemente calcolati, in modo che sia poi in grado di ricavare valori di possibilità per nuovi candidati assiomi.  Così procedendo, il grande costo computazionale viene concentrato nella fase iniziale, e molto mitigato successivamente
-L'algoritmo utilizzato, descritto nel paragrafo \ref{algorithmParagraph}, si basa sull'inferenza di una funzione di appartenenza a un insieme fuzzy: l'insieme fuzzy è l'insieme dei possibili assiomi, mentre il valore di possibilità con cui le formule sono inizialmente etichettate rappresenta il grado di appartenenza al suddetto insieme.
+L'alternativa considerata per il lavoro che si andrà a documentare, esposta in \cite{sacpaper}, è quella di allenare un algoritmo di machine learning su un modello surrogato, che consiste in un insieme di assiomi e delle loro negazioni, etichettati con i rispettivi valori di possibilità precedentemente calcolati, in modo che sia poi in grado di ricavare valori di possibilità per nuovi candidati assiomi.
+
+
+Il metodo è particolarmente promettente perché il grande costo computazionale viene concentrato nella fase iniziale e molto mitigato in quelle successive: una volta calcolati i valori di possibilità per i candidati assiomi con cui allenare l'algoritmo ed effettuato il training, l'inferenza per i nuovi assiomi sarà pressoché immediata.
+L'algoritmo utilizzato, descritto nel paragrafo \ref{algorithmParagraph}, si basa sull'inferenza di una funzione di appartenenza a un insieme fuzzy: l'insieme fuzzy è la classe degli assiomi, mentre il valore di possibilità con cui le formule sono inizialmente etichettate rappresenta il grado di appartenenza al suddetto insieme.
+Il problema risulta adatto a essere modellato in senso fuzzy perché l'appartenenza alla categoria degli assiomi non è booleana: il valore di possibilità rappresenta adeguatamente un grado di confidenza nel contesto incerto della modellizzazione della conoscenza.
 
 \chapter{Risoluzione del problema}
 \section{L'algoritmo di apprendimento}\label{algorithmParagraph}
