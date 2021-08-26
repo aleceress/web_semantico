@@ -74,13 +74,13 @@ Immaginiamo ``l'insieme dei laureati"; è possibile definire, preso un elemento 
 In questi casi occorre identificare una soglia: se la temperatura corporea di una persona supera i 37 gradi, allora diciamo che questa ha la febbre, ovvero appartiene all'insieme.
 
 L'esperienza quotidiana del mondo racconta, tuttavia, una realtà più composita: non a tutti i concetti è possibile applicare in maniera univoca una classificazione.
-Pensiamo a una ``classe degli uomini alti" \cite{fuzzysetspaper}: quale soglia di appartenenza si potrebbe fissare? 1.75, 1.80 metri? 
-L'operazione appare molto più complessa e, già a primo impatto, di scarso significato. Questo perché ``uomo alto" è un concetto molto più qualitativo dei precedenti, per il quale non ha particolare attinenza dare una risposta binaria: ha molto più senso interrogarsi su \emph{in che misura} l'elemento appartiene all'insieme. Potremmo così intuitivamente dire che un uomo di 1.60 metri appartiene meno all'insieme di uno di alto 1.80.
+Pensiamo a una ``classe degli uomini alti" \cite{fuzzysetspaper}: quale soglia di appartenenza si potrebbe fissare? 1.80, 1.85 metri? 
+L'operazione appare molto più complessa e, già a primo impatto, di scarso significato. Questo perché ``uomo alto" è un concetto molto più qualitativo dei precedenti, per il quale non ha particolare attinenza dare una risposta binaria: ha molto più senso interrogarsi su \emph{in che misura} l'elemento appartiene all'insieme. Potremmo così intuitivamente dire che un uomo di 1.70 metri appartiene meno all'insieme di uno di alto 1.80.
 
 
 Gli insiemi fuzzy sono una variante degli insiemi classici introdotta da Lotfi Zadeh del 1965, che li definisce ``una classe di oggetti con un continuo di gradi di appartenenza"\cite{fuzzysetspaper}.
 Dato un insieme classico e un oggetto del dominio, è possibile stabilire una funzione  $f: X \mapsto \{0,1\}$, o funzione di appartenenza: questa restituisce 1 se l'elemento appartiene all'insieme, 0 altrimenti.
-Nel caso di un insieme fuzzy, la funzione di appartenenza si presenta nella generalizzazione  $f: X \mapsto [0,1]$ : invece di un valore booleano, restituisce un numero continuo nell'intervallo tra 0 e 1, che sta ad indicare il grado di appartenenza all'insieme.
+Nel caso di un insieme fuzzy, la funzione di appartenenza si presenta nella generalizzazione  $f: X \mapsto [0,1]$ : invece di un valore booleano, restituisce un valore nell'intervallo continuo tra 0 e 1, che sta ad indicare il grado di appartenenza all'insieme.
 Questa generalizzazione rende molto più facile esprimere concetti che, come nel caso degli uomini alti descritto precedentemente, evadono la classificazione binaria a causa del loro carattere vago e qualitativo: proprio per questo parliamo di insiemi sfocati. Includendo anche questi elementi nel discorso, è possibile aggiungere un potere descrittivo enorme. Non solo, gli insiemi fuzzy rappresentano uno strumento utile in contesti di informazione incerta: un elemento può appartenere a più insiemi che esprimono caratteristiche opposte (ad esempio `` l'insieme delle persone vecchie" e ``l'insieme delle persone giovani"\cite{fuzzysystemspaper}) con gradi differenti mantenendo il sistema coerente, proprio come avverrebbe in un contesto reale.
 
 
@@ -118,9 +118,10 @@ Il problema di questa tecnica è che, a meno di alcuni trucchi di implementazion
 L'alternativa considerata per il lavoro che si andrà a documentare, esposta in \cite{sacpaper}, è quella di allenare un algoritmo di machine learning su un modello surrogato, che consiste in un insieme di assiomi e delle loro negazioni, etichettati con i rispettivi valori di possibilità precedentemente calcolati, in modo che sia poi in grado di ricavare valori di possibilità per nuovi candidati assiomi.
 
 
-Il metodo è particolarmente promettente perché il grande costo computazionale viene concentrato nella fase iniziale e molto mitigato in quelle successive: una volta calcolati i valori di possibilità per i candidati assiomi con cui allenare l'algoritmo ed effettuato il training, l'inferenza per i nuovi assiomi sarà pressoché immediata.
+Il metodo è particolarmente promettente perché il grande costo computazionale viene concentrato nella fase iniziale e molto mitigato in quelle successive: una volta calcolati i valori di possibilità per le formule con cui allenare l'algoritmo ed effettuato il training, l'inferenza per i nuovi assiomi sarà pressoché immediata.
+
 L'algoritmo utilizzato, descritto nel paragrafo \ref{algorithmParagraph}, si basa sull'inferenza di una funzione di appartenenza a un insieme fuzzy: l'insieme fuzzy è la classe degli assiomi, mentre il valore di possibilità con cui le formule sono inizialmente etichettate rappresenta il grado di appartenenza al suddetto insieme.
-Il problema risulta adatto a essere modellato in senso fuzzy perché l'appartenenza alla categoria degli assiomi non è booleana: il valore di possibilità rappresenta adeguatamente un grado di confidenza nel contesto incerto della modellizzazione della conoscenza.
+Il problema risulta adatto a essere modellato in senso fuzzy perché l'appartenenza alla categoria degli assiomi non è booleana: l'obiettivo non è suddividere le formule in categorie binarie di vero o falso, ma assegnare a ognuna di esse un certo valore di possibilità, grado di confidenza nel contesto incerto della modellazione della conoscenza. In questo senso, la confidenza nel candidato assioma sarà tanto più grande quanto il grado di appartenenza all'insieme fuzzy degli assiomi.
 
 \chapter{Risoluzione del problema}
 \section{L'algoritmo di apprendimento}\label{algorithmParagraph}
