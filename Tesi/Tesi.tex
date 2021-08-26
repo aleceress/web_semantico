@@ -74,25 +74,26 @@ Immaginiamo ``l'insieme dei laureati"; è possibile definire, preso un elemento 
 In questi casi occorre identificare una soglia: se la temperatura corporea di una persona supera i 37 gradi, allora diciamo che questa ha la febbre, ovvero appartiene all'insieme.
 
 L'esperienza quotidiana del mondo racconta, tuttavia, una realtà più composita: non a tutti i concetti è possibile applicare in maniera univoca una classificazione.
-Pensiamo a una ``classe degli uomini alti" \cite{fuzzysetspaper}: quale soglia di appartenenza si potrebbe fissare? 1.80, 1.85 metri? 
-L'operazione appare molto più complessa e, già a primo impatto, di scarso significato. Questo perché ``uomo alto" è un concetto molto più qualitativo dei precedenti, per il quale non ha particolare attinenza dare una risposta binaria: ha molto più senso interrogarsi su \emph{in che misura} l'elemento appartiene all'insieme. Potremmo così intuitivamente dire che un uomo di 1.70 metri appartiene meno all'insieme di uno di alto 1.80.
+Pensiamo a una ``classe degli uomini alti"\cite{fuzzysetspaper}: quale soglia di appartenenza si potrebbe fissare? 1.80, 1.85 metri? 
+L'operazione appare molto più complessa e, già a primo impatto, di scarso significato. Questo perché ``uomo alto" è un concetto molto più qualitativo dei precedenti, per il quale non ha particolare attinenza dare una risposta binaria: ha molto più senso interrogarsi su \emph{in che misura} l'elemento appartenga all'insieme. Potremmo così intuitivamente dire che un uomo di 1.70 metri appartiene meno all'insieme di uno alto 1.80.
 
 
 Gli insiemi fuzzy sono una variante degli insiemi classici introdotta da Lotfi Zadeh del 1965, che li definisce ``una classe di oggetti con un continuo di gradi di appartenenza"\cite{fuzzysetspaper}.
 Dato un insieme classico e un oggetto del dominio, è possibile stabilire una funzione  $f: X \mapsto \{0,1\}$, o funzione di appartenenza: questa restituisce 1 se l'elemento appartiene all'insieme, 0 altrimenti.
 Nel caso di un insieme fuzzy, la funzione di appartenenza si presenta nella generalizzazione  $f: X \mapsto [0,1]$ : invece di un valore booleano, restituisce un valore nell'intervallo continuo tra 0 e 1, che sta ad indicare il grado di appartenenza all'insieme.
-Questa generalizzazione rende molto più facile esprimere concetti che, come nel caso degli uomini alti descritto precedentemente, evadono la classificazione binaria a causa del loro carattere vago e qualitativo: proprio per questo parliamo di insiemi sfocati. Includendo anche questi elementi nel discorso, è possibile aggiungere un potere descrittivo enorme. Non solo, gli insiemi fuzzy rappresentano uno strumento utile in contesti di informazione incerta: un elemento può appartenere a più insiemi che esprimono caratteristiche opposte (ad esempio `` l'insieme delle persone vecchie" e ``l'insieme delle persone giovani"\cite{fuzzysystemspaper}) con gradi differenti mantenendo il sistema coerente, proprio come avverrebbe in un contesto reale.
+Questa generalizzazione rende molto più facile esprimere concetti che, come nel caso degli uomini alti descritto precedentemente, evadono la classificazione binaria a causa del loro carattere vago e qualitativo: proprio per questo parliamo di insiemi sfocati. Includendo anche questi elementi nel discorso, è possibile aggiungere un potere descrittivo enorme. Non solo, gli insiemi fuzzy rappresentano uno strumento utile in contesti di informazione incerta: un elemento può appartenere a più insiemi che esprimono caratteristiche opposte (ad esempio ``l'insieme delle persone vecchie" e ``l'insieme delle persone giovani"\cite{fuzzysystemspaper}) con gradi differenti mantenendo il sistema coerente, proprio come avverrebbe in un contesto reale.
 
 
 \section{Il web semantico}
 Nel 2001, Tim Berners Lee definiva il web semantico come ``un'estensione del web attuale, nella quale all'informazione viene dato un significato ben definito, permettendo a computer e utenti di cooperare meglio"\cite{semanticWebPaper}.
 Da quel momento, il termine è stato utilizzato per riferirsi all'idea di un web nel quale applicazioni intelligenti fossero in grado di comprendere il senso di un testo, guidando l'utente verso l'informazione cercata o addirittura sostituendosi ad esso nel processo.
-Condizione necessaria perché ciò avvenga è essere in grado di rappresentare l'informazione in un modo strutturato, che permetta ai computer di fare inferenze in modo automatico. Per questo motivo, ai dati in senso stretto devono essere associati dei metadati, ovvero descrizioni del contenuto che riescano a riportare l'enorme varietà dei concetti ad uno schema ben definito; ciò avviene a diversi livelli, che sono oggetto di studio dell'ingegneria della conoscenza.
+Condizione necessaria perché ciò avvenga è essere in grado di rappresentare l'informazione in un modo strutturato, che permetta ai computer di fare inferenze in modo automatico. Per questo motivo, ai dati in senso stretto devono essere associati dei metadati, ovvero descrizioni del contenuto che riescano a riportare l'enorme varietà dei concetti ad uno schema ben definito; ciò avviene a diversi livelli, che sono oggetto di studio dell'ingegneria della conoscenza. In figura \ref{livelliWebSemantico} vi è una schematizzazione di questi livelli.
 
 \begin{figure}[h]	
 \centering
 \includegraphics[width=0.7\textwidth]{images/semanticweblayers.png}
 \caption{Livelli del web semantico}
+\label{livelliWebSemantico}
 \end{figure}
 
 
@@ -118,7 +119,7 @@ Il problema di questa tecnica è che, a meno di alcuni trucchi di implementazion
 L'alternativa considerata per il lavoro che si andrà a documentare, esposta in \cite{sacpaper}, è quella di allenare un algoritmo di machine learning su un modello surrogato, che consiste in un insieme di assiomi e delle loro negazioni, etichettati con i rispettivi valori di possibilità precedentemente calcolati, in modo che sia poi in grado di ricavare valori di possibilità per nuovi candidati assiomi.
 
 
-Il metodo è particolarmente promettente perché il grande costo computazionale viene concentrato nella fase iniziale e molto mitigato in quelle successive: una volta calcolati i valori di possibilità per le formule con cui allenare l'algoritmo ed effettuato il training, l'inferenza per i nuovi assiomi sarà pressoché immediata.
+Il metodo è promettente perché il grande costo computazionale viene concentrato nella fase iniziale e molto mitigato in quelle successive: una volta calcolati i valori di possibilità per le formule con cui allenare l'algoritmo ed effettuato il training, l'inferenza per i nuovi candidati assiomi sarà pressoché immediata.
 
 L'algoritmo utilizzato, descritto nel paragrafo \ref{algorithmParagraph}, si basa sull'inferenza di una funzione di appartenenza a un insieme fuzzy: l'insieme fuzzy è la classe degli assiomi, mentre il valore di possibilità con cui le formule sono inizialmente etichettate rappresenta il grado di appartenenza al suddetto insieme.
 Il problema risulta adatto a essere modellato in senso fuzzy perché l'appartenenza alla categoria degli assiomi non è booleana: l'obiettivo non è suddividere le formule in categorie binarie di vero o falso, ma assegnare a ognuna di esse un certo valore di possibilità, grado di confidenza nel contesto incerto della modellazione della conoscenza. In questo senso, la confidenza nel candidato assioma sarà tanto più grande quanto il grado di appartenenza all'insieme fuzzy degli assiomi.
