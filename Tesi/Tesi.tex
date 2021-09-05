@@ -282,6 +282,7 @@ La libreria mulearn implementa i seguenti kernel:
 La maggior parte dei kernel qui descritti richiedono di essere inizializzati con opportuni iper-parametri: nel Capitolo \ref{capitoloEsperimenti} è stato esposto il procedimento di model selection effettuato su di essi.
 
 \subsection{Kernel precomputato}
+\label{jaccardSection}
 Per ottimizzare i tempi di computazione (i punti da mappare, nel caso di un insieme di formule, non corrispondono a valori numerici i cui valori del kernel sono semplici da calcolare) si è utilizzato un kernel precomputato, per il quale  $k(x_1,x_2)$ equivale a un valore precedentemente calcolato e salvato all'interno di una matrice, detta \emph{matrice di Gram}.
 In generale, il valore restituito da un kernel è interpretabile come una misura della similarità tra i suoi argomenti: per calcolarlo tra due formule si è dunque fatto riferimento a un criterio ispirato alla similarità di Jaccard, descritto in \cite{sacpaper}.
 Per tutte le coppie di assiomi $\phi$ e $\psi$, la definizione di similarità deve rispettare le seguenti proprietà:
@@ -318,116 +319,25 @@ Nella pratica, per calcolare i valori del kernel precomputato si è utilizzata u
 
 \[sim(A \sqsubseteq B, C  \sqsubseteq D) = \frac{\parallel [A] \cap [B] \cup [C] \cap [D] \parallel}{\parallel [A] \cup [C] \parallel}. \]
 
-Utilizzando questa definizione di similarità, i risultati ottenuti in termini di RMSE per i valori di test e per i valori di train sono riportati nella Tabella ~\ref{table:risultatiJaccard}.
-
-\begin{table}
-\small
-\centering 	
-	\begin{tabular}{|c|c|c|}
-	 \hline
-	 Fuzzifier & RMSE test(+/- std) & RMSE train (+/- std)\\ [0.5ex] 
-	 \hline
-	 Crisp & 0.26974 +/ 0.27 & 0.21694 +/- 0.024 \\ 
-	 \hline
-	 Quantile Constant Piecewise & 0.11759 +/- 0.108 & 0.10881 +/- 0.02\\
-	 \hline
-	 Quantile Linear Piecewise & 0.1032 +/- 0.08 & 0.09935 +/- 0.014\\
-	 \hline
-	 Linear & 0.15256 +/- 0.172 & 0.13883 +/- 0.024\\
-	 \hline
-	 Exponential  & 0.13603 +/- 0.17 & 0.13391 +/- 0.02\\ [1ex] 
-	 \hline
-	\end{tabular}
-\caption{Valori ottenuti con la similarità di Jaccard}
-\label{table:risultatiJaccard}
-\end{table}
 
 \subsection{Kernel alternativi}
 Nel corso degli esperimenti sono state utilizzate altre definizioni di similarità, diverse da quella di Jaccard, descritte in \cite{drtpaper}.
 \subsubsection{Length-based similarity}
+\label{lengthSection}
 Una prima forma ingenua di similarità utilizzata è quella basata sulla lunghezza degli assiomi.
 Si definisce dunque
 \[ s_{len}(\phi_1, \phi_2) = 1 - \frac{|\# \phi_1 - \# \phi_2|}{max\{\#\phi_1, \#\phi_2\}},\]
 ovvero il valore assoluto della differenza tra le due lunghezze, normalizzato.
 Tale formulazione nasconde una problematica: quando un assioma è il negato dell'altro la funzione restituisce un valore di similarità alto. Occore, pertanto, introdurre un'ulteriore casistica: se i segni dei due assiomi sono diversi, la funzione di similarità vale $1 - s_{len}(\phi_1,\phi_2)$.
-Una nuova classe kernel è stata implementata per essere utilizzata in modo da computare direttamente il valore di similarità basato su lunghezza dei due assiomi, senza passare per la creazione o il caricamento della matrice di Gram con i valori precalcolati.
-Per velocità di computazione si è scelto di implementare solamente la prima versione della funzione, ignorando il problema del valore di similarità per assiomi opposti l'uno all'altro.
-Anche agendo in questo modo, il tempo di computazione è risultato accettabile eseguendo gli esperimenti su un massimo di 50 assiomi su 1444; si è scelto, pertanto, di utilizzare matrice e kernel precomputato anche per questa definizione di similarità. La Tabella \ref{table:risultatiLength} mostra i risultati ottenuti. L'ingenuità del metodo faceva supporre un generale peggioramento dei risultati rispetto alla similarità di Jaccard, che anzi si presupponeva più consistente di quello effettivamente riscontrato.
-
-\begin{table}[h!]
-\small
-\centering 	
-	\begin{tabular}{|c|c|c|} 
-	 \hline
-	  & RMSE test(+/- std) & RMSE train (+/- std)\\ [0.5ex] 
-	 \hline
-	 Crisp Fuzzifier & 0.38573 +/- 0.466 & 0.391 +/- 0.108 \\ 
-	 \hline
-	 Quantile Constant Piecewise Fuzzifier & 0.31572 +/- 0.288 & 0.31 +/- 0.058\\
-	 \hline
-	 Quantile Linear Piecewise Fuzzifier & 0.30646 +/- 0.252 & 0.3 +/- 0.052\\
-	 \hline
-	 Linear Fuzzifier & 0.24792 +/- 0.092 & 0.225 +/- 0.014\\
-	 \hline
-	 Exponential Fuzzifier & 0.24521 +/- 0.11 & 0.224 +/- 0.014\\ [1ex] 
-	 \hline
-	\end{tabular}
-	\caption{Valori ottenuti con Length Similarity}	
-	\label{table:risultatiLength}
-\end{table}
 
 \subsubsection{Hamming similarity}
+\label{hammingSection}
 Altro modo di definire la similarità tra due assiomi è la distanza di Hamming, ovvero la distanza tra le rappresentazioni testuali delle due formule, intesa come il numero di caratteri diversi tra una e l'altra, trascurando i caratteri extra della stringa più lunga.
 Definendo $H$ la distanza di Hamming, si fa la stessa distinzione descritta precedentemente per gli assiomi di segno opposto:  $ \mathrm{sim_{H}}(\phi_1, \phi_2) = H(\mathrm{abs}(\phi_1),\mathrm{abs}(\phi_2))$ se i segni delle due formule sono opposti, $1 - H(\phi_1, \phi_2)$ altrimenti.
-Anche in questo caso, l'implementazione della classe \emph{HammingKernel} non ha portato ai risultati sperati, a causa dell'eccessivo costo computazionale di calcolare la distanza di Hamming per ognuno dei 1444 assiomi. Gli esperimenti con la matrice di Gram hanno invece condotto ai risultati riportati nella tabella \ref{table:risultatiHamming}. I valori di RMSE e varianza risultano complessivamente peggiori rispetto alla similarità di Jaccard, e stranamente non molto migliori di quelli basati sulla lunghezza: anzi, utilizzando il CrispFuzzifier risultano essere perfino peggiori di questi ultimi.
-
-\begin{table}[h!]
-\small
-\centering 	
-	\begin{tabular}{|c|c|c|} 
-	 \hline
-	  & RMSE test(+/- std) & RMSE train (+/- std)\\ [0.5ex] 
-	 \hline
-	 Crisp Fuzzifier & 0.54868 +/- 0.418 & 0.713 +/- 0.118 \\ 
-	 \hline
-	 Quantile Constant Piecewise Fuzzifier & 0.35935 +/- 0.198 & 0.448 +/- 0.064\\
-	 \hline
-	 Quantile Linear Piecewise Fuzzifier & 0.35008 +/- 0.162 & 0.42 +/- 0.06\\
-	 \hline
-	 Linear Fuzzifier &0.23933 +/- 0.11 & 0.191 +/- 0.066\\
-	 \hline
-	 Exponential Fuzzifier & 0.22399 +/- 0.088 & 0.198 +/- 0.016\\ [1ex] 
-	 \hline
-	\end{tabular}
-	\caption{Valori ottenuti con la similarità di Hamming}
-	\label{table:risultatiHamming}
-\end{table}
 
 \subsubsection{Levenshtein similarity}
+\label{levenshteinSection}
 L'ultima funzione di similarità utilizzata è la distanza di Levenshtein tra due stringhe, ovvero il numero più piccolo di operazioni atomiche che vanno fatte per trasformare una nell'altra. Chiamando questa funzione \emph{Lev}, $sim_{edit}(\phi_1, \phi_2) = 1 - Lev(\phi_1,\phi_2)$ se i due segni sono diversi, $Lev(abs(\phi_1),abs(\phi_2))$ altrimenti.
-Come nei due casi precedenti, si è continuato a dover utilizzare una matrice di Gram precalcolata per definire i valori del kernel in un tempo accettabile. I valori dell'RMSE ottenuti sono mostrati nella tabella \ref{table:risultatiLevenshtein} e risultano valere le stesse considerazioni fatte per la distanza di Hamming.
-
-\begin{table}[h!]
-\small
-\centering 	
-	\begin{tabular}{|c|c|c|} 
-	 \hline
-	  Fuzzifier & RMSE test(+/- std) & RMSE train (+/- std)\\ [0.5ex] 
-	 \hline
-	 Crisp & 0.50254 +/- 0.388 & 0.73 +/- 0.076 \\ 
-	 \hline
-	 Quantile Constant Piecewise & 0.36324 +/- 0.122 & 0.439 +/- 0.058\\
-	 \hline
-	 Quantile Linear Piecewise & 0.35503 +/- 0.138	 & 0.412 +/- 0.05\\
-	 \hline
-	 Linear & 0.23958 +/- 0.094 & 0.201 +/- 0.068\\
-	 \hline
-	 Exponential & 0.23807 +/- 0.11 & 0.198 +/- 0.07\\ [1ex] 
-	 \hline
-	\end{tabular}
-	\caption{Valori ottenuti con la similarità di Levenshtein}
-	\label{table:risultatiLevenshtein}
-\end{table}
 
 
 \chapter{Esperimenti}\label{capitoloEsperimenti}
@@ -438,24 +348,24 @@ La model evaluation è, invece, la valutazione delle performance di un modello e
 
 Effettuare model selection e model evaluation sugli stessi dati che vengono utilizzati per il training  è un errore metodologico \cite{scikit-learn} che rende difficile identificare una condizione di overfitting, nella quale il modello è in grado di associare molto bene etichette a individui del campione che ha già visto, semplicemente ripetendole, ma fallisce nell'identificare i valori associati a nuovi elementi su cui non è stato allenato; spesso l'overfitting si verifica quando il numero di parametri è eccessivo rispetto a quello di osservazioni, dunque il modello risulta troppo complesso e finisce per adattarsi ai dati del campione, imparandone anche il ``rumore" (o informazioni irrilevanti) \cite{IBMlearning}.
 Per questo motivo si suddividono in dati in training, validation e test set, utilizzati rispettivamente per allenare, selezionare e valutare i modelli.
-Quest'ultimo è un procedimento che può essere applicato in condizioni di disponibilità di dati: in molte situazioni, tuttavia, la quantità di dati disponibili per training e test saranno limitate. Per costruire dei buoni modelli vorremmo usare gran parte dei dati disponibili per il training, ma allo stesso tempo la scarsità di dati di test ci porterebbe a una valutazione poco attendibile dei modelli stessi \cite{patternRecognitionML}.	
+Quest'ultimo è un procedimento che può essere applicato in condizioni di disponibilità di dati: in molte situazioni, tuttavia, le quantità di dati disponibili per training e test saranno limitate. Per costruire dei buoni modelli vorremmo usare gran parte dei dati disponibili per il training, ma allo stesso tempo la scarsità di dati di test ci porterebbe a una valutazione poco attendibile dei modelli stessi \cite{patternRecognitionML}.	
 Per far fronte a questa problematica, si deve fare riferimento ad altre strategie.
 
 \subsection{Metodi probabilistici}
 
-Un metodo di risolvere il problema è ricorrere a un approccio probabilistico, nel quale la valutazione del modello avviene utilizzando contemporaneamente la sua complessità e le sue performance in fase di allenamento.
-Lo scoring delle performance viene penalizzato sulla base di quanto alto si suppone il bias di ottimismo per l'errore del training set, che tende notoriamente ad essere elevato; la complessità dipende tipicamente dal numero di gradi di libertà nei parametri del modello.
+Un metodo di risolvere il problema è ricorrere a un approccio probabilistico, nel quale la valutazione del modello avviene basandosi contemporaneamente sulla sua complessità e sulle sue performance in fase di allenamento.
+Lo scoring delle performance viene penalizzato sulla base di quanto alto si suppone il bias di ottimismo per l'errore del training set, che tende notoriamente ad essere elevato, mentre la complessità dipende tipicamente dal numero di gradi di libertà nei parametri del modello.
 Il vantaggio di questo approccio sta nel fatto che non necessita di isolare una porzione di dati di test: tutti i dati a disposizione possono essere utilizzati per il training. I metodi probabilistici, tuttavia, non permettono di utilizzare lo stesso criterio per valutare più modelli (i criteri di valutazione tendono ad essere specifici per ogni modello, proprio a causa della loro variabilità) e non considerano l'incertezza dei parametri: nella pratica, questi metodi tendono a favorire modelli troppo semplificati \cite{APM}.
 \subsection{Metodi di sottocampionamento}
 
-I metodi di ricampionamento stimano le performance di un modello tramite elementi fuori dal campione di traning.
+I metodi di ricampionamento stimano le performance di un modello tramite elementi fuori dal campione di training.
 Il traning set viene suddiviso in sottoinsiemi di training e di test, sui quali viene allenato e valutato, e questa suddivisione avviene più volte, riportando come errore finale la media delle performance degli esperimenti effettuati con ogni suddivisione.
 Tra i metodi di ricampionamento contiamo:
 
 \begin{itemize}
 \item{\emph{random train/test splits}}: fissate le percentuali di dati che devono essere inserite nei sottoinsiemi di training e test,  l'assegnamento di un'osservazione a un campione o all'altro avviene in maniera casuale;
 \item{\emph{bootstrap}}: per ognuno dei sottoinsiemi di training e test, si sceglie una grandezza del campione $n$, dopodiché,  scelta casualmente $n$ volte un'osservazione dal dataset, questa viene aggiunta al campione (la stessa osservazione può così trovarsi in più sottoinsiemi contemporaneamente); 
-\item{\emph{cross-validation}}: in quanto metodo utilizzato per effettuare la maggior parte degli esperimenti si cui si tratterà in questo elaborato, la sua forma di base ($k$-Fold cross-validation) viene trattata nella sezione seguente.
+\item{\emph{cross-validation}}: in quanto metodo utilizzato per effettuare la maggior parte degli esperimenti di cui si tratterà in questo elaborato, la sua forma di base ($k$-Fold cross-validation) viene trattata nella sezione seguente.
 \end{itemize}
 
 \subsubsection{$k$-Fold cross-validation}
@@ -465,12 +375,12 @@ Tale metodo risulta essere computazionalmente oneroso, ma permette di utilizzare
 \begin{figure}[h]	
 \centering
 \includegraphics[width=0.9\textwidth]{images/grid_search_cross_validation.png}
-\caption{Schematizzazione della suddivisione in fold nella $k$-fold cross validation (in questo caso con $k$ = 5) \cite{scikit-learn}.}
+\caption{Schematizzazione della suddivisione in fold nella $k$-fold cross validation (con $k$ = 5) \cite{scikit-learn}.}
 \label{scikitSchema}
 \end{figure}
 
 \section{Riproduzione degli esperimenti originali}
-Una delle prime attività svolte è stata quella di ripetere gli esperimenti originali descritti in \cite{sacpaper}, per confrontarne i risultati al netto dell'utilizzo di una nuova libreria: quegli esperimenti, infatti, si basavano una versione vecchia del codice, che non era ancora stato organizzato sistematicamente come nella libreria mulearn.
+Una delle prime attività svolte è stata quella di ripetere gli esperimenti originali descritti in \cite{sacpaper}, i cui valori medi di RMSE sono riportati nella Tabella \ref{table: risultatiVecchiEsperimenti}, per confrontarne i risultati al netto dell'utilizzo di una nuova libreria: quegli esperimenti, infatti, si basavano una versione vecchia del codice, che non era ancora stato organizzato sistematicamente come nella libreria mulearn.
 
 Sono stati considerati 722 candidati assiomi del tipo \emph{SubClassOf} con le loro negazioni, per un totale di 1444 formule;  tra ciascuna coppia è stata calcolata la similarità di Jaccard e inserita all'interno di una matrice di Gram $K$.
 Il valore precalcolato di possibilità è stato utilizzato come etichetta per il grado di appartenenza di ogni formula all'insieme fuzzy degli assiomi.
@@ -524,14 +434,133 @@ Come si può notare confrontando le tabelle \ref{table: risultatiNuoviEsperiment
 Le maggiori differenze si riscontrano per il Crisp Fuzzifier e per il Linear Fuzzifier; i risultati ottenuti mediante Exponential Fuzzifier sono solo parzialmente confrontabili poiché nel primo caso è stato utilizzato un fuzzificatore con decadimento esponenziale non fissato manualmente, mentre i risultati degli esperimenti del 2018 si riferiscono a un decadimento esponenziale di 0.001.
 
 \section{Esperimenti sul kernel}
+
+Sono poi state effettuate model selection e model validation tramite $k$-Fold cross-validation, con $k$ = 5, per ogni fuzzificatore.
+
+La model selection è stata eseguita sul parametro $c$, scegliendo tra sette possibili valori in un range da -1 a 1, spaziati uniformemente su una scala logaritmica (dunque tra 0.1, 0.21544347, 0.46415888,  1,  2.15443469, 4.64158883 e 10).
+Per ogni fuzzificatore, la model evaluation ha portato ai valori medi di RMSE in fase di test e in fase di train per i valori migliori di $c$, con le rispettive deviazioni standard.
+
+Il procedimento è stato ripetuto utilizzando diversi kernel precomputati e ha portato ai risultati che verranno esposti nelle sezioni successive.
+
+\subsection{Esperimenti con Jaccard similarity}
+Nella Tabella \ref{table:risultatiJaccard} sono riportati i  risultati ottenuti utilizzando come kernel la similarità di Jaccard definita nel Paragrafo \ref{jaccardSection}, precomputata e inserita all'interno di una matrice di Gram.
+
+\begin{table}[h!]
+\small
+\centering 	
+	\begin{tabular}{|c|c|c|}
+	 \hline
+	 Fuzzifier & RMSE test(+/- std) & RMSE train (+/- std)\\ [0.5ex] 
+	 \hline
+	 Crisp & 0.26974 +/ 0.27 & 0.21694 +/- 0.024 \\ 
+	 \hline
+	 Quantile Constant Piecewise & 0.11759 +/- 0.108 & 0.10881 +/- 0.02\\
+	 \hline
+	 Quantile Linear Piecewise & 0.1032 +/- 0.08 & 0.09935 +/- 0.014\\
+	 \hline
+	 Linear & 0.15256 +/- 0.172 & 0.13883 +/- 0.024\\
+	 \hline
+	 Exponential  & 0.13603 +/- 0.17 & 0.13391 +/- 0.02\\ [1ex] 
+	 \hline
+	\end{tabular}
+\caption{Valori medi di RMSE in fase di test e train per ogni fuzzificatore, con la similarità di Jaccard come kernel.}
+\label{table:risultatiJaccard}
+\end{table}
+
+
+\subsection{Esperimenti con Length-based similarity}
+
+La Tabella \ref{table:risultatiLength} mostra i risultati ottenuti utilizzando come kernel la similarità basata su lunghezza definita al Paragrafo \ref{lengthSection}. L'ingenuità del metodo faceva supporre un generale peggioramento dei risultati rispetto alla similarità di Jaccard in Tabella \ref{table:risultatiJaccard}, che anzi si presupponeva più consistente di quello effettivamente riscontrato.
+
+\begin{table}[h!]
+\small
+\centering 	
+	\begin{tabular}{|c|c|c|} 
+	 \hline
+	 Fuzzifier & RMSE test(+/- std) & RMSE train (+/- std)\\ [0.5ex] 
+	 \hline
+	 Crisp & 0.38573 +/- 0.466 & 0.391 +/- 0.108 \\ 
+	 \hline
+	 Quantile Constant Piecewise & 0.31572 +/- 0.288 & 0.31 +/- 0.058\\
+	 \hline
+	 Quantile Linear Piecewise & 0.30646 +/- 0.252 & 0.3 +/- 0.052\\
+	 \hline
+	 Linear & 0.24792 +/- 0.092 & 0.225 +/- 0.014\\
+	 \hline
+	 Exponential & 0.24521 +/- 0.11 & 0.224 +/- 0.014\\ [1ex] 
+	 \hline
+	\end{tabular}
+	\caption{Valori medi di RMSE in fase di test e train per ogni fuzzificatore, con la Length-similarity come kernel.}	
+	\label{table:risultatiLength}
+\end{table}
+
+Una nuova classe kernel è stata implementata per essere utilizzata in modo da computare direttamente il valore di similarità basato su lunghezza dei due assiomi, senza passare per la creazione o il caricamento della matrice di Gram con i valori precalcolati.
+Per velocità di computazione si è scelto di implementare solamente la prima versione della funzione, ignorando il problema del valore di similarità per assiomi opposti l'uno all'altro esposto nel Paragrafo \ref{lengthSection}.
+Anche agendo in questo modo, il tempo di computazione è risultato accettabile eseguendo gli esperimenti su un massimo di 50 assiomi su 1444; si è scelto, pertanto, di utilizzare matrice e kernel precomputato anche per questa definizione di similarità. 
+
+\subsection{Esperimenti con Hamming similarity}
+
+ Gli esperimenti con la Hamming similarity descritta al Paragrafo \ref{hammingSection} hanno invece condotto ai risultati riportati nella Tabella \ref{table:risultatiHamming}. I valori di RMSE e varianza risultano complessivamente peggiori rispetto alla similarità di Jaccard, e stranamente non molto migliori di quelli basati sulla lunghezza: anzi, utilizzando il CrispFuzzifier risultano essere perfino peggiori di questi ultimi.
+
+\begin{table}[h!]
+\small
+\centering 	
+	\begin{tabular}{|c|c|c|} 
+	 \hline
+	  Fuzzifier & RMSE test(+/- std) & RMSE train (+/- std)\\ [0.5ex] 
+	 \hline
+	 Crisp & 0.54868 +/- 0.418 & 0.713 +/- 0.118 \\ 
+	 \hline
+	 Quantile Constant Piecewise & 0.35935 +/- 0.198 & 0.448 +/- 0.064\\
+	 \hline
+	 Quantile Linear Piecewise & 0.35008 +/- 0.162 & 0.42 +/- 0.06\\
+	 \hline
+	 Linear &0.23933 +/- 0.11 & 0.191 +/- 0.066\\
+	 \hline
+	 Exponential & 0.22399 +/- 0.088 & 0.198 +/- 0.016\\ [1ex] 
+	 \hline
+	\end{tabular}
+	\caption{Valori medi di RMSE in fase di test e train per ogni fuzzificatore, con la Hamming similarity come kernel.}
+	\label{table:risultatiHamming}
+\end{table}
+
+Anche in questo caso, l'implementazione della classe \emph{HammingKernel} non ha portato ai risultati sperati, a causa dell'eccessivo costo computazionale di calcolare di volta in volta la distanza di Hamming per ognuno dei 1444 assiomi.
+
+\subsection{Esperimenti con Levenshtein similarity}
+
+ I valori dell'RMSE ottenuti tramite similarità di Levenshtein (Paragrafo \ref{levenshteinSection}) sono mostrati nella Tabella \ref{table:risultatiLevenshtein} e risultano valere le stesse considerazioni fatte per la distanza di Hamming.
+
+
+\begin{table}[h!]
+\small
+\centering 	
+	\begin{tabular}{|c|c|c|} 
+	 \hline
+	  Fuzzifier & RMSE test(+/- std) & RMSE train (+/- std)\\ [0.5ex] 
+	 \hline
+	 Crisp & 0.50254 +/- 0.388 & 0.73 +/- 0.076 \\ 
+	 \hline
+	 Quantile Constant Piecewise & 0.36324 +/- 0.122 & 0.439 +/- 0.058\\
+	 \hline
+	 Quantile Linear Piecewise & 0.35503 +/- 0.138	 & 0.412 +/- 0.05\\
+	 \hline
+	 Linear & 0.23958 +/- 0.094 & 0.201 +/- 0.068\\
+	 \hline
+	 Exponential & 0.23807 +/- 0.11 & 0.198 +/- 0.07\\ [1ex] 
+	 \hline
+	\end{tabular}
+	\caption{Valori medi di RMSE in fase di test e train per ogni fuzzificatore, con la Levenshtein similarity come kernel.}
+	\label{table:risultatiLevenshtein}
+\end{table}
+
+Come nei due casi precedenti, si è continuato a dover utilizzare una matrice di Gram precalcolata per definire i valori del kernel in un tempo accettabile.
+
+\subsection{Il problema del raggio negativo}
+
 Nel corso degli esperimenti, ci si è trovati di fronte a una problematica precedentemente inaspettata. 
 Al momento del calcolo della distanza dei punti, nello spazio delle feature, dal centro dello spazio di riferimento, si è riscontrato che questi valori risultavano negativi. Questo non dovrebbe chiaramente avvenire per il valore di una distanza, e ha fatto sì che risultasse problematico considerare valido il valore di membership inferito dall'algoritmo per alcuni assiomi.
 
 Il problema di definire perché ciò avvenga è ancora aperto, ma in prima istanza è stata fatta la seguente ipotesi: i valori del kernel all'interno della matrice di Gram sono stati precalcolati seguendo delle euristiche, che per definizione risultano intuitivamente corrette, ma non supportate da una dimostrazione formale. L'ipotesi è, dunque, che i valori precomputati della matrice di Gram non rappresentino effettivamente un kernel, non esistendo una dimostrazione del fatto che ne  rispettino le caratteristiche formali; perciò è possibile che, nel momento in cui si è andati a cercare di ritrovare delle proprietà matematiche che si riconoscevano immediate, queste non siano invece state riscontrate. 
-
-
-\subsection{Possibili soluzioni al problema del raggio negativo}
-
 Per cercare di comprendere meglio le ragioni che portavano al problema sopra descritto, sono stati condotti ulteriori esperimenti.
 
 \subsubsection{Eliminazione di formule}
@@ -542,6 +571,7 @@ Si è poi provato a cambiare completamente approccio: non considerare più i val
 Procedendo in questo modo, si sono ottenuti i risultati riportati nella tabella \ref{table:risultatiVettore}, che non soffrono del problema del raggio negativo ma sono globalmente meno buoni, in termini di RMSE, di quelli ottenuti utilizzando l'approccio originale.
 
 \begin{table}[h!]
+\small
 \centering 	
 	\begin{tabular}{|c|c|c|} 
 	 \hline
