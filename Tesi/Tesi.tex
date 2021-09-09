@@ -37,7 +37,7 @@
 \end{center}
 \vspace{12mm}
 \begin{center}
-{\huge{\bf Apprendimento di insiemi fuzzy nell'ambito del web semantico}}\\
+{\huge{\bf Apprendimento di insiemi fuzzy nell'ambito del Web semantico}}\\
 \end{center}
 \vspace{12mm}
 \begin{flushleft}
@@ -87,26 +87,24 @@ Questa generalizzazione rende molto più facile esprimere concetti che, come nel
 \section{Il Web semantico}
 Nel 2001, Tim Berners Lee definiva il Web semantico come ``un'estensione del web attuale, nella quale all'informazione viene dato un significato ben definito, permettendo a computer e utenti di cooperare meglio"\cite{semanticWebPaper}.
 Da quel momento, il termine è stato utilizzato per riferirsi all'idea di un web nel quale applicazioni intelligenti fossero in grado di comprendere il senso di un testo, guidando l'utente verso l'informazione cercata o addirittura sostituendosi ad esso nel processo.
-Condizione necessaria perché ciò avvenga è essere in grado di rappresentare l'informazione in un modo strutturato, che permetta ai computer di fare inferenze in modo automatico. Per questo motivo, ai dati in senso stretto devono essere associati dei metadati, ovvero descrizioni del contenuto che riescano a riportare l'enorme varietà dei concetti ad uno schema ben definito; ciò avviene a diversi livelli, che sono oggetto di studio dell'ingegneria della conoscenza. In Figura \ref{livelliWebSemantico} vi è una schematizzazione di questi livelli. 
-Alla base troviamo il concetto di URI (Uniform resource identifier), ovvero un insieme di identificatori unificato: nel momento in cui si scrive un testo su un argomento, infatti, è necessario identificarlo in maniera univoca.
-A salire, troviamo la tecnologia XML (eXtensible Markup Language): si tratta di un linguaggio di markup che permette di creare tag personalizzati per descrivere una risorsa; si è così in grado di conferire una struttura arbitraria ai propri dati, pur senza dare informazioni su cosa questa struttura stia effettivamente a significare.
-Il significato è demandato a RDF, standard proposto dal W3C; si tratta di un set di linguaggi basato su sintassi XML, principalmente utilizzato per fare delle asserzioni descrittive di un contenuto. RDF utilizza delle triple soggetto-verbo-oggetto, ad esempio ``Apprendimento di insiemi fuzzy nell'ambito del web semantico" (soggetto) ha come autore (verbo) Alessia Cecere (oggetto): questa particolare struttura risulta essere adatta a descrivere la maggior parte dei dati che devono essere elaborati da macchine.
-I tre componenti di una tripla sono spesso rappresentati da URI, in modo da rappresentare elementi specifici ed evitare l'ambiguità tra termini che è tipica del linguaggio naturale.
-Il passo successivo è dato dalla ontologie o OWL (Web ontology language), che permettono di superare la specificità dei riferimenti (ad esempio diversi modi di esprimere lo stesso concetto), tramite una tassonomia e un insieme di regole di inferenza. La tassonomia descrive classi di oggetti e le relazioni che queste classi hanno tra loro (ad esempio, ``sedia è una sottoclasse di mobile"), mentre le regole di inferenza permettono di stabilire vincoli ulteriori relativi alla realtà di riferimento: ad esempio, se un prefisso è associato a una città, e un indirizzo utilizza quel prefisso, allora anche l'indirizzo ha associato il prefisso di quella città \cite{semanticWebPaper}. 
-L'utilizzo delle ontologie permette di salire al livello successivo, ovvero recuperare documenti esprimendo query complesse, che tengano conto non solo degli oggetti del discorso coinvolti ma anche del legame tra essi.
+Condizione necessaria perché ciò avvenga è essere in grado di rappresentare l'informazione in un modo strutturato, che permetta ai computer di fare inferenze in modo automatico. Per questo motivo, ai dati in senso stretto devono essere associati dei metadati, ovvero descrizioni del contenuto che riescano a riportare l'enorme varietà dei concetti ad uno schema ben definito; ciò avviene a diversi livelli, che sono oggetto di studio dell'ingegneria della conoscenza. 
 
 \begin{figure}[h]	
 \centering
 \includegraphics[width=0.7\textwidth]{images/semanticweblayers.png}
-\caption{Livelli del web semantico}
+\caption{Livelli del web semantico \cite{semanticWebImage}}
 \label{livelliWebSemantico}
 \end{figure}
 
-
-Si tratta del primo passo verso lo strato verde in Figura \ref{livelliWebSemantico}, ovvero il livello logico, non ancora sviluppato e oggetto di speculazione teorica. A questo livello l'obiettivo è realizzare sistemi composti da formulazioni di concetti logici e rendere i computer in grado di ragionare per inferenza su tali principi, attraverso un insieme di processori di informazioni. Naturalmente, in questo contesto dovrà essere garantito un grado di fiducia nelle informazioni, attraverso l'uso trasversale di crittografia e firma digitale: questa attesterà che un determinato utente ritiene veritiero un documento o un'istruzione, dando alle macchine dei parametri per 
-decidere in cosa e quanto credere.
-Lo sviluppo di questi concetti porterà nel suo complesso alla realizzazione \emph{Web of trust}, apice della gerarchia.
-
+In Figura \ref{livelliWebSemantico} vi è una schematizzazione di questi livelli. 
+Alla base troviamo il concetto di URI (Uniform resource identifier), ovvero un insieme di identificatori che hanno lo scopo di rendere univoci dei riferimenti oggetto di un discorso, com'è spesso richiesto nel momento in cui si scrive un testo.
+A salire incontriamo la tecnologia XML \cite{semanticWebPage} (eXtensible Markup Language), linguaggio di markup che permette di creare tag personalizzati per descrivere una risorsa: si è così in grado di conferire una struttura arbitraria ai propri dati, pur senza dare informazioni su cosa questa struttura stia effettivamente a significare.
+Il significato è demandato a RDF \cite{semanticWebPage}, standard proposto dal W3C; si tratta di un set di linguaggi basato su sintassi XML, principalmente utilizzato per fare delle asserzioni descrittive di un contenuto. RDF utilizza delle triple soggetto-verbo-oggetto, ad esempio ``Apprendimento di insiemi fuzzy nell'ambito del web semantico" (soggetto) ha come autore (verbo) Alessia Cecere (oggetto): questa particolare struttura risulta essere adatta a descrivere la maggior parte dei dati che devono essere elaborati da macchine.
+I tre componenti di una tripla sono spesso rappresentati da URI, in modo da rappresentare elementi specifici ed evitare l'ambiguità tra termini che è tipica del linguaggio naturale.
+Il passo successivo è dato dalla ontologie o OWL (Web ontology language) \cite{semanticWebPage}, che permettono di superare la specificità dei riferimenti (ad esempio diversi modi di esprimere lo stesso concetto), tramite una tassonomia e un insieme di regole di inferenza. La tassonomia descrive classi di oggetti e le relazioni che queste classi hanno tra loro (ad esempio, ``sedia è una sottoclasse di mobile"), mentre le regole di inferenza permettono di stabilire vincoli ulteriori relativi alla realtà di riferimento: ad esempio, se un prefisso è associato a una città, e un indirizzo utilizza quel prefisso, allora anche l'indirizzo ha associato il prefisso di quella città \cite{semanticWebPaper}. 
+L'utilizzo delle ontologie permette di salire al livello successivo, ovvero recuperare documenti esprimendo query complesse, che tengano conto non solo degli oggetti del discorso coinvolti ma anche del legame tra essi.
+Si tratta del primo passo verso lo strato verde in Figura \ref{livelliWebSemantico}, ovvero il livello logico, non ancora sviluppato e oggetto di speculazione teorica. A questo livello l'obiettivo è realizzare sistemi composti da formulazioni di concetti logici e rendere i computer in grado di ragionare per inferenza su tali principi, attraverso lo scambio di informazioni tra un insieme di processori di informazioni. Naturalmente, in questo contesto dovrà essere garantito un grado di fiducia nelle informazioni incontrate, attraverso l'uso trasversale di crittografia e firma digitale: questa attesterà che un determinato utente ritiene veritiero un documento o un'istruzione, dando alle macchine dei parametri per stabilire in cosa e quanto credere.
+Lo sviluppo di questi concetti porterà nel suo complesso alla realizzazione del \emph{Web of trust} \cite{semanticWebPage}: ogni utente avrà un insieme di utenti nei quali ha fiducia, che ne avranno a loro volta altri, a costruire una rete.
 
 \section{Applicazione alla ricerca di assiomi in un insieme di formule}
 
@@ -351,7 +349,7 @@ L'ultima funzione di similarità utilizzata è la distanza di Levenshtein tra du
 La model selection è il processo di scelta di un modello definitivo tra un insieme di candidati modelli di machine learning per un training set; può essere applicata sia tra modelli sia tra parametri di uno stesso modello.
 La model evaluation è, invece, la valutazione delle performance di un modello esistente.
 
-Effettuare model selection e model evaluation sugli stessi dati che vengono utilizzati per il training  è un errore metodologico \cite{scikit-learn} che rende difficile identificare una condizione di overfitting, nella quale il modello è in grado di associare molto bene etichette a individui del campione che ha già visto, semplicemente ripetendole, ma fallisce nell'identificare i valori associati a nuovi elementi su cui non è stato allenato; spesso l'overfitting si verifica quando il numero di parametri è eccessivo rispetto a quello di osservazioni, dunque il modello risulta troppo complesso e finisce per adattarsi ai dati del campione, imparandone anche il ``rumore" (o informazioni irrilevanti) \cite{IBMlearning}.
+Effettuare model selection e model evaluation sugli stessi dati che vengono utilizzati per il training  è un errore metodologico \cite{scikit-learn} che rende difficile identificare una condizione di overfitting, nella quale l'algoritmo è in grado di associare molto bene etichette a individui del campione che ha già visto, semplicemente ripetendole, ma fallisce nell'identificare i valori associati a nuovi elementi su cui non è stato allenato; spesso l'overfitting si verifica quando il numero di parametri è eccessivo rispetto a quello di osservazioni, dunque il modello risulta troppo complesso e finisce per adattarsi ai dati del campione, imparandone anche il ``rumore" (o informazioni irrilevanti) \cite{IBMlearning}.
 Per questo motivo si suddividono in dati in training, validation e test set, utilizzati rispettivamente per allenare, selezionare e valutare i modelli.
 Quest'ultimo è un procedimento che può essere applicato in condizioni di disponibilità di dati: in molte situazioni, tuttavia, le quantità di dati disponibili per training e test saranno limitate. Per costruire dei buoni modelli vorremmo usare gran parte dei dati disponibili per il training, ma allo stesso tempo la scarsità di dati di test ci porterebbe a una valutazione poco attendibile dei modelli stessi \cite{patternRecognitionML}.	
 Per far fronte a questa problematica, si deve fare riferimento ad altre strategie.
@@ -379,8 +377,8 @@ Tale metodo risulta essere computazionalmente oneroso, ma permette di utilizzare
 
 \begin{figure}[h]	
 \centering
-\includegraphics[width=0.9\textwidth]{images/grid_search_cross_validation.png}
-\caption{Schematizzazione della suddivisione in fold nella $k$-fold cross validation (con $k$ = 5) \cite{scikit-learn}.}
+\includegraphics[width=0.9\textwidth]{images/782px-K-fold_cross_validation_EN.svg.png}
+\caption{Schematizzazione della suddivisione in fold nella $k$-fold cross validation \cite{crossValidationImage}.}
 \label{scikitSchema}
 \end{figure}
 
@@ -601,9 +599,13 @@ Procedendo in questo modo, si sono ottenuti i risultati riportati nella tabella 
 \section{Ambiente utilizzato}
 Gli esperimenti sono stati eseguiti su una macchina con CPU Intel(R) Core(T) i7-8550U, 8 GB di RAM, sistema operativo Windows 10 Home versione 20H2. 
 Il linguaggio utilizzato è stato Python 3.7.9, in environment Anaconda \cite{anaconda} versione 4.9.2.
-Le principali librerie utilizzate sono state scikit-learn \cite{scikit-learn} versione 0.23.2, numpy \cite{numpy} versione 1.17.0, matplotlib \cite{matplotlib} versione 3.3.2, mulearn \cite{mulearn} versione 0.2.9.4.
-
-
+Le principali librerie utilizzate sono state:
+\begin{itemize}
+\item scikit-learn \cite{scikit-learn} versione 0.23.2;
+\item numpy \cite{numpy} versione 1.17.0;
+\item matplotlib \cite{matplotlib} versione 3.3.2;
+\item mulearn \cite{mulearn} versione 0.2.9.4.
+\end{itemize}
 \section{Risultati ottenuti}
 A seguito degli esperimenti svolti, si può concludere che il kernel precomputato all'interno della matrice di Gram è necessario per evitare l'eccesso di tempo di computazione impiegato nel calcolare di volta in volta i valori richiesti; è inoltre emerso che, tra le possibili definizioni di kernel, quella che porta ai valori medi migliori di RMSE è la similarità di Jaccard.
 Il problema della negatività del raggio risulta ancora aperto, dal momento che le modifiche della matrice tramite eliminazione di formule non lo hanno eliminato e la soluzione proposta al paragrafo \ref{vettoriSection} non si è rivelata ottimale in termini di RMSE: la risoluzione del problema necessiterebbe di ulteriore ricerca.
