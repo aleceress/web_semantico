@@ -79,7 +79,7 @@ L'operazione appare molto più complessa e, già a primo impatto, di scarso sign
 
 
 Gli insiemi fuzzy (o sfocati, nella terminologia italiana) sono una variante degli insiemi classici introdotta da Lotfi Zadeh del 1965, che li definisce ``una classe di oggetti con un continuo di gradi di appartenenza"\cite{fuzzysetspaper}.
-Dato un insieme classico e un oggetto appartenente a un universo del discorso $X$, è possibile stabilire una funzione  $f: X \mapsto \{0,1\}$, o funzione di appartenenza: questa restituisce 1 se l'elemento appartiene all'insieme, 0 altrimenti.
+Dato un insieme classico e un oggetto appartenente a un oggetto del dominio $X$, è possibile stabilire una funzione  $f: X \mapsto \{0,1\}$, o funzione di appartenenza: questa restituisce 1 se l'elemento appartiene all'insieme, 0 altrimenti.
 Nel caso di un insieme fuzzy, la funzione di appartenenza si presenta nella generalizzazione  $f: X \mapsto [0,1]$ : invece di un valore booleano, restituisce un valore nell'intervallo continuo tra 0 e 1, che sta a indicare il grado di appartenenza all'insieme; più il valore risulterà vicino a 1 più il grado di appartenenza sarà elevato, e viceversa.
 Questa generalizzazione rende molto più facile esprimere concetti che, come nel caso degli uomini alti descritto precedentemente, evadono la classificazione binaria a causa del loro carattere vago e qualitativo: proprio per questo parliamo di insiemi sfocati. Grazie alla formalizzazione matematica di questi concetti, è possibile aggiungere un potere descrittivo enorme. Non solo, gli insiemi fuzzy rappresentano uno strumento utile in contesti di informazione incerta: un elemento può appartenere a più insiemi che esprimono caratteristiche opposte (ad esempio ``l'insieme delle persone vecchie" e ``l'insieme delle persone giovani"\cite{fuzzysystemspaper}) con gradi differenti mantenendo il sistema coerente, proprio come avverrebbe in un contesto reale.
 
@@ -97,13 +97,13 @@ Condizione necessaria perché ciò avvenga è essere in grado di rappresentare l
 \end{figure}
 
 In Figura \ref{livelliWebSemantico} vi è una schematizzazione di questi livelli. 
-Alla base troviamo il concetto di URI (Uniform resource identifier), ovvero un insieme di identificatori che hanno lo scopo di rendere univoci dei riferimenti oggetto di un discorso, com'è spesso richiesto nel momento in cui si scrive un testo.
-A salire incontriamo la tecnologia XML \cite{semanticWebPage} (eXtensible Markup Language), linguaggio di markup che permette di creare tag personalizzati per descrivere una risorsa: si è così in grado di conferire una struttura arbitraria ai propri dati, pur senza dare informazioni su cosa questa struttura stia effettivamente a significare.
-Il significato è demandato a RDF \cite{semanticWebPage}, standard proposto dal W3C; si tratta di un set di linguaggi basato su sintassi XML, principalmente utilizzato per fare delle asserzioni descrittive di un contenuto. RDF utilizza delle triple soggetto-verbo-oggetto, ad esempio ``Apprendimento di insiemi fuzzy nell'ambito del web semantico" (soggetto) ha come autore (verbo) Alessia Cecere (oggetto): questa particolare struttura risulta essere adatta a descrivere la maggior parte dei dati che devono essere elaborati da macchine.
-I tre componenti di una tripla sono spesso rappresentati da URI, in modo da rappresentare elementi specifici ed evitare l'ambiguità tra termini che è tipica del linguaggio naturale.
+Alla base, in rosso, troviamo il concetto di URI (Uniform resource identifier), ovvero un insieme di identificatori che rendono univoci i riferimenti, com'è spesso necessario nel momento in cui si scrive un testo.
+A salire, in arancione, incontriamo la tecnologia XML \cite{xmlBook} (eXtensible Markup Language), linguaggio di markup che permette di creare tag personalizzati per descrivere una risorsa: si è così in grado di conferire una struttura arbitraria ai propri dati, pur senza dare informazioni su cosa questa struttura stia effettivamente a significare.
+Il significato è demandato a RDF \cite{rdfBook} (in grigio in figura), standard proposto dal W3C; si tratta di un set di linguaggi basato su sintassi XML, principalmente utilizzato per fare delle asserzioni descrittive di un contenuto. RDF utilizza delle triple soggetto-verbo-oggetto, ad esempio ``Apprendimento di insiemi fuzzy nell'ambito del web semantico" (soggetto) ha come autore (verbo) Alessia Cecere (oggetto): questa particolare struttura risulta essere adatta a descrivere la maggior parte dei dati che devono essere elaborati da macchine.
+I tre componenti di una tripla sono spesso rappresentati da URI, in modo da indicare elementi specifici ed evitare l'ambiguità tra termini che è tipica del linguaggio naturale.
 Il passo successivo è dato dalla ontologie o OWL (Web ontology language) \cite{semanticWebPage}, che permettono di superare la specificità dei riferimenti (ad esempio diversi modi di esprimere lo stesso concetto), tramite una tassonomia e un insieme di regole di inferenza. La tassonomia descrive classi di oggetti e le relazioni che queste classi hanno tra loro (ad esempio, ``sedia è una sottoclasse di mobile"), mentre le regole di inferenza permettono di stabilire vincoli ulteriori relativi alla realtà di riferimento: ad esempio, se un prefisso è associato a una città, e un indirizzo utilizza quel prefisso, allora anche l'indirizzo ha associato il prefisso di quella città \cite{semanticWebPaper}. 
 L'utilizzo delle ontologie permette di salire al livello successivo, ovvero recuperare documenti esprimendo query complesse, che tengano conto non solo degli oggetti del discorso coinvolti ma anche del legame tra essi.
-Si tratta del primo passo verso lo strato verde in Figura \ref{livelliWebSemantico}, ovvero il livello logico, non ancora sviluppato e oggetto di speculazione teorica. A questo livello l'obiettivo è realizzare sistemi composti da formulazioni di concetti logici e rendere i computer in grado di ragionare per inferenza su tali principi, attraverso lo scambio di informazioni tra un insieme di processori di informazioni. Naturalmente, in questo contesto dovrà essere garantito un grado di fiducia nelle informazioni incontrate, attraverso l'uso trasversale di crittografia e firma digitale: questa attesterà che un determinato utente ritiene veritiero un documento o un'istruzione, dando alle macchine dei parametri per stabilire in cosa e quanto credere.
+Si tratta del primo passo verso lo strato verde, ovvero il livello logico, non ancora sviluppato e oggetto di speculazione teorica. A questo livello l'obiettivo è realizzare sistemi composti da formulazioni di concetti logici e rendere i computer in grado di ragionare per inferenza su tali principi, attraverso lo scambio di informazioni tra un insieme di processori di informazioni. Naturalmente, in questo contesto dovrà essere garantito un grado di fiducia nelle informazioni incontrate, attraverso l'uso trasversale (arancione e verticale in figura) di crittografia e firma digitale: questa attesterà che un determinato utente ritiene veritiero un documento o un'istruzione, dando alle macchine dei parametri per stabilire in cosa e quanto credere.
 Lo sviluppo di questi concetti porterà nel suo complesso alla realizzazione del \emph{Web of trust} \cite{semanticWebPage}: ogni utente avrà un insieme di utenti nei quali ha fiducia, che ne avranno a loro volta altri, a costruire una rete.
 
 \section{Applicazione alla ricerca di assiomi in un insieme di formule}
@@ -115,7 +115,7 @@ Un'euristica basata sulla teoria della possibilità e sulla falsificazione nel c
 Sintentizzando ulteriormente, immaginiamo di avere un candidato assioma $\phi$ che esprime una possibile relazione tra due elementi del dominio, e di dover valutare la sua credibilità sulla base di un dataset a disposizione $\Gamma$.
 L'assioma $\phi$  verrà definito come l'insieme finito di affermazioni $\psi$  che ne sono conseguenza: perciò, se  $\Gamma \models\footnote{Il simbolo $\models$ esprime la relazione di conseguenza logica. In questo caso indica che, se tutte le proposizioni contenute nel dataset $\Gamma$ sono vere, allora ne deve conseguire che anche $\psi$ è vera.} \psi$ allora $\psi$ è una conferma di $\phi$, se $\Gamma \models \neg \psi$ allora $\psi$ è un controesempio di $\phi$, mentre se 
 $\Gamma \not\models \psi$ e $\Gamma \not\models \neg \psi$ non si tratta né di un controesempio né di una conferma.
-Inseriamo nel quadro la teoria della possibilità, ovvero quella teoria matematica per cui a ogni evento si associa un grado di possibilità tra 0 (impossibile) e 1 (completamente possibile, normale)\cite{possibilityTheoryPaper}: avendo a disposizione una misura distribuzione di possibilità $\pi$, induciamo una misura di possibilità $\Pi$ per ogni evento. 
+Inseriamo nel quadro la teoria della possibilità, ovvero quella teoria matematica per cui a ogni evento si associa un grado di possibilità tra 0 (impossibile) e 1 (completamente possibile, normale)\cite{DUBOIS200647}: avendo a disposizione una distribuzione di possibilità $\pi$, induciamo una misura di possibilità $\Pi$ per ogni evento. 
 Indichiamo con $u_\phi$ la cardinalità degli $\psi$, con  $u_{\phi}^+$ la cardinalità delle conferme di $\phi$ e con $u_{\phi}^-$ la cardinalità dei controesempi di $\phi$; allora, se $u_\phi > 0,$  
 
 \[ \Pi(\phi) = 1 - \sqrt{1 - \frac{u_\phi - u_{\phi}^-}{u_\phi}},\]
@@ -134,7 +134,7 @@ Il problema risulta adatto a essere modellato in senso fuzzy perché l'appartene
 \section{L'algoritmo di apprendimento}\label{algorithmParagraph}
 Per affrontare il problema sopra descritto, si è utilizzata una variante dell'algoritmo di support vector clustering, descritta in \cite{svpaper}.
 
-Dati un campione  \{$x_1$, \dots , $x_n$\} di elementi appartenenti a un dominio $X$ e i rispettivi gradi di appartenenza  \{$\mu_1$, \dots , $\mu_n$\}  a un fuzzy set sconosciuto $A$, obiettivo dell'algoritmo è indurre un'approssimazione del fuzzy set $A$,  inferendo la sua funzione di appartenenza $\mu_A$. Per spiegare la tecnica, immaginiamo che esista una sfera di raggio $R$  e centro $a$ sconosciuti che contiene i punti con membership elevata, in modo che il loro  grado di membership dipenda dalla distanza dal centro $a$.
+Dati un campione  \{$x_1$, \dots , $x_n$\} di elementi appartenenti a un dominio $X$ e i rispettivi gradi di appartenenza  \{$\mu_1$, \dots , $\mu_n$\}  a un fuzzy set sconosciuto $A$, obiettivo dell'algoritmo è indurre un'approssimazione del fuzzy set $A$,  inferendo la sua funzione di appartenenza $\mu_A$. Per spiegare la tecnica, immaginiamo di dover trovare una sfera di raggio $R$  e centro $a$  che contenga i punti con membership elevata, in modo che il loro  grado di membership dipenda dalla distanza dal centro $a$.
 Un primo modo di formulare il problema sarebbe, ignorando i valori di membership, la seguente ottimizzazione vincolata:
 \[ \min R^2 + C\sum_{i} \xi_{i}\]
 \[s.t.\]
@@ -206,7 +206,7 @@ Nel Paragrafo \ref{kernelSection} sono elencati e descritti i diversi kernel uti
 
 Per eseguire gli esperimenti, è stata utilizzata la libreria mulearn\cite{mulearn}.
 Come si può leggere dalla documentazione, al suo interno vi è una classe FuzzyInductor, che raccoglie la funzionalità fondamentale del processo di apprendimento: una volta allenato (attraverso l'operazione fit) su una serie di esempi, il FuzzyInductor è in grado, ricevendo un vettore di valori, di inferire una funzione di appartenenza all'insieme fuzzy, e quindi di restituire, tramite la funzione predict, un grado di appartenenza per ogni vettore dato.
-Per la costruzione del FuzzyInductor devono essere specificati una serie di parametri; il primo dei quali è il parametro $c$ (l'equivalente di $C$ dei paragrafi precedenti), che fa da tradeoff tra la grandezza della sfera di appartenenza e il rispetto dei vincoli imposti. 
+Per la costruzione del FuzzyInductor devono essere specificati una serie di parametri; il primo dei quali è il parametro \texttt{c} (l'equivalente di $C$ dei paragrafi precedenti), che fa da tradeoff tra la grandezza della sfera di appartenenza e il rispetto dei vincoli imposti. 
 
 Ulteriore parametro è il fuzzifier, ovvero la funzione che riceve come argomento la distanza tra l'immagine di un vettore $x$ e il centro della sfera (indicata con $R^2(x)$ nel paragrafo precedente), restituendo un'approssimazione del grado di appartenenza di $x$ al fuzzy set. Esistono diversi tipi di fuzzificatori, più o meno complessi a seconda delle esigenze del problema.
 \begin{itemize}
@@ -229,7 +229,7 @@ Ulteriore parametro è il fuzzifier, ovvero la funzione che riceve come argoment
 	\label{linearFuzzifierGraph}
 \end{minipage}
 
-\item \emph{Exponential Fuzzifier}(grafico esemplificativo in Figura \ref{exponentialFuzzifierGraph}): corrisponde a un fuzzy set la cui  membership diminuisce da 1 a 0 in maniera esponenziale. Il parametro $\alpha$ indica il decadimento esponenziale fissato;
+\item \emph{Exponential Fuzzifier}(grafico esemplificativo in Figura \ref{exponentialFuzzifierGraph}): corrisponde a un fuzzy set la cui  membership diminuisce da 1 a 0 in maniera esponenziale; la funzione che trasforma la distanza $r$ dal centro della sfera in un grado di appartenenza vale 1 se $r \leq r_1$, dove $r_1$ è il valore soglia, $e(r)$ altrimenti (dove $e$ è una funzione esponenziale che decresce da 0 a 1). Il parametro $\alpha$ indica il decadimento esponenziale fissato;
 
 \begin{minipage}{\linewidth}
 	\centering
@@ -268,7 +268,7 @@ Nella costruzione del FuzzyInductor si può optare per due tipi diversi di solve
 
 Gurobi\cite{gurobi} è un solutore commerciale di ottimizzazione sviluppato nel 2008. Risolve problemi di programmazione lineare (LP), quadratica (QP), quadratica con vincoli (CQP), programmazione lineare intera mista (MILP), programmazione intera quadratica mista (MIQP) e programmazione intera quadratica con vincoli (MIQCP).
 
-TensorFlow \cite{tensorFlow} è una piattaforma end-to-end open source per il machine learning. Viene utilizzata in ambiti di produzione e di ricerca scientifica, principalmente allo scopo di realizzare algoritmi per compiti percettivi e di comprensione del linguaggio. Viene tipicamente utilizzato per allenare modelli di reti neurali profonde, ma, dal momento che il loro allenamento richiede l'ottimizzazione di una funzione, è possibile utilizzarlo per risolvere problemi generici di ottimizzazione, come il quello descritto nel Paragrafo \ref{algorithmParagraph}.
+TensorFlow \cite{tensorFlow} è una piattaforma end-to-end open source per il machine learning. Viene utilizzata in ambiti di produzione e di ricerca scientifica, principalmente allo scopo di realizzare algoritmi per compiti percettivi e di comprensione del linguaggio. Viene tipicamente utilizzato per allenare modelli di reti neurali profonde, ma, dal momento che il loro allenamento richiede l'ottimizzazione di una funzione (funzione di perdita), è possibile utilizzarlo per risolvere problemi generici di ottimizzazione, come il quello descritto nel Paragrafo \ref{algorithmParagraph}.
 
 \section{Il Kernel}\label{kernelSection}
 Il parametro kernel (equivalente della funzione $k$ dei paragrafi precedenti) della classe FuzzyInductor definisce quale sarà la funzione attraverso cui i valori verranno mappati nello spazio a più dimensioni.
@@ -331,16 +331,16 @@ Una prima forma ingenua di similarità utilizzata è quella basata sulla lunghez
 Si definisce dunque
 \[ s_{len}(\phi_1, \phi_2) = 1 - \frac{|\# \phi_1 - \# \phi_2|}{max\{\#\phi_1, \#\phi_2\}},\]
 ovvero il valore assoluto della differenza tra le due lunghezze, normalizzato.
-Tale formulazione nasconde una problematica: quando un assioma è il negato dell'altro la funzione restituisce un valore di similarità alto. Occore, pertanto, introdurre un'ulteriore casistica: se i segni dei due assiomi sono diversi, la funzione di similarità vale $1 - s_{len}(\phi_1,\phi_2)$.
+Tale formulazione nasconde una problematica: quando un assioma è il negato dell'altro la funzione restituisce un valore di similarità alto. Occore, pertanto, introdurre un'ulteriore casistica: se i segni dei due assiomi sono diversi, la funzione di similarità vale $1 - s_{len}(\phi_1,\phi_2)$. Al Paragrafo \ref{esperimentiLength} si trova la descrizione degli esperimenti effettuati con questa misura di similarità.
 
 \subsubsection{Hamming similarity}
 \label{hammingSection}
 Altro modo di definire la similarità tra due assiomi è la distanza di Hamming, ovvero la distanza tra le rappresentazioni testuali delle due formule, intesa come il numero di caratteri diversi tra una e l'altra, trascurando i caratteri extra della stringa più lunga.
-Definendo $H$ la distanza di Hamming, si fa la stessa distinzione descritta precedentemente per gli assiomi di segno opposto:  $ \mathrm{sim_{H}}(\phi_1, \phi_2) = H(\mathrm{abs}(\phi_1),\mathrm{abs}(\phi_2))$ se i segni delle due formule sono opposti, $1 - H(\phi_1, \phi_2)$ altrimenti.
+Definendo $H$ la distanza di Hamming, si fa la stessa distinzione descritta precedentemente per gli assiomi di segno opposto:  $ \mathrm{sim_{H}}(\phi_1, \phi_2) = H(\mathrm{abs}(\phi_1),\mathrm{abs}(\phi_2))$ se i segni delle due formule sono opposti, $1 - H(\phi_1, \phi_2)$ altrimenti. Gli esperimenti relativi sono descritti al Paragrafo \ref{esperimentiHamming}.
 
 \subsubsection{Levenshtein similarity}
 \label{levenshteinSection}
-L'ultima funzione di similarità utilizzata è la distanza di Levenshtein tra due stringhe, ovvero il numero più piccolo di operazioni atomiche che vanno fatte per trasformare una nell'altra. Chiamando questa funzione \emph{Lev}, $sim_{edit}(\phi_1, \phi_2) = 1 - Lev(\phi_1,\phi_2)$ se i due segni sono diversi, $Lev(abs(\phi_1),abs(\phi_2))$ altrimenti.
+L'ultima funzione di similarità utilizzata è la distanza di Levenshtein tra due stringhe, ovvero il numero più piccolo di operazioni atomiche che vanno fatte per trasformare una nell'altra. Chiamando questa funzione \emph{Lev}, $sim_{edit}(\phi_1, \phi_2) = 1 - Lev(\phi_1,\phi_2)$ se i due segni sono diversi, $Lev(abs(\phi_1),abs(\phi_2))$ altrimenti. Questa forma di similarità è utilizzata negli esperimenti al Paragrafo  \ref{esperimentiLevenshtein}.
 
 
 \chapter{Esperimenti}\label{capitoloEsperimenti}
@@ -472,7 +472,7 @@ Nella Tabella \ref{table:risultatiJaccard} sono riportati i  risultati ottenuti 
 
 
 \subsection{Esperimenti con Length-based similarity}
-
+\label{esperimentiLength}
 La Tabella \ref{table:risultatiLength} mostra i risultati ottenuti utilizzando come kernel la similarità basata su lunghezza definita al Paragrafo \ref{lengthSection}. L'ingenuità del metodo faceva supporre un generale peggioramento dei risultati rispetto alla similarità di Jaccard in Tabella \ref{table:risultatiJaccard}, che anzi si presupponeva più consistente di quello effettivamente riscontrato.
 
 \begin{table}[h!]
@@ -502,7 +502,7 @@ Per velocità di computazione si è scelto di implementare solamente la prima ve
 Anche agendo in questo modo, il tempo di computazione è risultato accettabile eseguendo gli esperimenti su un massimo di 50 assiomi su 1444; si è scelto, pertanto, di utilizzare matrice e kernel precomputato anche per questa definizione di similarità. 
 
 \subsection{Esperimenti con Hamming similarity}
-
+\label{esperimentiHamming}
  Gli esperimenti con la Hamming similarity descritta al Paragrafo \ref{hammingSection} hanno invece condotto ai risultati riportati nella Tabella \ref{table:risultatiHamming}. I valori di RMSE e varianza risultano complessivamente peggiori rispetto alla similarità di Jaccard, e stranamente non molto migliori di quelli basati sulla lunghezza: anzi, utilizzando il CrispFuzzifier risultano essere perfino peggiori di questi ultimi.
 
 \begin{table}[h!]
@@ -530,7 +530,7 @@ Anche agendo in questo modo, il tempo di computazione è risultato accettabile e
 Anche in questo caso, l'implementazione della classe \emph{HammingKernel} non ha portato ai risultati sperati, a causa dell'eccessivo costo computazionale di calcolare di volta in volta la distanza di Hamming per ognuno dei 1444 assiomi.
 
 \subsection{Esperimenti con Levenshtein similarity}
-
+\label{esperimentiLevenshtein}
  I valori dell'RMSE ottenuti tramite similarità di Levenshtein (Paragrafo \ref{levenshteinSection}) sono mostrati nella Tabella \ref{table:risultatiLevenshtein} e risultano valere le stesse considerazioni fatte per la distanza di Hamming.
 
 
@@ -571,8 +571,9 @@ Contestualmente alla negatività del raggio, ci si è anche resi conto di un pro
 
 \subsubsection{Valori di similarità come vettori in input all'algoritmo}
 \label{vettoriSection}
+
+
 Si è poi provato a cambiare completamente approccio: non considerare più i valori precomputati della matrice di Gram come un kernel, ma come descrizione delle formule stesse; le righe della matrice di similarità sono dunque diventate il vettore di valori numerici utilizzati per allenare l'algoritmo di apprendimento.
-Procedendo in questo modo, si sono ottenuti i risultati riportati nella tabella \ref{table:risultatiVettore}, che non soffrono del problema del raggio negativo ma sono globalmente meno buoni, in termini di RMSE, di quelli ottenuti utilizzando l'approccio originale.
 
 \begin{table}[h!]
 \small
@@ -595,6 +596,10 @@ Procedendo in questo modo, si sono ottenuti i risultati riportati nella tabella 
 	\caption{Valori ottenuti utilizzando la matrice di Gram come descrizione delle formule}
 	\label{table:risultatiVettore}
 \end{table}
+
+Procedendo in questo modo, si sono ottenuti i risultati riportati nella tabella \ref{table:risultatiVettore}, che non soffrono del problema del raggio negativo ma sono globalmente meno buoni, in termini di RMSE, di quelli ottenuti utilizzando l'approccio originale.
+
+
 
 \section{Ambiente utilizzato}
 Gli esperimenti sono stati eseguiti su una macchina con CPU Intel(R) Core(T) i7-8550U, 8 GB di RAM, sistema operativo Windows 10 Home versione 20H2. 
