@@ -65,6 +65,9 @@
 
 % o sections (dipende dal documentclass)
 \chapter*{Introduzione}
+Questo elaborato si basa sull'attività di tirocinio che ho svolto, incentrata sull'apprendimento di insiemi fuzzy nell'ambito del web semantico. 
+
+
 
 \chapter{Apprendimento di insiemi fuzzy}
 \section{Gli insiemi fuzzy}
@@ -85,8 +88,8 @@ Questa generalizzazione rende molto più facile esprimere concetti che, come nel
 
 
 \section{Il Web semantico}
-Nel 2001, Tim Berners Lee definiva il Web semantico come ``un'estensione del web attuale, nella quale all'informazione viene dato un significato ben definito, permettendo a computer e utenti di cooperare meglio"\cite{semanticWebPaper}.
-Da quel momento, il termine è stato utilizzato per riferirsi all'idea di un web nel quale applicazioni intelligenti fossero in grado di comprendere il senso di un testo, guidando l'utente verso l'informazione cercata o addirittura sostituendosi ad esso nel processo.
+Nel 2001, Tim Berners Lee definiva il Web semantico come ``un'estensione del Web attuale, nella quale all'informazione viene dato un significato ben definito, permettendo a computer e utenti di cooperare meglio"\cite{semanticWebPaper}.
+Da quel momento, il termine è stato utilizzato per riferirsi all'idea di un Web nel quale applicazioni intelligenti fossero in grado di comprendere il senso di un testo, guidando l'utente verso l'informazione cercata o addirittura sostituendosi ad esso nel processo.
 Condizione necessaria perché ciò avvenga è essere in grado di rappresentare l'informazione in un modo strutturato, che permetta ai computer di fare inferenze in modo automatico. Per questo motivo, ai dati in senso stretto devono essere associati dei metadati, ovvero descrizioni del contenuto che riescano a riportare l'enorme varietà dei concetti ad uno schema ben definito; ciò avviene a diversi livelli, che sono oggetto di studio dell'ingegneria della conoscenza. 
 
 \begin{figure}[h]	
@@ -101,12 +104,13 @@ Alla base, in rosso, troviamo il concetto di URI (Uniform resource identifier), 
 A salire, in arancione, incontriamo la tecnologia XML \cite{xmlBook} (eXtensible Markup Language), linguaggio di markup che permette di creare tag personalizzati per descrivere una risorsa: si è così in grado di conferire una struttura arbitraria ai propri dati, pur senza dare informazioni su cosa questa struttura stia effettivamente a significare.
 Il significato è demandato a RDF \cite{rdfBook} (in grigio in figura), standard proposto dal W3C; si tratta di un set di linguaggi basato su sintassi XML, principalmente utilizzato per fare delle asserzioni descrittive di un contenuto. RDF utilizza delle triple soggetto-verbo-oggetto, ad esempio ``Apprendimento di insiemi fuzzy nell'ambito del web semantico" (soggetto) ha come autore (verbo) Alessia Cecere (oggetto): questa particolare struttura risulta essere adatta a descrivere la maggior parte dei dati che devono essere elaborati da macchine.
 I tre componenti di una tripla sono spesso rappresentati da URI, in modo da indicare elementi specifici ed evitare l'ambiguità tra termini che è tipica del linguaggio naturale.
-Il passo successivo è dato dalla ontologie o OWL (Web ontology language) \cite{semanticWebPage}, che permettono di superare la specificità dei riferimenti (ad esempio diversi modi di esprimere lo stesso concetto), tramite una tassonomia e un insieme di regole di inferenza. La tassonomia descrive classi di oggetti e le relazioni che queste classi hanno tra loro (ad esempio, ``sedia è una sottoclasse di mobile"), mentre le regole di inferenza permettono di stabilire vincoli ulteriori relativi alla realtà di riferimento: ad esempio, se un prefisso è associato a una città, e un indirizzo utilizza quel prefisso, allora anche l'indirizzo ha associato il prefisso di quella città \cite{semanticWebPaper}. 
+Il passo successivo è dato dalla ontologie o OWL (Web ontology language) \cite{owlBook}, che permettono di superare la specificità dei riferimenti (ad esempio diversi modi di esprimere lo stesso concetto), tramite una tassonomia e un insieme di regole di inferenza. La tassonomia descrive classi di oggetti e le relazioni che queste classi hanno tra loro (ad esempio, ``sedia è una sottoclasse di mobile"), mentre le regole di inferenza permettono di stabilire vincoli ulteriori relativi alla realtà di riferimento: ad esempio, se un prefisso è associato a una città, e un indirizzo utilizza quel prefisso, allora anche l'indirizzo ha associato il prefisso di quella città \cite{semanticWebPaper}. 
 L'utilizzo delle ontologie permette di salire al livello successivo, ovvero recuperare documenti esprimendo query complesse, che tengano conto non solo degli oggetti del discorso coinvolti ma anche del legame tra essi.
 Si tratta del primo passo verso lo strato verde, ovvero il livello logico, non ancora sviluppato e oggetto di speculazione teorica. A questo livello l'obiettivo è realizzare sistemi composti da formulazioni di concetti logici e rendere i computer in grado di ragionare per inferenza su tali principi, attraverso lo scambio di informazioni tra un insieme di processori di informazioni. Naturalmente, in questo contesto dovrà essere garantito un grado di fiducia nelle informazioni incontrate, attraverso l'uso trasversale (arancione e verticale in figura) di crittografia e firma digitale: questa attesterà che un determinato utente ritiene veritiero un documento o un'istruzione, dando alle macchine dei parametri per stabilire in cosa e quanto credere.
 Lo sviluppo di questi concetti porterà nel suo complesso alla realizzazione del \emph{Web of trust} \cite{semanticWebPage}: ogni utente avrà un insieme di utenti nei quali ha fiducia, che ne avranno a loro volta altri, a costruire una rete.
 
 \section{Applicazione alla ricerca di assiomi in un insieme di formule}
+\label{ontologyLearning}
 
 L'ontology learning è un ambito di ricerca che punta alla generazione automatica di ontologie, a partire da un testo o un'ontologia preesistente (tipicamente espressa in OWL), insieme alla sua istanza (espressa in RDF). Sono stati studiati diversi metodi per ricavare dei pattern da questi input, e tutti si basano fortemente sul calcolo dello score di candidati assiomi, ovvero sull'identificazione del valore di verità delle formule di un insieme considerato, allo scopo di ricavarne degli assiomi.
 Negli ultimi anni sono stati proposti diversi approcci alla risoluzione del problema, che utilizzano principalmente euristiche 
@@ -125,7 +129,7 @@ Il problema di questa tecnica è che, a meno di alcuni trucchi di implementazion
 L'alternativa considerata per il lavoro che si andrà a documentare, esposta in \cite{sacpaper}, è quella di allenare un modello surrogato tramite un algoritmo di machine learning; l'allenamento viene fatto in modo induttivo a partire da un insieme di possibili assiomi e delle loro negazioni, etichettati con i rispettivi valori di possibilità precedentemente calcolati. L'obiettivo è rendere l'algoritmo in grado di ricavare valori di possibilità per nuovi candidati assiomi.
 
 
-Il metodo è promettente perché il grande costo computazionale viene concentrato nella fase iniziale e molto mitigato in quelle successive: una volta calcolati i valori di possibilità per le formule con cui allenare l'algoritmo ed effettuato il training, l'inferenza per i nuovi candidati assiomi sarà pressoché immediata.
+Il metodo è promettente perché il grande costo computazionale viene concentrato nella fase iniziale (il calcolo dei valori di possibilità ha richiesto poco meno di 290 giorni di tempo di CPU su una macchina piuttosto potente \cite{sacpaper}) e molto mitigato in quelle successive: una volta calcolati i valori di possibilità per le formule con cui allenare l'algoritmo ed effettuato il training, l'inferenza per i nuovi candidati assiomi sarà pressoché immediata.
 
 L'algoritmo utilizzato, descritto nel Paragrafo \ref{algorithmParagraph}, si basa sull'inferenza di una funzione di appartenenza a un insieme fuzzy: l'insieme fuzzy è la classe degli assiomi, mentre il valore di possibilità con cui le formule sono inizialmente etichettate rappresenta il grado di appartenenza al suddetto insieme.
 Il problema risulta adatto a essere modellato in senso fuzzy perché l'appartenenza alla categoria degli assiomi non è booleana: l'obiettivo non è suddividere le formule in categorie binarie di vero o falso, ma assegnare a ognuna di esse un certo valore di possibilità, grado di confidenza nel contesto incerto della modellazione della conoscenza. In questo senso, la confidenza nel candidato assioma sarà tanto più grande quanto il grado di appartenenza all'insieme fuzzy degli assiomi.
@@ -204,7 +208,7 @@ Nel Paragrafo \ref{kernelSection} sono elencati e descritti i diversi kernel uti
 
 \subsection{Utilizzo della libreria mulearn}\label{FuzzifierSection}
 
-Per eseguire gli esperimenti, è stata utilizzata la libreria mulearn\cite{mulearn}.
+Per eseguire gli esperimenti, è stata utilizzata la libreria mulearn \cite{mulearn}.
 Come si può leggere dalla documentazione, al suo interno vi è una classe FuzzyInductor, che raccoglie la funzionalità fondamentale del processo di apprendimento: una volta allenato (attraverso l'operazione fit) su una serie di esempi, il FuzzyInductor è in grado, ricevendo un vettore di valori, di inferire una funzione di appartenenza all'insieme fuzzy, e quindi di restituire, tramite la funzione predict, un grado di appartenenza per ogni vettore dato.
 Per la costruzione del FuzzyInductor devono essere specificati una serie di parametri; il primo dei quali è il parametro \texttt{c} (l'equivalente di $C$ dei paragrafi precedenti), che fa da tradeoff tra la grandezza della sfera di appartenenza e il rispetto dei vincoli imposti. 
 
@@ -276,7 +280,7 @@ La libreria mulearn implementa i seguenti kernel:
 
 \begin{itemize}
 \item \emph{kernel lineare}: il valore $k(x_1,x_2)$ equivale al prodotto $x_1\cdot x_2$, ovvero  $\sum_{i=1}^N(x_1)_i\cdot(x_2)_i$, dove $N$ è la dimensione dei vettori $x_1$ e $x_2$;
-\item \emph{Kernel polinomiale}: il valore $k(x_1,x_2)$ equivale a $(x_1\cdot x_2 + 1)^d$, dove $d$ è il grado polinomiale del kernel;
+\item \emph{kernel polinomiale}: il valore $k(x_1,x_2)$ equivale a $(x_1\cdot x_2 + 1)^d$, dove $d$ è il grado polinomiale del kernel;
 \item \emph{kernel polinomiale omogeneo}:  il valore  $k(x_1,x_2)$ equivale a $(x_1\cdot x_2)^d$;
 \item \emph{kernel Gaussiano}:   il valore  $k(x_1,x_2)$ equivale a $e^{-\frac{||x_1 - x_2||^2}{2 \sigma^2}}$, dove $\sigma$ è la deviazione standard del kernel;
 \item \emph{kernel iperbolico}:   il valore $k(x_1,x_2)$  equivale a $\tanh(\alpha x_1 \cdot x_2 + \beta)$, dove $\alpha$ è la scala e $\beta$ l'offset.
@@ -351,29 +355,42 @@ La model evaluation è, invece, la valutazione delle performance di un modello e
 
 Effettuare model selection e model evaluation sugli stessi dati che vengono utilizzati per il training  è un errore metodologico \cite{scikit-learn} che rende difficile identificare una condizione di overfitting, nella quale l'algoritmo è in grado di associare molto bene etichette a individui del campione che ha già visto, semplicemente ripetendole, ma fallisce nell'identificare i valori associati a nuovi elementi su cui non è stato allenato; spesso l'overfitting si verifica quando il numero di parametri è eccessivo rispetto a quello di osservazioni, dunque il modello risulta troppo complesso e finisce per adattarsi ai dati del campione, imparandone anche il ``rumore" (o informazioni irrilevanti) \cite{IBMlearning}.
 Per questo motivo si suddividono in dati in training, validation e test set, utilizzati rispettivamente per allenare, selezionare e valutare i modelli.
-Quest'ultimo è un procedimento che può essere applicato in condizioni di disponibilità di dati: in molte situazioni, tuttavia, le quantità di dati disponibili per training e test saranno limitate. Per costruire dei buoni modelli vorremmo usare gran parte dei dati disponibili per il training, ma allo stesso tempo la scarsità di dati di test ci porterebbe a una valutazione poco attendibile dei modelli stessi \cite{patternRecognitionML}.	
+Si tratta di un procedimento che può essere applicato quando si ha a disposizione una quantità consistente di dati: in molte situazioni, tuttavia, le quantità di dati disponibili per training e test saranno limitate. Per costruire dei buoni modelli vorremmo usare gran parte dei dati disponibili per il training, ma allo stesso tempo la scarsità di dati di test ci porterebbe a una valutazione poco attendibile dei modelli stessi \cite{patternRecognitionML}.	
 Per far fronte a questa problematica, si deve fare riferimento ad altre strategie.
 
 \subsection{Metodi probabilistici}
 
 Un metodo di risolvere il problema è ricorrere a un approccio probabilistico, nel quale la valutazione del modello avviene basandosi contemporaneamente sulla sua complessità e sulle sue performance in fase di allenamento.
-Lo scoring delle performance viene penalizzato sulla base di quanto alto si suppone il bias di ottimismo per l'errore del training set, che tende notoriamente ad essere elevato, mentre la complessità dipende tipicamente dal numero di gradi di libertà nei parametri del modello.
-Il vantaggio di questo approccio sta nel fatto che non necessita di isolare una porzione di dati di test: tutti i dati a disposizione possono essere utilizzati per il training. I metodi probabilistici, tuttavia, non permettono di utilizzare lo stesso criterio per valutare più modelli (i criteri di valutazione tendono ad essere specifici per ogni modello, proprio a causa della loro variabilità) e non considerano l'incertezza dei parametri: nella pratica, questi metodi tendono a favorire modelli troppo semplificati \cite{APM}.
+Lo scoring delle performance viene penalizzato sulla base di quanto alto si suppone il bias di ottimismo per l'errore del training set, che tende notoriamente a essere elevato, mentre la complessità dipende tipicamente dal numero di gradi di libertà nei parametri del modello.
+
+Esistono principalmente tre approcci, equivalenti o proporzionali l'uno all'altro, derivati da diversi ambiti di ricerca:
+\begin{itemize}
+	\item{Akaike information criterion (AIC), derivato dalla probabilità frequentista;}
+	\item{bayesian information criterion (BIC), derivato dalla probabilità bayesiana;}
+	\item{minimum description length (MDL), derivato dalla teoria dell'informazione.}
+\end{itemize}
+
+Tutti utilizzano la \emph{log-likelihood} tra modello e dati, dove per log-likelihood si intende una derivazione della maximum likelihood estimation, nella quale l'obiettivo è massimizzare la probabilità condizionata di osservare il dato ($X$), data una distribuzione di probabilità e i suoi parametri $\theta$, ovvero $P(X, \theta)$. $X$ può essere vista come la distribuzione di probabilità congiunta di tutte le osservazioni del dominio del problema da 1 a $n$, dunque formalmente $P(x_1, x_2, x_3 \dots x_n, \theta)$: la probabilità congiunta si può calcolare come la moltiplicazione delle probabilità condizionate di osservare ogni elemento, dati i parametri della distribuzione. Dal momento che, però, moltiplicare tutte le piccole probabilità porterebbe a instabilità, si riformula il problema come la somma dei logaritmi naturali delle probabilità condizionate, ovvero $\sum_{i=1}^n\log(P(x_i,\theta))$.
+Una descrizione estensiva di tutti i metodi probabilistici va al di fuori degli scopi di questo elaborato; si riporta tuttavia come esempio il caso dell'AIC, definito come la minimizzazione di $-2/N \cdot LL + 2k/N$ \cite{probabilisticMethod}, dove $N$ è il numero di elementi del campione, $LL$ la log-likelihood del modello sul traning set e $k$ il numero di parametri del modello.
+
+Il vantaggio di questi approcci sta nel fatto che non necessitano di isolare una porzione di dati di test: tutti i dati a disposizione possono essere utilizzati per il training. I metodi probabilistici, tuttavia, non permettono di utilizzare lo stesso criterio per valutare più modelli (i criteri di valutazione tendono ad essere specifici per ogni modello, proprio a causa della loro variabilità) e non considerano l'incertezza dei parametri: nella pratica, questi metodi tendono a favorire modelli troppo semplificati \cite{APM}.
 \subsection{Metodi di sottocampionamento}
 
 I metodi di ricampionamento stimano le performance di un modello tramite elementi fuori dal campione di training.
-Il traning set viene suddiviso in sottoinsiemi di training e di test, sui quali viene allenato e valutato, e questa suddivisione avviene più volte, riportando come errore finale la media delle performance degli esperimenti effettuati con ogni suddivisione.
+Il traning set viene suddiviso in sottoinsiemi di training e di test, sui quali viene rispettivamente allenato e valutato, e questa suddivisione avviene più volte, riportando come errore finale la media delle performance degli esperimenti effettuati con ogni suddivisione.
 Tra i metodi di ricampionamento contiamo:
 
 \begin{itemize}
-\item{\emph{random train/test splits}}: fissate le percentuali di dati che devono essere inserite nei sottoinsiemi di training e test,  l'assegnamento di un'osservazione a un campione o all'altro avviene in maniera casuale;
+\item{\emph{random train/test splits}}: fissate le percentuali di dati che devono essere inserite nei sottoinsiemi di training e test,  l'assegnamento di un'osservazione a un campione o all'altro avviene in maniera casuale (in alcuni casi è meglio effettuare una stratificazione, ovvero una suddivisione preliminare dei dati in categorie, dette strati, da cui poi si estraggono casualmente i campioni, in modo da mantenere il bilanciamento dei dati del dataset intero \cite{introStat});
+
 \item{\emph{bootstrap}}: per ognuno dei sottoinsiemi di training e test, si sceglie una grandezza del campione $n$, dopodiché,  scelta casualmente $n$ volte un'osservazione dal dataset, questa viene aggiunta al campione (la stessa osservazione può così trovarsi in più sottoinsiemi contemporaneamente); 
 \item{\emph{cross-validation}}: in quanto metodo utilizzato per effettuare la maggior parte degli esperimenti di cui si tratterà in questo elaborato, la sua forma di base ($k$-Fold cross-validation) viene trattata nella sezione seguente.
 \end{itemize}
 
 \subsubsection{$k$-Fold cross-validation}
-Nella $k$-Fold cross-validation, il training set viene suddiviso in $k$ sottoinsiemi più piccoli: per ogni sottoinsieme il modello viene allenato su $k - 1$ sottoinsiemi del training set, mentre la valutazione avviene sulla porzione rimanente dei dati; l'errore finale è dato dalla media degli errori calcolati per ogni ripetizione del processo.
-Tale metodo risulta essere computazionalmente oneroso, ma permette di utilizzare tutti i dati a disposizione per allenare l'algoritmo, valore aggiunto che risulta determinante in problemi per i quali il numero di elementi del campione risulta basso \cite{scikit-learn}. Una schematizzazione grafica di questa tecnica viene riportata in Figura \ref{scikitSchema}.
+\label{kFoldCrossValidationSection}
+Nella $k$-Fold cross-validation, il training set viene suddiviso in $k$ sottoinsiemi approssimativamente della stessa grandezza: per ogni sottoinsieme il modello viene allenato su $k - 1$ sottoinsiemi del training set, mentre la valutazione avviene sulla porzione rimanente dei dati; l'errore finale è dato dalla media degli errori calcolati per ogni ripetizione del processo.
+Tale metodo risulta essere un compromesso tra l'utilizzo di un unico split di train/test e la ricerca di tutti i modi possibili di suddividere i dati a disposizione tra train e test set di ampiezza prefissata; permette inoltre di utilizzare tutti i dati a disposizione per allenare l'algoritmo, valore aggiunto che risulta determinante in problemi per i quali il numero di elementi del campione risulta basso \cite{scikit-learn}. Una schematizzazione grafica di questa tecnica viene riportata in Figura \ref{scikitSchema}.
 
 \begin{figure}[h]	
 \centering
@@ -385,11 +402,11 @@ Tale metodo risulta essere computazionalmente oneroso, ma permette di utilizzare
 \section{Riproduzione degli esperimenti originali}
 Una delle prime attività svolte è stata quella di ripetere gli esperimenti originali descritti in \cite{sacpaper}, i cui valori medi di RMSE sono riportati nella Tabella \ref{table: risultatiVecchiEsperimenti}, per confrontarne i risultati al netto dell'utilizzo di una nuova libreria: quegli esperimenti, infatti, si basavano una versione vecchia del codice, che non era ancora stato organizzato sistematicamente come nella libreria mulearn \cite{mulearn}.
 
-Sono stati considerati 722 candidati assiomi del tipo \emph{SubClassOf} con le loro negazioni, per un totale di 1444 formule;  tra ciascuna coppia è stata calcolata la similarità di Jaccard e inserita all'interno di una matrice di Gram $K$.
-Il valore precalcolato di possibilità è stato utilizzato come etichetta per il grado di appartenenza di ogni formula all'insieme fuzzy degli assiomi.
+Sono stati considerati 722 candidati assiomi del tipo \emph{SubClassOf} con le loro negazioni, per un totale di 1444 formule;  tra ciascuna coppia è stata calcolata la similarità di Jaccard (introdotta al Paragrafo \ref{jaccardSection}) e inserita all'interno di una matrice di Gram $K$.
+Il valore precalcolato di possibilità, il cui calcolo è descritto al Paragrafo \ref{ontologyLearning}, è stato utilizzato come etichetta per il grado di appartenenza di ogni formula all'insieme fuzzy degli assiomi.
 Si è poi effettuata la model selection sugli iperparametri con cui inizializzare i componenti dell'algoritmo; le formule sono state permutate e divise in tre gruppi dedicati a training, model selection e model validation, contenenti rispettivamente l'80\%, il 10\% e il 10\% del campione originale.
 La model selection è stata effettuata a questo stadio sull'iperparametro c, in termini di quale tra quelli testati (0.005, 0.007, 0.01, 0.03, 0.05, 0.07, 0.1, 0.3, 0.5, 0.7, 1, 10, 100) desse luogo all'RMSE minore nella previsione del grado di membership dell'assioma, dove RMSE sta a indicare lo scarto quadratico medio posto sotto radice, per riportarlo all'unità di misura dei dati.
-Questo procedimento è stato ripetuto dieci volte per ogni fuzzificatore, concludendo per ciascuno di esso i valori minimi dell'RMSE sui valori di test, che vengono riportati nella tabella \ref{table: risultatiNuoviEsperimenti}
+Questo procedimento è stato ripetuto dieci volte per ogni fuzzificatore, concludendo per ciascuno di esso i valori minimi dell'RMSE sui valori di test, che vengono riportati nella Tabella \ref{table: risultatiNuoviEsperimenti}
 
 \begin{table}[h!]
 \centering 	
@@ -433,17 +450,17 @@ Questo procedimento è stato ripetuto dieci volte per ogni fuzzificatore, conclu
 	\label{table: risultatiVecchiEsperimenti}
 \end{table}
 
-Come si può notare confrontando le tabelle \ref{table: risultatiNuoviEsperimenti} e \ref{table: risultatiVecchiEsperimenti}, i risultati ottenuti nei due esperimenti si discostano, anche se non eccessivamente.
+Come si può notare confrontando le Tabelle \ref{table: risultatiNuoviEsperimenti} e \ref{table: risultatiVecchiEsperimenti}, i risultati ottenuti nei due esperimenti si discostano, anche se non eccessivamente.
 Le maggiori differenze si riscontrano per il Crisp Fuzzifier e per il Linear Fuzzifier; i risultati ottenuti mediante Exponential Fuzzifier sono solo parzialmente confrontabili poiché nel primo caso è stato utilizzato un fuzzificatore con decadimento esponenziale non fissato manualmente, mentre i risultati degli esperimenti del 2018 si riferiscono a un decadimento esponenziale di 0.001.
 
 \section{Esperimenti sul kernel}
 
-Sono poi state effettuate model selection e model validation tramite $k$-Fold cross-validation, con $k$ = 5, per ogni fuzzificatore.
+Sono poi state effettuate model selection e model validation tramite $k$-Fold cross-validation (descritta al Paragrafo \ref{kFoldCrossValidationSection}) , con $k$ = 5, per ogni fuzzificatore.
 
-La model selection è stata eseguita sul parametro $c$, scegliendo tra sette possibili valori in un range da -1 a 1, spaziati uniformemente su una scala logaritmica (dunque tra 0.1, 0.21544347, 0.46415888,  1,  2.15443469, 4.64158883 e 10).
+La model selection è stata eseguita sul parametro \texttt{c}, scegliendo tra sette possibili valori in un range da -1 a 1, spaziati uniformemente su una scala logaritmica (dunque tra 0.1, 0.21544347, 0.46415888,  1,  2.15443469, 4.64158883 e 10).
 Per ogni fuzzificatore, la model evaluation ha portato ai valori medi di RMSE in fase di test e in fase di train per i valori migliori di $c$, con le rispettive deviazioni standard.
 
-Il procedimento è stato ripetuto utilizzando diversi kernel precomputati e ha portato ai risultati che verranno esposti nelle sezioni successive.
+Il procedimento è stato ripetuto utilizzando diversi kernel precomputati e ha portato ai risultati che verranno esposti nei paragrafi successivi.
 
 \subsection{Esperimenti con Jaccard similarity}
 Nella Tabella \ref{table:risultatiJaccard} sono riportati i  risultati ottenuti utilizzando come kernel la similarità di Jaccard definita nel Paragrafo \ref{jaccardSection}, precomputata e inserita all'interno di una matrice di Gram.
@@ -573,7 +590,7 @@ Contestualmente alla negatività del raggio, ci si è anche resi conto di un pro
 \label{vettoriSection}
 
 
-Si è poi provato a cambiare completamente approccio: non considerare più i valori precomputati della matrice di Gram come un kernel, ma come descrizione delle formule stesse; le righe della matrice di similarità sono dunque diventate il vettore di valori numerici utilizzati per allenare l'algoritmo di apprendimento.
+Si è poi provato a cambiare completamente approccio: non considerare più i valori precomputati della matrice di Gram come un kernel, ma come descrizione delle formule stesse; le righe della matrice di similarità sono dunque diventate il vettore di valori numerici utilizzati per allenare l'algoritmo di apprendimento, in modo da effettuare una sorta di feature extraction \cite{featureExtraction} dai dati a disposizione.
 
 \begin{table}[h!]
 \small
@@ -597,7 +614,7 @@ Si è poi provato a cambiare completamente approccio: non considerare più i val
 	\label{table:risultatiVettore}
 \end{table}
 
-Procedendo in questo modo, si sono ottenuti i risultati riportati nella tabella \ref{table:risultatiVettore}, che non soffrono del problema del raggio negativo ma sono globalmente meno buoni, in termini di RMSE, di quelli ottenuti utilizzando l'approccio originale.
+Procedendo in questo modo, si sono ottenuti i risultati riportati nella Tabella \ref{table:risultatiVettore}, che non soffrono del problema del raggio negativo ma sono globalmente meno buoni, in termini di RMSE, di quelli ottenuti utilizzando l'approccio originale.
 
 
 
@@ -613,7 +630,7 @@ Le principali librerie utilizzate sono state:
 \end{itemize}
 \section{Risultati ottenuti}
 A seguito degli esperimenti svolti, si può concludere che il kernel precomputato all'interno della matrice di Gram è necessario per evitare l'eccesso di tempo di computazione impiegato nel calcolare di volta in volta i valori richiesti; è inoltre emerso che, tra le possibili definizioni di kernel, quella che porta ai valori medi migliori di RMSE è la similarità di Jaccard.
-Il problema della negatività del raggio risulta ancora aperto, dal momento che le modifiche della matrice tramite eliminazione di formule non lo hanno eliminato e la soluzione proposta al paragrafo \ref{vettoriSection} non si è rivelata ottimale in termini di RMSE: la risoluzione del problema necessiterebbe di ulteriore ricerca.
+Il problema della negatività del raggio risulta ancora aperto, dal momento che le modifiche della matrice tramite eliminazione di formule non lo hanno eliminato e la soluzione proposta al Paragrafo \ref{vettoriSection} non si è rivelata ottimale in termini di RMSE: la risoluzione del problema necessiterebbe di ulteriore ricerca.
 
 \chapter*{Conclusione}
 
