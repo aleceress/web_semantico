@@ -65,8 +65,13 @@
 
 % o sections (dipende dal documentclass)
 \chapter*{Introduzione}
-Questo elaborato si basa sull'attività di tirocinio che ho svolto, incentrata sull'apprendimento di insiemi fuzzy nell'ambito del web semantico. 
+Questo elaborato è un resoconto dell'attività di tirocinio che ho svolto, incentrata sull'apprendimento di insiemi fuzzy nell'ambito del Web semantico. 
 
+Nel primo capitolo vengono introdotte le basi teoriche necessarie alla comprensione del lavoro: vengono esposti i concetti di insieme fuzzy e Web semantico, oltre che la loro applicazione alla ricerca di assiomi in un insieme di formule, problema cardine affrontato nel tirocinio.
+
+Nel secondo capitolo viene invece trattato l'algoritmo di apprendimento applicato alla risoluzione del problema, a partire dalle basi matematiche fino alla sua implementazione all'interno della libreria mulearn. Vengono inoltre introdotte le diverse varianti dei kernel utilizzati nell'algoritmo, nella loro definizione formale.
+
+Il terzo capitolo è invece dedicato agli esperimenti: dopo un primo inquadramento teorico delle diverse tecniche di model selection e model evaluation, vengono descritte quelle effettivamente impiegate e i risultati a cui hanno portato in termini di RMSE, al variare degli approcci utilizzati (inizializzazione dei parametri, scelta del kernel e dei dati forniti all'algoritmo di apprendimento). Vengono inoltre discussi i problemi riscontrati e le possibili soluzioni.
 
 
 \chapter{Apprendimento di insiemi fuzzy}
@@ -82,7 +87,7 @@ L'operazione appare molto più complessa e, già a primo impatto, di scarso sign
 
 
 Gli insiemi fuzzy (o sfocati, nella terminologia italiana) sono una variante degli insiemi classici introdotta da Lotfi Zadeh del 1965, che li definisce ``una classe di oggetti con un continuo di gradi di appartenenza"\cite{fuzzysetspaper}.
-Dato un insieme classico e un oggetto appartenente a un oggetto del dominio $X$, è possibile stabilire una funzione  $f: X \mapsto \{0,1\}$, o funzione di appartenenza: questa restituisce 1 se l'elemento appartiene all'insieme, 0 altrimenti.
+Dato un insieme classico e un oggetto appartenente a un oggetto di un dominio $X$, è possibile stabilire una funzione  $f: X \mapsto \{0,1\}$, o funzione di appartenenza: questa restituisce 1 se l'elemento appartiene all'insieme, 0 altrimenti.
 Nel caso di un insieme fuzzy, la funzione di appartenenza si presenta nella generalizzazione  $f: X \mapsto [0,1]$ : invece di un valore booleano, restituisce un valore nell'intervallo continuo tra 0 e 1, che sta a indicare il grado di appartenenza all'insieme; più il valore risulterà vicino a 1 più il grado di appartenenza sarà elevato, e viceversa.
 Questa generalizzazione rende molto più facile esprimere concetti che, come nel caso degli uomini alti descritto precedentemente, evadono la classificazione binaria a causa del loro carattere vago e qualitativo: proprio per questo parliamo di insiemi sfocati. Grazie alla formalizzazione matematica di questi concetti, è possibile aggiungere un potere descrittivo enorme. Non solo, gli insiemi fuzzy rappresentano uno strumento utile in contesti di informazione incerta: un elemento può appartenere a più insiemi che esprimono caratteristiche opposte (ad esempio ``l'insieme delle persone vecchie" e ``l'insieme delle persone giovani"\cite{fuzzysystemspaper}) con gradi differenti mantenendo il sistema coerente, proprio come avverrebbe in un contesto reale.
 
@@ -107,7 +112,7 @@ I tre componenti di una tripla sono spesso rappresentati da URI, in modo da indi
 Il passo successivo è dato dalla ontologie o OWL (Web ontology language) \cite{owlBook}, che permettono di superare la specificità dei riferimenti (ad esempio diversi modi di esprimere lo stesso concetto), tramite una tassonomia e un insieme di regole di inferenza. La tassonomia descrive classi di oggetti e le relazioni che queste classi hanno tra loro (ad esempio, ``sedia è una sottoclasse di mobile"), mentre le regole di inferenza permettono di stabilire vincoli ulteriori relativi alla realtà di riferimento: ad esempio, se un prefisso è associato a una città, e un indirizzo utilizza quel prefisso, allora anche l'indirizzo ha associato il prefisso di quella città \cite{semanticWebPaper}. 
 L'utilizzo delle ontologie permette di salire al livello successivo, ovvero recuperare documenti esprimendo query complesse, che tengano conto non solo degli oggetti del discorso coinvolti ma anche del legame tra essi.
 Si tratta del primo passo verso lo strato verde, ovvero il livello logico, non ancora sviluppato e oggetto di speculazione teorica. A questo livello l'obiettivo è realizzare sistemi composti da formulazioni di concetti logici e rendere i computer in grado di ragionare per inferenza su tali principi, attraverso lo scambio di informazioni tra un insieme di processori di informazioni. Naturalmente, in questo contesto dovrà essere garantito un grado di fiducia nelle informazioni incontrate, attraverso l'uso trasversale (arancione e verticale in figura) di crittografia e firma digitale: questa attesterà che un determinato utente ritiene veritiero un documento o un'istruzione, dando alle macchine dei parametri per stabilire in cosa e quanto credere.
-Lo sviluppo di questi concetti porterà nel suo complesso alla realizzazione del \emph{Web of trust} \cite{semanticWebPage}: ogni utente avrà un insieme di utenti nei quali ha fiducia, che ne avranno a loro volta altri, a costruire una rete.
+Lo sviluppo di questi concetti porterà nel suo complesso alla realizzazione del \emph{Web of trust}: ogni utente avrà un insieme di utenti nei quali ha fiducia, che ne avranno a loro volta altri, a costruire una rete.
 
 \section{Applicazione alla ricerca di assiomi in un insieme di formule}
 \label{ontologyLearning}
@@ -210,7 +215,7 @@ Nel Paragrafo \ref{kernelSection} sono elencati e descritti i diversi kernel uti
 
 Per eseguire gli esperimenti, è stata utilizzata la libreria mulearn \cite{mulearn}.
 Come si può leggere dalla documentazione, al suo interno vi è una classe FuzzyInductor, che raccoglie la funzionalità fondamentale del processo di apprendimento: una volta allenato (attraverso l'operazione fit) su una serie di esempi, il FuzzyInductor è in grado, ricevendo un vettore di valori, di inferire una funzione di appartenenza all'insieme fuzzy, e quindi di restituire, tramite la funzione predict, un grado di appartenenza per ogni vettore dato.
-Per la costruzione del FuzzyInductor devono essere specificati una serie di parametri; il primo dei quali è il parametro \texttt{c} (l'equivalente di $C$ dei paragrafi precedenti), che fa da tradeoff tra la grandezza della sfera di appartenenza e il rispetto dei vincoli imposti. 
+Per la costruzione del FuzzyInductor devono essere specificati una serie di parametri; il primo dei quali è \texttt{c} (l'equivalente di $C$ dei paragrafi precedenti), che fa da tradeoff tra la grandezza della sfera di appartenenza e il rispetto dei vincoli imposti. 
 
 Ulteriore parametro è il fuzzifier, ovvero la funzione che riceve come argomento la distanza tra l'immagine di un vettore $x$ e il centro della sfera (indicata con $R^2(x)$ nel paragrafo precedente), restituendo un'approssimazione del grado di appartenenza di $x$ al fuzzy set. Esistono diversi tipi di fuzzificatori, più o meno complessi a seconda delle esigenze del problema.
 \begin{itemize}
@@ -247,7 +252,11 @@ Ulteriore parametro è il fuzzifier, ovvero la funzione che riceve come argoment
        \includegraphics[width=0.8\linewidth]{images/exponentialFuzzifier2.png}
 	 \captionof{figure}{Grafico esemplificativo di un exponential fuzzifier con $\alpha$  = 0.5}
 \end{minipage}
+\end{itemize}
 
+Per tutti i fuzzificatori fin ora descritti è possibile fissare il parametro \texttt{profile} a ``fixed" o ``infer": il primo esegue l'adattamento dei dati alla funzione di appartenenza basandosi su valori standard prefissati, mentre il secondo metodo modifica le soglie di riferimento a partire dai dati del campione. I fuzzificatori seguenti, invece, basandosi sui quantili, sono sempre adattati al campione specifico su cui vengono utilizzati.
+
+\begin{itemize}
 \item \emph{Quantile Constant Piecewise Fuzzifier}(grafico esemplificativo in Figura \ref{quantileConstantFuzzifierGraph}):  corrisponde a un fuzzy set che ha una funzione di membership costante a tratti, per la quale gli step sono definiti in base ai quartili delle distanze al quadrato tra le immagini dei punti e il centro della sfera inferita; 
 
 \begin{minipage}{\linewidth}
@@ -629,10 +638,15 @@ Le principali librerie utilizzate sono state:
 \item mulearn \cite{mulearn} versione 0.2.9.4.
 \end{itemize}
 \section{Risultati ottenuti}
-A seguito degli esperimenti svolti, si può concludere che il kernel precomputato all'interno della matrice di Gram è necessario per evitare l'eccesso di tempo di computazione impiegato nel calcolare di volta in volta i valori richiesti; è inoltre emerso che, tra le possibili definizioni di kernel, quella che porta ai valori medi migliori di RMSE è la similarità di Jaccard.
+A seguito degli esperimenti svolti, si può concludere che il kernel precomputato all'interno della matrice di Gram è necessario per evitare l'eccesso di tempo di computazione impiegato nel calcolare di volta in volta i valori richiesti; è inoltre emerso che, tra le possibili definizioni di kernel, quella che porta ai valori medi migliori di RMSE è la similarità di Jaccard. Utilizzando questa misura di similarità, i fuzzificatori che risultano riportare dei valori di errore migliori sono quelli basati sui quantili, seguiti dal lineare e dall'esponenziale, con risultati sensibilmente peggiori per il crisp fuzzifier.
 Il problema della negatività del raggio risulta ancora aperto, dal momento che le modifiche della matrice tramite eliminazione di formule non lo hanno eliminato e la soluzione proposta al Paragrafo \ref{vettoriSection} non si è rivelata ottimale in termini di RMSE: la risoluzione del problema necessiterebbe di ulteriore ricerca.
 
 \chapter*{Conclusione}
+
+Il principale obiettivo di questo elaborato è stato il resoconto del lavoro svolto durante l'attività di tirocinio. Dopo un primo inquadramento teorico dei concetti di Web semantico e insieme fuzzy, si è passati alla descrizione della loro applicazione alla ricerca di assiomi in un insieme di formule: è stato mostrato quanto la risoluzione del problema risulti essere computazionalmente onerosa, seguendo metodi standard, e quanto invece l'applicazione del machine learning, in una variante dell'algoritmo di Support Vector Clustering, possa essere vantaggiosa.
+Si è poi discusso più nel dettaglio dell'algoritmo di apprendimento, passando per la sua effettiva implementazione attraverso la libreria mulearn.
+Sono stati valutati i diversi parametri con cui inizializzare l'algoritmo, tra cui la scelta tra kernel che riflettessero diverse misure di similarità tra candidati assiomi, e su questi parametri sono state effettuate model selection e model evaluation. La discussione dei risultati ha portato all'evidenza di una superiorità della similarità di Jaccard rispetto alle altre, e a una preferenza per l'utilizzo di fuzzificatori basati su quantili, seguiti da lineare ed esponenziale.
+Si è poi discusso del problema riguardante la negatività della distanza dei punti dal centro della sfera, confrontando diverse possibili soluzioni (eliminazione di formule dalla matrice di Gram nel tentativo di ridurne l'aggiustamento, utilizzo delle righe della matrice di Gram come vettori in input all'algoritmo): tali tentativi non hanno tuttavia portato a identificare con chiarezza il problema e a risolverlo, lasciando il campo aperto a ulteriore ricerca in tal senso.
 
 \bibliographystyle{plain}
 \bibliography{Biblio}
