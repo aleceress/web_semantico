@@ -67,11 +67,15 @@
 \chapter*{Introduzione}
 Questo elaborato è un resoconto dell'attività di tirocinio che ho svolto, incentrata sull'apprendimento di insiemi fuzzy nell'ambito del Web semantico. 
 
-Nel primo capitolo vengono introdotte le basi teoriche necessarie alla comprensione del lavoro: vengono esposti i concetti di insieme fuzzy e Web semantico, oltre che la loro applicazione alla ricerca di assiomi in un insieme di formule, problema cardine affrontato nel tirocinio.
+Gli insiemi fuzzy sono una variante degli insiemi classici, che permette di modellare l'appartenenza a una classe associandovi un grado di membership; il Web semantico è, invece, un'evoluzione del Web attuale, nella quale all'informazione viene associato un significato, con l'obiettivo di rendere le macchine in grado di comprendere in modo automatico i concetti esposti nel testo e farvi delle inferenze.
+Web semantico e insieme fuzzy sono stati utilizzati per risolvere il problema della ricerca di assiomi all'interno di un insieme di formule, ovvero l'identificazione, a partire da un insieme di candidati assiomi, di quelli con un valore di verità alto.
+Tale problema risulta, tuttavia, computazionalmente molto oneroso: l'idea esposta nell'elaborato, e raffinata nel corso del tirocinio, è quella di utilizzare un algoritmo di machine learning che, allenato su una base di conoscenza appartenente al Web semantico (composta da un insieme di candidati assiomi con i rispettivi valori di verità), sviluppi un modello surrogato, in modo da limitare i costi computazionali alla fase iniziale di training. Il valore di verità viene formulato come appartenenza all'insieme fuzzy degli assiomi: dato un candidato assioma, l'algoritmo inferisce la funzione appartenenza a tale insieme.
 
-Nel secondo capitolo viene invece trattato l'algoritmo di apprendimento applicato alla risoluzione del problema, a partire dalle basi matematiche fino alla sua implementazione all'interno della libreria mulearn. Vengono inoltre introdotte le diverse varianti dei kernel utilizzati nell'algoritmo, nella loro definizione formale.
+Nel primo capitolo vengono introdotte le basi teoriche necessarie alla comprensione del lavoro: sono esposti i concetti di insieme fuzzy e Web semantico, oltre che la loro applicazione alla ricerca di assiomi in un insieme di formule.
 
-Il terzo capitolo è invece dedicato agli esperimenti: dopo un primo inquadramento teorico delle diverse tecniche di model selection e model evaluation, vengono descritte quelle effettivamente impiegate e i risultati a cui hanno portato in termini di RMSE, al variare degli approcci utilizzati (inizializzazione dei parametri, scelta del kernel e dei dati forniti all'algoritmo di apprendimento). Vengono inoltre discussi i problemi riscontrati e le possibili soluzioni.
+Nel secondo capitolo viene invece trattato l'algoritmo di apprendimento applicato alla risoluzione del problema, a partire dalle basi matematiche fino alla sua implementazione all'interno di una libreria preesistente. Vengono inoltre introdotte le diverse varianti dei kernel utilizzati nell'algoritmo, nella loro definizione formale.
+
+Il terzo capitolo è invece dedicato agli esperimenti: dopo un primo inquadramento teorico delle diverse tecniche di model selection e model evaluation, sono descritte quelle effettivamente impiegate e i risultati a cui hanno portato in termini di RMSE, al variare degli approcci utilizzati (inizializzazione dei parametri, scelta del kernel e dei dati forniti all'algoritmo di apprendimento). Vengono inoltre discussi i problemi riscontrati e le possibili soluzioni.
 
 
 \chapter{Apprendimento di insiemi fuzzy}
@@ -641,7 +645,7 @@ Le principali librerie utilizzate sono state:
 A seguito degli esperimenti svolti, si può concludere che il kernel precomputato all'interno della matrice di Gram è necessario per evitare l'eccesso di tempo di computazione impiegato nel calcolare di volta in volta i valori richiesti; è inoltre emerso che, tra le possibili definizioni di kernel, quella che porta ai valori medi migliori di RMSE è la similarità di Jaccard. Utilizzando questa misura di similarità, i fuzzificatori che risultano riportare dei valori di errore migliori sono quelli basati sui quantili, seguiti dal lineare e dall'esponenziale, con risultati sensibilmente peggiori per il crisp fuzzifier.
 Il problema della negatività del raggio risulta ancora aperto, dal momento che le modifiche della matrice tramite eliminazione di formule non lo hanno eliminato e la soluzione proposta al Paragrafo \ref{vettoriSection} non si è rivelata ottimale in termini di RMSE: la risoluzione del problema necessiterebbe di ulteriore ricerca.
 
-\chapter*{Conclusione}
+\chapter*{Conclusioni}
 
 Il principale obiettivo di questo elaborato è stato il resoconto del lavoro svolto durante l'attività di tirocinio. Dopo un primo inquadramento teorico dei concetti di Web semantico e insieme fuzzy, si è passati alla descrizione della loro applicazione alla ricerca di assiomi in un insieme di formule: è stato mostrato quanto la risoluzione del problema risulti essere computazionalmente onerosa, seguendo metodi standard, e quanto invece l'applicazione del machine learning, in una variante dell'algoritmo di Support Vector Clustering, possa essere vantaggiosa.
 Si è poi discusso più nel dettaglio dell'algoritmo di apprendimento, passando per la sua effettiva implementazione attraverso la libreria mulearn.
